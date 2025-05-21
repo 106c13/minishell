@@ -37,7 +37,6 @@ void	listDir(const char *path)
 void	pwd()
 {
 	char	*buffer;
-	char	*path;
 
 	buffer = getcwd(NULL, 0);
 	if (buffer)
