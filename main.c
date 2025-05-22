@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/21 21:56:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/22 23:22:26 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@
 #include <readline/history.h>
 #include "minishell.h"
 
+/* DEBUG */
+void	print_env_list(t_shell *shell);
+
 /*
  * Function that listens user's commads
  */
-static void	listen(void)
+static void	listen(t_shell *shell)
 {
 	char	*cmd;
 
@@ -33,31 +36,18 @@ static void	listen(void)
 		add_history(cmd);
 		free(cmd);
 	}
-}
-
-/*
- * Function for environment initialization
- * Now just prints all given data
- */
-static void	init_env(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
+	(void)shell;
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)argv;
-	init_env(env);
+	t_shell	shell;
+
+	init_env_list(&shell, env);
+	print_env_list(&shell);
 	setup_signals();
-	listen();
+	listen(&shell);
+	free_env_list(&shell);
 	rl_clear_history();
-	return (0);
+	return ((void)argc, (void)argv, 0);
 }

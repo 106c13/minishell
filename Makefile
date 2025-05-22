@@ -1,6 +1,6 @@
 NAME=minishell
 
-SRCS=main.c signal.c#commands.c
+SRCS=main.c signal.c env.c ft_split.c ft_strdup.c#commands.c
 
 OBJS=$(SRCS:.c=.o)
 
