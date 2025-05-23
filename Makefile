@@ -1,29 +1,37 @@
-NAME=minishell
+NAME = minishell
 
-SRCS=main.c signal.c env.c ft_split.c ft_strdup.c#commands.c
+SRCS = src/main.c src/signal.c src/env.c src/ft_split.c src/ft_strdup.c src/ft_strcmp.c \
+	src/utils.c src/ft_memcpy.c src/ft_strjoin.c
 
-OBJS=$(SRCS:.c=.o)
+OBJDIR = objs
 
-CC=cc
+OBJS = $(SRCS:src/%.c=$(OBJDIR)/%.o)
 
-CFLAGS=-Wall -Wextra -Werror 
+CC = cc
 
-LGFLAGS=-lreadline
+CFLAGS = -Wall -Wextra -Werror
+
+LGFLAGS = -lreadline
 
 all: $(NAME)
 
-%.o: %.c
+$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LGFLAGS)
 
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	rm -f $(OBJS) 
+	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all 
+re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re
+

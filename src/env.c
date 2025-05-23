@@ -25,6 +25,17 @@ void	print_env_list(t_shell *shell)
 	}
 }
 
+char	*get_env_val(t_env *env_list, char *key)
+{
+	while (env_list)
+	{
+		if (ft_strcmp(env_list->key, key) == 0)
+			return (env_list->val);
+		env_list = env_list->next;
+	}
+	return (NULL);
+}
+
 static t_env	*new_env_node(char *key, char *val)
 {
 	t_env	*new;

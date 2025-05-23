@@ -10,11 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "minishell.h"
 
 /* DEBUG */
@@ -26,16 +21,20 @@ void	print_env_list(t_shell *shell);
 static void	listen(t_shell *shell)
 {
 	char	*cmd;
+	char	*shell_prompt;
 
+	shell_prompt = get_shell_prompt(shell);
 	while (1)
 	{
-		cmd = readline("minishell > ");
+		cmd = readline(shell_prompt);
 		if (!cmd) // Ctrl-D
 			break ;
 		// pass command to detecting func & execute
 		add_history(cmd);
 		free(cmd);
 	}
+	printf("exit\n");
+	free(shell_prompt);
 	(void)shell;
 }
 
@@ -44,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 	t_shell	shell;
 
 	init_env_list(&shell, env);
-	print_env_list(&shell);
+	//print_env_list(&shell);
 	setup_signals();
 	listen(&shell);
 	free_env_list(&shell);
