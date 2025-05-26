@@ -20,6 +20,7 @@ char	*get_shell_prompt(t_shell *shell)
 	int		size;
 
 	base = "minishell:";
+//	getcwd();
 	path = get_env_val(shell->env_list, "PWD");
 	size = 0;
 	size = ft_strlen(base) + ft_strlen(path);

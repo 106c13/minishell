@@ -1,11 +1,18 @@
 NAME = minishell
 
-SRCS = src/main.c src/signal.c src/env.c src/ft_split.c src/ft_strdup.c src/ft_strcmp.c \
-	src/utils.c src/ft_memcpy.c src/ft_strjoin.c
+FILES = main.c signal.c env.c ft_split.c \
+		ft_strdup.c ft_strcmp.c cmd_arseniy.c \
+		utils.c ft_memcpy.c ft_strjoin.c exit.c
 
-OBJDIR = objs
+SRCS_DIR=./src/
 
-OBJS = $(SRCS:src/%.c=$(OBJDIR)/%.o)
+SRCS=$(addprefix $(SRCS_DIR), $(FILES))
+
+OBJS_DIR=./obj/
+
+OBJS=$(addprefix $(OBJS_DIR), $(FILES:.c=.o))
+
+INCLUDES_DIR=./includes/
 
 CC = cc
 
@@ -13,20 +20,21 @@ CFLAGS = -Wall -Wextra -Werror
 
 LGFLAGS = -lreadline
 
-all: $(NAME)
+# RULES
+all: ./obj $(NAME)
 
-$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -o $@ -c $<
+./obj:
+	mkdir -p $(OBJS_DIR)
+
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -o $@ -c $<
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LGFLAGS)
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
 clean:
 	rm -f $(OBJS)
-	rm -rf $(OBJDIR)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	rm -f $(NAME)
@@ -34,4 +42,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-

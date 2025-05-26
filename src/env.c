@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/22 23:21:42 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:15:57 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/* DEBUG */
 void	print_env_list(t_shell *shell)
 {
-	while (shell->env_list)
+	t_env	*list;
+
+	list = shell->env_list;
+	while (list)
 	{
-		printf("key: %s, val: %s\n", shell->env_list->key, shell->env_list->val);
-		shell->env_list = shell->env_list->next;
+		printf("%s=%s\n", list->key, list->val);
+		list = list->next;
 	}
 }
 

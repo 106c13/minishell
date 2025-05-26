@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/22 21:36:20 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:00:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,15 @@ typedef struct s_shell
 	t_env	*env_list;
 }	t_shell;
 
+/* cmd_arseniy.c */
+int		exec_cmd(char *cmd, t_shell *shell);
+
+/* exit.c */
+void	safe_shell_exit(t_shell *shell);
+
 /* env.c */
+void	print_env_list(t_shell *shell);
+
 void	init_env_list(t_shell *shell, char **env);
 
 void	free_env_list(t_shell *shell);
