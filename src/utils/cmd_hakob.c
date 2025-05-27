@@ -10,7 +10,7 @@
 // opendir returns something like file descriptor, like open() funciton "open(filename, O_RDONLY)"
 // readdir returns a struct of a file, it working like get_next_line, each time when you call it, it returns a
 // file struct and switch to the next one.
-void	listDir(const char *path)
+void	list_dir(const char *path)
 {
 	DIR		*dir;
 	struct dirent	*entry;

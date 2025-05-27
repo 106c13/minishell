@@ -12,20 +12,20 @@
 
 #include "minishell.h"
 
-int	exec_cmd(char *cmd, t_shell *shell)
+int	exec_cmd(t_command *cmd, t_shell *shell)
 {
-	if (is_builtin(cmd))
+	if (is_builtin(cmd->cmd))
 	{
-		shell->exec_result = exec_builtin(cmd, shell);
+		shell->exec_result = exec_builtin(cmd->cmd, shell);
 	}
 	else
 	{
-		shell->exec_result = exec_bin(cmd, shell);
+		shell->exec_result = exec_bin(cmd->cmd, shell);
 	}
 
 	if (!shell->exec_result)
 	{
-		printf("minishell: command not found: %s\n", cmd);
+		printf("minishell: command not found: %s\n", cmd->cmd);
 	}
 	return (0);
 }

@@ -63,6 +63,19 @@ static char	*allocate_word(const char *str, int len)
 	return (word);
 }
 
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i] != NULL)
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
 char	**ft_split(const char *str, char c)
 {
 	int		split_count;
@@ -89,17 +102,4 @@ char	**ft_split(const char *str, char c)
 	}
 	result[word_i] = NULL;
 	return (result);
-}
-
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i] != NULL)
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
 }

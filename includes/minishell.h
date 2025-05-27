@@ -19,6 +19,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# include "parser.h"
+
 typedef struct s_env
 {
 	char			*key;
@@ -33,7 +35,7 @@ typedef struct s_shell
 }	t_shell;
 
 /* exec */
-int	exec_cmd(char *cmd, t_shell *shell);
+int	exec_cmd(t_command *cmd, t_shell *shell);
 
 int	exec_bin(char *cmd, t_shell *shell);
 
@@ -41,12 +43,14 @@ int	exec_builtin(char *cmd, t_shell *shell);
 
 int	is_builtin(char *cmd);
 
-/* buitins */
+/* builtins */
 int		safe_shell_exit(t_shell *shell);
 
 int		echo(char **args, t_shell *shell);
 
 int		print_env_list(t_shell *shell);
+
+int		change_directory(char *dir);
 
 /* env.c */
 void	init_env_list(t_shell *shell, char **env);
@@ -61,19 +65,17 @@ void	setup_signals(void);
 /* utils.c */
 int		ft_strlen(char *str);
 
+int		ft_strcmp(const char *s1, const char *s2);
+
 char	*get_shell_prompt(t_shell *shell);
 
 char	**ft_split(const char *str, char c);
 
-int		get_split_count(const char *str, char c);
-
-void	free_split(char **split);
-
 char	*ft_strdup(const char *str);
 
-int		ft_strcmp(const char *s1, const char *s2);
-
 char	*ft_strjoin(char *s1, char *s2);
+
+void	free_split(char **split);
 
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 

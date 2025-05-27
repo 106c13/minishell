@@ -17,22 +17,24 @@
  */
 static void	listen(t_shell *shell)
 {
-	char	*cmd;
+	char		*input;
+	t_command	*cmd;
 
 	while (1)
 	{
-		cmd = readline("minishell > ");
-		if (!cmd) // Ctrl-D
+		input = readline("minishell > ");
+		if (!input) // Ctrl-D
 		{
-			free(cmd);
+			free(input);
 			safe_shell_exit(shell);
 		}
-		if (cmd[0] != '\0')
+		if (input[0] != '\0')
 		{
-			// cmd_data = parse_cmd(shell); or someting like this
+			cmd = parse_command(input);
 			exec_cmd(cmd, shell);
-			add_history(cmd);
+			add_history(input);
 		}
+		free(input);
 		free(cmd);
 	}
 }
