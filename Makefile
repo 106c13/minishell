@@ -1,33 +1,32 @@
 NAME = minishell
 
-FILES = main.c signal.c env.c ft_split.c \
-		ft_strdup.c ft_strcmp.c cmd_arseniy.c \
-		utils.c ft_memcpy.c ft_strjoin.c exit.c
+MAIN = main.c signal.c
+BUILTINS = echo.c cd.c pwd.c export.c unset.c env.c exit.c
+EXEC = exec.c builtin.c bin.c
+ENV = env.c
+UTILS = ft_memcpy.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c utils.c
 
-SRCS_DIR=./src/
+SRCS_DIR = src/
+INCLUDES_DIR = includes/
 
-SRCS=$(addprefix $(SRCS_DIR), $(FILES))
+SRCS = \
+	$(addprefix $(SRCS_DIR), $(addprefix main/, $(MAIN))) \
+	$(addprefix $(SRCS_DIR), $(addprefix builtins/, $(BUILTINS))) \
+	$(addprefix $(SRCS_DIR), $(addprefix exec/, $(EXEC))) \
+	$(addprefix $(SRCS_DIR), $(addprefix env/, $(ENV))) \
+	$(addprefix $(SRCS_DIR), $(addprefix utils/, $(UTILS))) 
 
-OBJS_DIR=./obj/
-
-OBJS=$(addprefix $(OBJS_DIR), $(FILES:.c=.o))
-
-INCLUDES_DIR=./includes/
+OBJS = $(SRCS:.c=.o)
 
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror
-
 LGFLAGS = -lreadline
 
-# RULES
-all: ./obj $(NAME)
+# --- Rules ---
+all: $(NAME)
 
-./obj:
-	mkdir -p $(OBJS_DIR)
-
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -o $@ -c $<
+$(OBJS): %.o : %.c 
+	$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -c $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LGFLAGS)

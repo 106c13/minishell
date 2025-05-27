@@ -47,17 +47,3 @@ void	pwd()
 	else
 		printf("Error\n");
 }
-
-void	env(t_shell *shell)
-{
-	while (shell->env_list)
-	{
-		printf("%s=%s\n", shell->env_list->key, shell->env_list->val);
-		shell->env_list = shell->env_list->next;
-	}
-}
-
-void	shell_exit(t_shell *shell)
-{
-	
-}
