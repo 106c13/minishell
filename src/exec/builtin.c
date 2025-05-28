@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:34:44 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:20:31 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	is_builtin(t_command *cmd)
 		ft_strcmp(cmd->cmd, "export") == 0 ||
 		ft_strcmp(cmd->cmd , "pwd") == 0 ||
 		ft_strcmp(cmd->cmd, "cd") == 0 ||
-		ft_strcmp(cmd->cmd, "echo") == 0
+		ft_strcmp(cmd->cmd, "echo") == 0 ||
+		ft_strcmp(cmd->cmd, "clear") == 0
 	);
 }
 
@@ -32,7 +33,7 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	if (ft_strcmp(cmd->cmd, "env") == 0)
 		return (print_env_list(shell));
 	if (ft_strcmp(cmd->cmd, "unset") == 0)
-		return (1);
+		return (unset_env(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "export") == 0)
 		return (1);
 	if (ft_strcmp(cmd->cmd, "pwd") == 0)
@@ -41,5 +42,7 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 		return (change_dir(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "echo") == 0)
 		return (1);
+	if (ft_strcmp(cmd->cmd, "clear") == 0)
+		return (clear_shell());
 	return (0);
 }

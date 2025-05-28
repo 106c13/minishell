@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:35:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:26:33 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ int		change_dir(t_command *cmd, t_shell *shell);
 
 int		print_working_dir(t_shell *shell);
 
+int		clear_shell(void);
+
+int		unset_env(t_command *cmd, t_shell *shell);
+
 /* env.c */
 void	init_env_list(t_shell *shell, char **env);
 
@@ -64,10 +68,14 @@ char	*get_env_val(t_env *env_list, char *key);
 
 void	set_env_val(t_env *env_list, char *key, char *new_val);
 
+void	del_env_pair(t_env **env_list, char *key);
+
 /* signal.c */
 void	setup_signals(void);
 
 /* utils.c */
+int		get_args_count(char **args);
+
 int		ft_strlen(char *str);
 
 int		ft_strcmp(const char *s1, const char *s2);

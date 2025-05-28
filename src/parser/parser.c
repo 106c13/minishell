@@ -27,7 +27,7 @@ t_command	*parse_command(char *input)
 	// add malloc check
 	cmd->cmd = get_word(&input);
 	cmd->args = ft_split(input, ' ');
-	print_cmd(cmd);
+//	print_cmd(cmd);
 	return (cmd);
 }
 

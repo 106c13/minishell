@@ -35,3 +35,15 @@ char	*get_shell_prompt(t_shell *shell)
 	ft_memcpy((shell_prompt + ft_strlen(base)), path, ft_strlen(path));
 	return (shell_prompt);
 }
+
+int	get_args_count(char **args)
+{
+	int	count;
+
+	if (args == NULL)
+		return (0);
+	count = 0;
+	while (args[count])
+		count++;
+	return (count);
+}

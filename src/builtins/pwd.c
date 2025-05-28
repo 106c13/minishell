@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:23:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:29:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:00:40 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 int	print_working_dir(t_shell *shell)
 {
-	printf("%s\n", get_env_val(shell->env_list, "PWD"));
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	printf("%s\n", pwd);
+	(void)shell;
 	return (SUCCESS);
 }
