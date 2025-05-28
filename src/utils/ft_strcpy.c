@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 18:57:06 by haaghaja         ###   ########.fr       */
+/*   Created: 2025/05/28 18:21:00 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/05/28 18:24:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	PARSER_H
-# define PARSER_H
+#include "minishell.h"
 
-typedef struct s_command
+char	*ft_strcpy(char	*str)
 {
-	char			*cmd;
-	char			**args;
-	int			oper;	
-	struct s_command	*next;
-} t_command;
+	int	size;
+	char	*dest;
 
-t_command	*parse_command(char *cmd);
-
-void		free_command(t_command *cmd);
-
-char		*get_word(char	**str);
-
-char		*trim_spaces(char *str);
-
-int	get_operator_type(char *word);
-#endif
+	size = ft_strlen(str);
+	dest = (char *)malloc(sizeof(char) * (size + 1));
+	if (!dest)
+		return (NULL);
+	dest[size] = '\0';
+	while (size >= 0)
+	{
+		size--;
+		dest[size] = str[size];
+	}
+	return (dest);
+}

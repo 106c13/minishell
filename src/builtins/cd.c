@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 15:53:17 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:26:51 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	update_env_pwds(t_shell *shell)
 int	change_dir(t_command *cmd, t_shell *shell)
 {
 	char	*path;
-
 	path = cmd->args[0];
 	if (!path)
 		return (FAILURE);

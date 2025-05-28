@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:35:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:00:48 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int		ft_strlen(char *str);
 int		ft_strcmp(const char *s1, const char *s2);
 
 char	*get_shell_prompt(t_shell *shell);
+
+char	*ft_strcpy(char *str);
 
 char	**ft_split(const char *str, char c);
 

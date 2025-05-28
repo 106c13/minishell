@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/05/28 19:26:26 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 
@@ -6,27 +18,82 @@ void	print_cmd(t_command *cmd)
 {
 	int	i;
 
-	i = 0;
-	printf("CMD: %s\n", cmd->cmd);
-	while (cmd->args[i])
+	printf("---------------cmd---------------\n");
+	while (cmd)
 	{
-		printf("ARG %d: %s\n", i + 1, cmd->args[i]);
-		i++;  
+		printf("COMMAND: %s\n", cmd->cmd);
+		i = 0;
+		if (cmd->args)
+		{
+			while (cmd->args[i])
+			{
+				printf("ARG %d: %s\n", i + 1, cmd->args[i]);
+				i++;  
+			}
+		}
+		printf("OPERATOR: %d\n", cmd->oper);
+		cmd = cmd->next;
 	}
+	printf("---------------end---------------\n");
 }
+
+int	parse_word(char	**words, t_command *cmd)
+{
+	int	i;
+	int	op_type;
+	t_command *tmp;
+
+	i = 0;
+	while (words[i])
+	{
+		if (cmd->cmd == NULL)
+		{
+			cmd->cmd = ft_strcpy(words[i]);
+			free(words[i]);
+			words[i] = NULL;
+			i++;
+			continue;
+		}
+		if (cmd->args == NULL)
+			cmd->args = &words[i];
+		op_type = get_operator_type(words[i]);
+		if (op_type != 0)
+		{
+			tmp = cmd;
+			// TODO: Check malloc
+			cmd = malloc(sizeof(t_command) * 1);
+			cmd->cmd = NULL;
+			cmd->args = NULL;
+			cmd->next = NULL;
+			cmd->oper = 0;
+			tmp->next = cmd;
+			tmp->oper = op_type;
+		}
+		i++;
+	}
+	return (0);
+}
+
 
 
 t_command	*parse_command(char *input)
 {
 	t_command	*cmd;
+	char		**words;
 
 	input = trim_spaces(input);
 	if (*input == '\0')
 		return (NULL);
+	words = ft_split(input, ' ');
 	cmd = malloc(sizeof(t_command) * 1);
-	// add malloc check
-	cmd->cmd = get_word(&input);
-	cmd->args = ft_split(input, ' ');
+	cmd->cmd = NULL;
+	cmd->args = NULL;
+	cmd->next = NULL;
+	cmd->oper = 0;
+	if (!cmd)
+		return (NULL);
+	if (parse_word(words, cmd) != 0)
+		return (NULL);
 	print_cmd(cmd);
 	return (cmd);
 }
@@ -34,6 +101,7 @@ t_command	*parse_command(char *input)
 
 void	free_command(t_command *cmd)
 {
-	// also free args
+	free(cmd->cmd);
+	free(cmd->args);
 	free(cmd);
 }

@@ -28,3 +28,16 @@ char	*get_word(char	**str)
 	word[i] = '\0';
 	return (word);
 }
+
+int	get_operator_type(char *word)
+{
+	if (ft_strcmp(word, "&") == 0)
+		return (1);
+	if (ft_strcmp(word, "|") == 0)
+		return (2);
+	if (ft_strcmp(word, "&&") == 0)
+		return (3);
+	if (ft_strcmp(word, "||") == 0)
+		return (4);
+	return (0);
+}
