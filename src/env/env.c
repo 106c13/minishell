@@ -6,24 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:00:03 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:53:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-char	*get_env_val(t_env *env_list, char *key)
-{
-	while (env_list)
-	{
-		if (ft_strcmp(env_list->key, key) == 0)
-			return (env_list->val);
-		env_list = env_list->next;
-	}
-	return (NULL);
-}
 
 static t_env	*new_env_node(char *key, char *val)
 {
@@ -40,6 +29,32 @@ static t_env	*new_env_node(char *key, char *val)
 		return (free(new->key), free(new), NULL);
 	new->next = NULL;
 	return (new);
+}
+
+char	*get_env_val(t_env *env_list, char *key)
+{
+	while (env_list)
+	{
+		if (ft_strcmp(env_list->key, key) == 0)
+			return (env_list->val);
+		env_list = env_list->next;
+	}
+	return (NULL);
+}
+
+void	set_env_val(t_env *env_list, char *key, char *new_val)
+{
+	while (env_list)
+	{
+		if (ft_strcmp(env_list->key, key) == 0)
+		{
+			free(env_list->val);
+			env_list->val = new_val;
+			return ;
+		}
+		env_list = env_list->next;
+	}
+	env_list = new_env_node(key, new_val);
 }
 
 void	init_env_list(t_shell *shell, char **env_arr)

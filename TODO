@@ -1,0 +1,8 @@
+
+check correctness of set_env_val function
+check correctness of buitlin cd implementation
+implement free_command function
+oldpwd is not correct
+seg fault cd with relative path
+
+clear func (not so important)

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:17:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:35:35 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,13 @@
 
 int	exec_cmd(t_command *cmd, t_shell *shell)
 {
-	if (is_builtin(cmd->cmd))
+	if (is_builtin(cmd))
 	{
-		shell->exec_result = exec_builtin(cmd->cmd, shell);
+		shell->exec_result = exec_builtin(cmd, shell);
 	}
 	else
 	{
-		shell->exec_result = exec_bin(cmd->cmd, shell);
+		shell->exec_result = exec_bin(cmd, shell);
 	}
-
-	if (!shell->exec_result)
-	{
-		printf("minishell: command not found: %s\n", cmd->cmd);
-	}
-	return (0);
+	return (shell->exec_result);
 }

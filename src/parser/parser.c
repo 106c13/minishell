@@ -24,8 +24,16 @@ t_command	*parse_command(char *input)
 	if (*input == '\0')
 		return (NULL);
 	cmd = malloc(sizeof(t_command) * 1);
+	// add malloc check
 	cmd->cmd = get_word(&input);
 	cmd->args = ft_split(input, ' ');
 	print_cmd(cmd);
 	return (cmd);
+}
+
+
+void	free_command(t_command *cmd)
+{
+	// also free args
+	free(cmd);
 }

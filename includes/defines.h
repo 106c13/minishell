@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 16:23:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:29:21 by azolotar         ###   ########.fr       */
+/*   Created: 2025/05/28 15:23:07 by azolotar          #+#    #+#             */
+/*   Updated: 2025/05/28 15:23:44 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef DEFINES_H
+# define DEFINES_H
 
-int	print_working_dir(t_shell *shell)
-{
-	printf("%s\n", get_env_val(shell->env_list, "PWD"));
-	return (SUCCESS);
-}
+# define SUCCESS 0
+# define FAILURE 1
+
+#endif

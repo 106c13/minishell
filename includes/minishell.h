@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/27 19:09:34 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:35:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 
 # include "parser.h"
+# include "defines.h"
 
 typedef struct s_env
 {
@@ -37,11 +38,11 @@ typedef struct s_shell
 /* exec */
 int	exec_cmd(t_command *cmd, t_shell *shell);
 
-int	exec_bin(char *cmd, t_shell *shell);
+int	exec_bin(t_command *cmd, t_shell *shell);
 
-int	exec_builtin(char *cmd, t_shell *shell);
+int	exec_builtin(t_command *cmd, t_shell *shell);
 
-int	is_builtin(char *cmd);
+int	is_builtin(t_command *cmd);
 
 /* builtins */
 int		safe_shell_exit(t_shell *shell);
@@ -50,7 +51,9 @@ int		echo(char **args, t_shell *shell);
 
 int		print_env_list(t_shell *shell);
 
-int		change_directory(char *dir);
+int		change_dir(t_command *cmd, t_shell *shell);
+
+int		print_working_dir(t_shell *shell);
 
 /* env.c */
 void	init_env_list(t_shell *shell, char **env);
@@ -58,6 +61,8 @@ void	init_env_list(t_shell *shell, char **env);
 void	free_env_list(t_shell *shell);
 
 char	*get_env_val(t_env *env_list, char *key);
+
+void	set_env_val(t_env *env_list, char *key, char *new_val);
 
 /* signal.c */
 void	setup_signals(void);
