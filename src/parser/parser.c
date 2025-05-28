@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 19:26:26 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:35:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_command	*parse_command(char *input)
 	if (*input == '\0')
 		return (NULL);
 	words = ft_split(input, ' ');
+	// add malloc check
 	cmd = malloc(sizeof(t_command) * 1);
 	cmd->cmd = NULL;
 	cmd->args = NULL;
@@ -94,7 +95,7 @@ t_command	*parse_command(char *input)
 		return (NULL);
 	if (parse_word(words, cmd) != 0)
 		return (NULL);
-	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }
 

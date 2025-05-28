@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 15:53:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:26:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,31 @@ static t_env	*new_env_node(char *key, char *val)
 		return (free(new->key), free(new), NULL);
 	new->next = NULL;
 	return (new);
+}
+
+void	del_env_pair(t_env **env_list, char *key)
+{
+	t_env	*curr;
+	t_env	*prev;
+
+	curr = *env_list;
+	prev = NULL;
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, key) == 0)
+		{
+			if (prev)
+				prev->next = curr->next;
+			else
+				*env_list = curr->next;
+			free(curr->key);
+			free(curr->val);
+			free(curr);
+			return ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
 }
 
 char	*get_env_val(t_env *env_list, char *key)

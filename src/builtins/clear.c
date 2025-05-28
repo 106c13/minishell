@@ -6,13 +6,14 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:19:09 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 16:20:17 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:22:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	clear(void)
+int	clear_shell(void)
 {
 	printf("\033[2J\033[H");
+	return (SUCCESS);
 }
