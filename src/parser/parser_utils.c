@@ -1,32 +1,16 @@
 #include "minishell.h"
 
-
 char	*trim_spaces(char *str)
 {
+	int	size;
+
 	while (*str == ' ')
 		str++;
+	size = ft_strlen(str) - 1;
+	while (str[size] == ' ')
+		size--;
+	str[size + 1] = '\0';
 	return (str);
-}
-
-char	*get_word(char	**str)
-{
-	int	size;
-	int	i;
-	char	*word;
-
-	size = 0;
-	i = 0;
-	while ((*str)[size] && (*str)[size] != ' ')
-		size++;
-	word = (char *)malloc(sizeof(char) * (size + 1));
-	while(i < size)
-	{
-		word[i] = **str;
-		i++;
-		(*str)++;
-	}
-	word[i] = '\0';
-	return (word);
 }
 
 int	get_operator_type(char *word)
@@ -40,4 +24,11 @@ int	get_operator_type(char *word)
 	if (ft_strcmp(word, "||") == 0)
 		return (4);
 	return (0);
+}
+
+void	free_command(t_command *cmd)
+{
+	free(cmd->cmd);
+	free(cmd->args);
+	free(cmd);
 }

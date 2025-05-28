@@ -15,10 +15,8 @@
 static void	update_env_pwds(t_shell *shell)
 {
 	char	*curr_pwd;
-	char	*new_pwd;
 
 	curr_pwd = ft_strdup(get_env_val(shell->env_list, "PWD"));
-	new_pwd = getcwd(NULL, 0);
 	set_env_val(shell->env_list, "PWD", getcwd(NULL, 0));
 	set_env_val(shell->env_list, "OLDPWD", curr_pwd);
 }

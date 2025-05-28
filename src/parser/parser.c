@@ -95,14 +95,8 @@ t_command	*parse_command(char *input)
 		return (NULL);
 	if (parse_word(words, cmd) != 0)
 		return (NULL);
-	//print_cmd(cmd);
+	print_cmd(cmd);
 	return (cmd);
 }
 
 
-void	free_command(t_command *cmd)
-{
-	free(cmd->cmd);
-	free(cmd->args);
-	free(cmd);
-}
