@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:51:44 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:34:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,15 @@ void	print_export_env(t_env *env)
 			tmp = tmp->next;
 		}
 	}
+}
+
+int	env_contains(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			return (1);
+		env = env->next;
+	}
+	return (0);
 }

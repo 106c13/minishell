@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:52:02 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:34:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ typedef struct s_shell
 }	t_shell;
 
 /* exec */
-int	exec_cmd(t_command *cmd, t_shell *shell);
+int		exec_cmd(t_command *cmd, t_shell *shell);
 
-int	exec_bin(t_command *cmd, t_shell *shell);
+int		exec_bin(t_command *cmd, t_shell *shell);
 
-int	exec_builtin(t_command *cmd, t_shell *shell);
+int		exec_builtin(t_command *cmd, t_shell *shell);
 
-int	is_builtin(t_command *cmd);
+int		is_builtin(t_command *cmd);
 
 /* builtins */
 int		safe_shell_exit(t_shell *shell);
@@ -75,6 +75,8 @@ void	del_env_pair(t_env **env_list, char *key);
 void	print_export_env(t_env *env);
 
 int		envlen(t_env *env);
+
+int		env_contains(t_env *env, char *key);
 
 /* signal.c */
 void	setup_signals(void);

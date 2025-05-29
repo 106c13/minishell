@@ -4,4 +4,4 @@ check correctness of buitlin cd implementation
 implement free_command function
 
 add better env parsing, cause some values can contain '=' sign, ans split will behave incorrect
-
+check export builitin func & implement valid of args
