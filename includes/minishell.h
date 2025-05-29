@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 19:32:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:13:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int		clear_shell(void);
 
 int		unset_env(t_command *cmd, t_shell *shell);
 
+int		export_env(t_command *cmd, t_shell *shell);
+
 /* env.c */
 void	init_env_list(t_shell *shell, char **env);
 
@@ -69,6 +71,10 @@ char	*get_env_val(t_env *env_list, char *key);
 void	set_env_val(t_env *env_list, char *key, char *new_val);
 
 void	del_env_pair(t_env **env_list, char *key);
+
+void	print_sorted_env(t_env *env);
+
+int		envlen(t_env *env);
 
 /* signal.c */
 void	setup_signals(void);
@@ -93,5 +99,7 @@ char	*ft_strjoin(char *s1, char *s2);
 void	free_split(char **split);
 
 void	*ft_memcpy(void *dest, const void *src, size_t n);
+
+int		str_contains(char *str, char c);
 
 #endif

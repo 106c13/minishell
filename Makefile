@@ -3,7 +3,7 @@ NAME = minishell
 MAIN = main.c signal.c
 BUILTINS = echo.c cd.c pwd.c export.c unset.c env.c exit.c clear.c # clear is optional
 EXEC = exec.c builtin.c bin.c
-ENV = env.c
+ENV = env.c env_utils.c
 UTILS = ft_memcpy.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c utils.c ft_strcpy.c
 PARSER = parser.c parser_utils.c
 

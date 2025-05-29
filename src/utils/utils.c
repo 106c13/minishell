@@ -47,3 +47,17 @@ int	get_args_count(char **args)
 		count++;
 	return (count);
 }
+
+int	str_contains(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
