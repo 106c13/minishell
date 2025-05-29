@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 19:26:21 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:53:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,22 @@ char	*get_env_val(t_env *env_list, char *key)
 
 void	set_env_val(t_env *env_list, char *key, char *new_val)
 {
-	while (env_list)
+	t_env	*tmp;
+
+	tmp = env_list;
+	while (tmp)
 	{
-		if (ft_strcmp(env_list->key, key) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			free(env_list->val);
-			env_list->val = new_val;
+			free(tmp->val);
+			tmp->val = ft_strdup(new_val);
 			return ;
 		}
-		env_list = env_list->next;
+		if (tmp->next == NULL)
+			break ;
+		tmp = tmp->next;
 	}
-	env_list = new_env_node(key, new_val);
+	tmp->next = new_env_node(key, new_val);
 }
 
 void	init_env_list(t_shell *shell, char **env_arr)
