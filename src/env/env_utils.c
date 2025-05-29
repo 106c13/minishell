@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:23:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:51:44 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	get_env_sort_pos(char *env_key, t_env *env)
 	return (pos);
 }
 
-void	print_sorted_env(t_env *env)
+void	print_export_env(t_env *env)
 {
 	int		env_len;
 	int		printed_count;
@@ -57,7 +57,12 @@ void	print_sorted_env(t_env *env)
 			if (pos == printed_count)
 			{
 				if (ft_strcmp(tmp->key, "_") != 0)
-					printf("%s=%s\n", tmp->key, tmp->val);
+				{
+					if (tmp->val == NULL)
+						printf("%s=''\n", tmp->key);
+					else
+						printf("%s=%s\n", tmp->key, tmp->val);
+				}
 				printed_count += 1;
 			}
 			tmp = tmp->next;

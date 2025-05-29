@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:58:34 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 15:26:32 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:49:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	print_env_list(t_shell *shell)
 	list = shell->env_list;
 	while (list)
 	{
-		printf("%s=%s\n", list->key, list->val);
+		if (list->val != NULL)
+			printf("%s=%s\n", list->key, list->val);
 		list = list->next;
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:10:55 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:52:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	export_env(t_command *cmd, t_shell *shell)
 
 	args_count = get_args_count(cmd->args);
 	if (args_count == 0)
-		return (print_sorted_env(shell->env_list), SUCCESS);
+		return (print_export_env(shell->env_list), SUCCESS);
 	i = -1;
 	while (++i < args_count)
 	{

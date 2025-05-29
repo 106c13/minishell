@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 16:53:38 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:49:17 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@ static t_env	*new_env_node(char *key, char *val)
 	new->key = ft_strdup(key);
 	if (!new->key)
 		return (free(new), NULL);
-	new->val = ft_strdup(val);
-	if (!new->val)
-		return (free(new->key), free(new), NULL);
+	if (val == NULL)
+		new->val = NULL;
+	else
+	{
+		new->val = ft_strdup(val);
+		if (!new->val)
+			return (free(new->key), free(new), NULL);
+	}
 	new->next = NULL;
 	return (new);
 }
