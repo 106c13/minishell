@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/30 18:04:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:12:36 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_cmd(t_command *cmd)
 		{
 			while (cmd->args[i])
 			{
-				printf("ARG %d: %s\n", i + 1, cmd->args[i]);
+				printf("ARG %d: %s\n", i, cmd->args[i]);
 				i++;  
 			}
 		}
@@ -47,11 +47,7 @@ int	parse_word(char	**words, t_command *cmd)
 	while (words[i])
 	{
 		if (cmd->cmd == NULL)
-		{
 			cmd->cmd = ft_strcpy(words[i]);
-			i++;
-			continue;
-		}
 		if (cmd->args == NULL)
 			cmd->args = &words[i];
 		op_type = get_operator_type(words[i]);
@@ -95,7 +91,7 @@ t_command	*parse_command(char *input)
 		return (NULL);
 	if (parse_word(words, cmd) != 0)
 		return (NULL);
-//	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }
 
