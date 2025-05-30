@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:25:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 17:16:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:57:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	echo(t_command *cmd, t_shell *shell)
 	int		i;
 
 	(void)shell;
+	cmd->args += 1;
 	args_count = get_args_count(cmd->args);
 	n_flag = 0;
 	if (args_count >= 1 && ft_strcmp(cmd->args[0], "-n") == 0)

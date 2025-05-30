@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 20:34:50 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:14:52 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,27 @@ int	env_contains(t_env *env, char *key)
 		env = env->next;
 	}
 	return (0);
+}
+
+char	**env_list_to_str_arr(t_env *env)
+{
+	char	**result;
+	char	*tmp;
+	int		i;
+
+	result = malloc(sizeof(char *) * (envlen(env) + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (env)
+	{
+		result[i] = ft_strjoin(env->key, "=");
+		tmp = result[i];
+		result[i] = ft_strjoin(result[i], env->val);
+		free(tmp);
+		i++;
+		env = env->next;
+	}
+	result[i] = NULL;
+	return (result);
 }

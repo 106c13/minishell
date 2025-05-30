@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 16:54:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:57:28 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	change_dir(t_command *cmd, t_shell *shell)
 	int		args_count;
 	char	*old_pwd;
 
+	cmd->args += 1;
 	args_count = get_args_count(cmd->args);
 	if (args_count == 1)
 	{

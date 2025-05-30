@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 16:41:59 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:25:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 
 # include "parser.h"
 # include "defines.h"
@@ -77,6 +78,8 @@ void	print_export_env(t_env *env);
 int		envlen(t_env *env);
 
 int		env_contains(t_env *env, char *key);
+
+char	**env_list_to_str_arr(t_env *env);
 
 /* signal.c */
 void	setup_signals(void);

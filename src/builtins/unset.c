@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:39:10 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 19:26:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:58:46 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	unset_env(t_command *cmd, t_shell *shell)
 	int	args_count;
 	int	i;
 
+	cmd->args += 1;
 	args_count = get_args_count(cmd->args);
 	if (args_count == 0)
 	{
