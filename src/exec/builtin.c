@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:12:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:50:30 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	if (ft_strcmp(cmd->cmd, "cd") == 0)
 		return (change_dir(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "echo") == 0)
-		return (1);
+		return (echo(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "clear") == 0)
 		return (clear_shell());
 	return (0);

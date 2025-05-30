@@ -6,21 +6,32 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:25:16 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:14:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:16:37 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	echo(char **args, t_shell *shell)
+int	echo(t_command *cmd, t_shell *shell)
 {
-	(void)args;
-	(void)shell;
 	char	n_flag;
+	int		args_count;
+	int		i;
 
-	printf("echo mock\n");
+	(void)shell;
+	args_count = get_args_count(cmd->args);
 	n_flag = 0;
+	if (args_count >= 1 && ft_strcmp(cmd->args[0], "-n") == 0)
+		n_flag = 1;
+	i = n_flag;
+	while (i < args_count)
+	{
+		printf("%s", cmd->args[i]);
+		if (i < (args_count - 1))
+			printf(" ");
+		i++;
+	}
 	if (n_flag == 0)
-		write(1, "\n", 1);
-	return (1);
+		printf("\n");
+	return (SUCCESS);
 }

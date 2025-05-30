@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 20:34:58 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:41:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		is_builtin(t_command *cmd);
 /* builtins */
 int		safe_shell_exit(t_shell *shell);
 
-int		echo(char **args, t_shell *shell);
+int		echo(t_command *cmd, t_shell *shell);
 
 int		print_env_list(t_shell *shell);
 
