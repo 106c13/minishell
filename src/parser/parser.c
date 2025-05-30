@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/30 16:51:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:04:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	parse_word(char	**words, t_command *cmd)
 		if (cmd->cmd == NULL)
 		{
 			cmd->cmd = ft_strcpy(words[i]);
-			free(words[i]);
-			words[i] = NULL;
 			i++;
 			continue;
 		}
@@ -59,6 +57,8 @@ int	parse_word(char	**words, t_command *cmd)
 		op_type = get_operator_type(words[i]);
 		if (op_type != 0)
 		{
+			free(words[i]);
+			words[i] = NULL;
 			tmp = cmd;
 			// TODO: Check malloc
 			cmd = malloc(sizeof(t_command) * 1);

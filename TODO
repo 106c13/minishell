@@ -5,3 +5,13 @@ implement free_command function
 
 add better env parsing, cause some values can contain '=' sign, ans split will behave incorrect
 check export builitin func & implement valid of args
+
+add check if last symbol in STDOUT is new line or not (to avoid shell prompt on one line with prev output)
+
+check bin permissions
+
+Hakob:
+add cmd as first arg in t_command
+
+Arseniy:
+write func that will convert env to char**
