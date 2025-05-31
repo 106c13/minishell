@@ -6,11 +6,11 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 20:51:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/22 21:18:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/05/31 16:58:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "minishell.h"
 
 int	get_split_count(const char *str, char c)
 {
