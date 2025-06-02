@@ -14,135 +14,75 @@
 
 static int	get_split_count(char *str, char sep)
 {
-	int	count;
+	int		count;
 	char	quote;
 
 	count = 0;
 	quote = 0;
 	while (*str)
 	{
-		if (!quote)
+		if (!quote && (*str == '\'' || *str == '"'))
+			quote = *str;
+		else if (quote && *str == quote && (!str[1] || str[1] == sep))
 		{
-			if (*str == '"' || *str == '\'')
-				quote = *str;
-			else if (*str != sep && (*(str + 1) == sep || *(str + 1) == '\0'))
-				count++;
+			count++;
+			quote = 0;
 		}
-		else
-		{
-			if (*str == quote)
-			{
-				if (*(str + 1) == sep || *(str + 1) == '\0')
-					count++;
-				quote = 0;
-			}
-		}	
+		else if (!quote && *str != sep && (!str[1] || str[1] == sep))
+			count++;
 		str++;
 	}
-	//printf("SIZE: %d\n", count);
 	return (count);
 }
 
-static int	strlen_till_sep(char *str, char c)
-{
-	int	len;
-
-	len = 0;
-	while (str[len] && str[len] != c)
-	{
-		len++;
-	}
-	//printf("STR SIZE: %d\n", len);
-	return (len);
-}
-
-static char	*allocate_word(char *str, int len)
-{
-	char	*word;
-	int		i;
-
-	word = malloc(sizeof(char) * (len + 1));
-	if (!word)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		word[i] = str[i];
-		i++;
-	}
-	word[i] = '\0';
-	return (word);
-}
-
-int	strlen_till_quote(char *str, char sep)
+int	strlen_till_sep(char *str, char sep)
 {
 	int	quote;
-	int	size;
+	int	i;
 
 	quote = 0;
-	size = 0;
+	i = 0;
 	while (*str)
 	{
-		if (!quote)
-		{
-			if (*str == sep)
-				break ;
-			else if (*str == '"' || *str == '\'')
-				quote = *str;
-			else
-				size++;
-		}
+		if (!quote && (*str == '"' || *str == '\''))
+			quote = *str;
+		else if (quote && *str == quote)
+			quote = 0;
+		else if (!quote && *str == sep)
+			break ;
 		else
-		{
-			if (*str != quote)
-				size++;
-			else
-				quote = 0;
-		}
+			i++;
 		str++;
 	}
-	//printf("STR SIZE: %d\n", size);
-	return (size);
+	return (i);
 }
 
-char	*allocate_quote(char **str, int	size)
+char	*allocate_word(char **str, int size)
 {
 	char	*word;
 	char	quote;
-	int	i;
+	int		i;
 
-	word = (char *)malloc(sizeof(char) + (size + 1));
+	word = (char *)malloc(sizeof(char) * (size + 1));
+	quote = 0;
+	i = 0;
 	if (!word)
 		return (NULL);
 	word[size] = '\0';
-	quote = 0;
-	i = 0;
 	while (i < size)
 	{
-		if (!quote)
+		if (!quote && (**str == '\'' || **str == '"'))
+			quote = *(*str)++;
+		else if (quote && **str == quote)
 		{
-			if (**str == '"' || **str == '\'')
-				quote = **str;
-			else
-			{
-				word[i] = **str;
-				i++;
-			}
+			quote = 0;
+			(*str)++;
 		}
 		else
-		{
-			if (**str != quote)
-			{
-				word[i] = **str;
-				i++;
-			}
-			else
-				quote = 0;
-		}
-		(*str)++;
+			word[i++] = *(*str)++;
 	}
-	(*str)++;
-	//printf("STR: %s\n", *str);
+	if (**str)
+		(*str)++;
 	return (word);
 }
 
@@ -161,21 +101,11 @@ char	**shell_split(char *str, char sep)
 	while (*str)
 	{
 		if (*str == sep)
-		{
 			str++;
-			continue ;
-		}
-		if (*str == '"' || *str == '\'')
-		{
-			word_len = strlen_till_quote(str, sep);
-			result[word_i] = allocate_quote(&str, word_len);
-			word_i++;
-		}
 		else
 		{
 			word_len = strlen_till_sep(str, sep);
-			result[word_i] = allocate_word(str, word_len);
-			str += word_len;
+			result[word_i] = allocate_word(&str, word_len);
 			word_i++;
 		}
 	}
