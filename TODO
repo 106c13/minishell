@@ -1,3 +1,4 @@
+FOR TODAY: fix all memory leaks
 
 check correctness of set_env_val function
 check correctness of buitlin cd implementation
