@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/28 19:27:07 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:37:20 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	listen(t_shell *shell)
 
 	while (1)
 	{
-		input = readline("minishell > ");
+		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
 		if (!input) // Ctrl-D
 		{
 			free(input);
