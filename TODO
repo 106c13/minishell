@@ -8,10 +8,8 @@ check export builitin func & implement valid of args
 
 add check if last symbol in STDOUT is new line or not (to avoid shell prompt on one line with prev output)
 
-check bin permissions
+check bin permissions -> done???
+check if S_ISREG macros forbidden?
 
 Hakob:
-add cmd as first arg in t_command
-
-Arseniy:
-write func that will convert env to char**
+make func that will free cmd

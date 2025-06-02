@@ -6,23 +6,11 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/31 21:17:50 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:58:57 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*get_bin_path(char *path, char *bin)
-{
-	char	*result;
-	char	*tmp;
-
-	result = ft_strjoin(path, "/");
-	tmp = result;
-	result = ft_strjoin(result, bin);
-	free(tmp);
-	return (result);
-}
 
 static void	print_error_exit(char *cmd, char *msg, int code)
 {
@@ -47,42 +35,71 @@ static void	exec_local_bin(t_command *cmd, char **env_str_arr)
 	print_error_exit(cmd->cmd, "Execution failded", 126);
 }
 
-static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
+static char	*get_bin_path(char *path, char *bin)
 {
-	char	*path;
-	char	**split_path;
-	char	*bin;
-	int		i;
+	char	*result;
+	char	*tmp;
+
+	result = ft_strjoin(path, "/");
+	tmp = result;
+	result = ft_strjoin(result, bin);
+	free(tmp);
+	return (result);
+}
+
+char	*find_executable_path(char *cmd, t_shell *shell)
+{
+	struct stat	st;
+	char		*path;
+	char		**split_path;
+	char		*full_path;
+	int			i;
 
 	path = get_env_val(shell->env_list, "PATH");
 	if (path == NULL)
-	{
-		free_split(env_str_arr);
-		print_error_exit(cmd->cmd, "PATH not set", 127);
-	}
+		print_error_exit(cmd, "PATH not set", 127);
 	split_path = ft_split(path, ':');
-	if (!split_path)
-	{
-		free_split(env_str_arr);
-		print_error_exit("minishell", "Malloc failed", 1);
-	}
+	if (split_path == NULL)
+		return (NULL);
 	i = -1;
 	while (split_path[++i])
 	{
-		bin = get_bin_path(split_path[i], cmd->cmd);
-		if (!bin)
+		full_path = get_bin_path(split_path[i], cmd);
+		if (!full_path)
 			continue ;
-		if (access(bin, X_OK) == 0)
+		if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && access(full_path, X_OK) == 0)
 		{
-			execve(bin, cmd->args, env_str_arr);
-			free(bin);
-			break ;
+			free_split(split_path);
+			return (full_path);
 		}
-		free(bin);
+		else
+		{
+			free(full_path);
+		}
 	}
 	free_split(split_path);
+	return (NULL);
+}
+
+static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
+{
+	char	*bin;
+	int		exit_code;
+
+	bin = find_executable_path(cmd->cmd, shell);
+	if (!bin)
+	{
+		free_split(env_str_arr);
+		print_error_exit(cmd->cmd, "command not found", 127);
+	}
+	execve(bin, cmd->args, env_str_arr);
+	free(bin);
 	free_split(env_str_arr);
-	print_error_exit(cmd->cmd, "command not found", 127);
+	if (errno == EACCES)
+		exit_code = 126;
+	else
+		exit_code = 127;
+	print_error_exit(cmd->cmd, strerror(errno), exit_code);
 }
 
 int	exec_bin(t_command *cmd, t_shell *shell)
