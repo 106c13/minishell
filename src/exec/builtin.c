@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 16:50:30 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:29:46 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	is_builtin(t_command *cmd)
 		ft_strcmp(cmd->cmd, "export") == 0 ||
 		ft_strcmp(cmd->cmd , "pwd") == 0 ||
 		ft_strcmp(cmd->cmd, "cd") == 0 ||
-		ft_strcmp(cmd->cmd, "echo") == 0 ||
-		ft_strcmp(cmd->cmd, "clear") == 0
+		ft_strcmp(cmd->cmd, "echo") == 0
 	);
 }
 
@@ -42,7 +41,5 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 		return (change_dir(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "echo") == 0)
 		return (echo(cmd, shell));
-	if (ft_strcmp(cmd->cmd, "clear") == 0)
-		return (clear_shell());
 	return (0);
 }
