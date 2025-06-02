@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 20:56:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:49:17 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:22:35 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,30 @@ void	set_env_val(t_env *env_list, char *key, char *new_val)
 	tmp->next = new_env_node(key, new_val);
 }
 
+static t_env	*parse_env_line(char *env_line)
+{
+	char	*equal_sign_loc;
+	char	*key;
+	char	*val;
+	t_env	*new;
+
+	equal_sign_loc = ft_strchr(env_line, '=');
+	if (!equal_sign_loc)
+		return (NULL);
+	key = ft_substr(env_line, 0, equal_sign_loc - env_line);
+	if (!key)
+		return (NULL);
+	val = ft_strdup(equal_sign_loc + 1);
+	if (!val)
+		return (free(key), NULL);
+	new = new_env_node(key, val);
+	free(key);
+	free(val);
+	return (new);
+}
+
 void	init_env_list(t_shell *shell, char **env_arr)
 {
-	char	**split;
 	t_env	*new;
 	t_env	*last;
 	int		i;
@@ -104,27 +125,17 @@ void	init_env_list(t_shell *shell, char **env_arr)
 	i = -1;
 	while (env_arr[++i])
 	{
-		split = ft_split(env_arr[i], '=');
-		if (!split || !split[0] || !split[1])
-		{
-			if (split)
-				free_split(split);
-			continue ;
-		}
-		new = new_env_node(split[0], split[1]);
-		free_split(split);
+		new = parse_env_line(env_arr[i]);
 		if (!new)
-		{
-			free_env_list(shell);
-			return ;
-		}
+			continue ;
 		if (shell->env_list == NULL)
 			shell->env_list = new;
 		else
 			last->next = new;
 		last = new;
 	}
-	last->next = NULL;
+	if (last)
+		last->next = NULL;
 }
 
 void	free_env_list(t_shell *shell)
