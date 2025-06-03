@@ -6,16 +6,21 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:58:34 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/29 19:49:45 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:25:15 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_env_list(t_shell *shell)
+int	print_env_list(t_command *cmd, t_shell *shell)
 {
 	t_env	*list;
 
+	if (get_args_count(cmd->args) != 1)
+	{
+		printf("env: too many arguments\n");
+		return (FAILURE);
+	}
 	list = shell->env_list;
 	while (list)
 	{

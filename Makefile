@@ -22,7 +22,7 @@ SRCS = \
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 LGFLAGS = -lreadline
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/03 19:36:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:11:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ t_command	*get_command(char	*input)
 	{
 		shell_split(&input, cmd);
 		print_cmd(cmd);
-		break ;
 		if (*input)
 		{
 			tmp = cmd;

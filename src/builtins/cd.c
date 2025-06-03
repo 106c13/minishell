@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 18:35:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:03:02 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,27 @@ int	change_dir(t_command *cmd, t_shell *shell)
 	char	*path;
 	int		args_count;
 	char	*old_pwd;
+	char	*tmp;
 
 	cmd->args += 1;
 	args_count = get_args_count(cmd->args);
 	if (args_count == 1)
 	{
 		path = cmd->args[0];
+		if (path[0] == '$')
+		{
+			tmp = get_env_val(shell->env_list, path + 1);
+			if (tmp != NULL)
+			{
+				free(path);
+				path = ft_strdup(tmp);
+			}
+			else
+			{
+				printf("minishell: cd: Not enough arguments\n");
+				return (FAILURE);
+			}
+		}
 		old_pwd = getcwd(NULL, 0);
 		if (chdir(path) != 0)
 		{
