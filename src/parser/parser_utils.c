@@ -28,7 +28,14 @@ int	get_operator_type(char *word)
 
 void	free_command(t_command *cmd)
 {
-	free(cmd->cmd);
-	free(cmd->args);
-	free(cmd);
+	t_command *tmp;
+
+	while (cmd)
+	{
+		tmp = cmd;
+		free(cmd->cmd);
+		free(cmd->args);
+		cmd = tmp->next;
+		free(tmp);
+	}
 }
