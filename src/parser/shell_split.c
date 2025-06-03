@@ -6,109 +6,121 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 19:06:44 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:57:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_split_count(char *str, char sep)
+static	int	is_whitespace(char c)
+{
+	return (!c || c == ' ' || c == '\t');
+}
+
+static int	get_split_count(char *str)
 {
 	int		count;
 	char	quote;
 
 	count = 0;
 	quote = 0;
-	while (*str)
+	while (*str && get_operator_type(str) == 0)
 	{
 		if (!quote && (*str == '\'' || *str == '"'))
 			quote = *str;
-		else if (quote && *str == quote && (!str[1] || str[1] == sep))
+		else if (quote && *str == quote && is_whitespace(str[1]))
 		{
 			count++;
 			quote = 0;
 		}
-		else if (!quote && *str != sep && (!str[1] || str[1] == sep))
+		else if (!quote && !is_whitespace(*str) && is_whitespace(str[1]))
 			count++;
 		str++;
 	}
+	printf("ARGS COUNT: %d\n", count);
 	return (count);
 }
 
-int	strlen_till_sep(char *str, char sep)
+int	get_arg_len(char *str)
 {
 	int	quote;
 	int	i;
 
 	quote = 0;
 	i = 0;
-	while (*str)
+	while (*str && get_operator_type(str) == 0)
 	{
 		if (!quote && (*str == '"' || *str == '\''))
 			quote = *str;
 		else if (quote && *str == quote)
 			quote = 0;
-		else if (!quote && *str == sep)
+		else if (!quote && is_whitespace(*str))
 			break ;
 		else
 			i++;
 		str++;
 	}
+	printf("ARG LEN: %d\n", i);
 	return (i);
 }
 
-char	*allocate_word(char **str, int size)
+void	add_arg(char **str, t_arg *arg, int size)
 {
-	char	*word;
 	char	quote;
 	int		i;
 
-	word = (char *)malloc(sizeof(char) * (size + 1));
+	arg->arg = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
-	if (!word)
-		return (NULL);
-	word[size] = '\0';
+	arg->interpet_env_var = 0;
+	if (!arg->arg)
+		return ;
+	arg->arg[size] = '\0';
 	while (i < size)
 	{
 		if (!quote && (**str == '\'' || **str == '"'))
-			quote = *(*str)++;
+			quote = **str;
 		else if (quote && **str == quote)
-		{
 			quote = 0;
-			(*str)++;
-		}
 		else
-			word[i++] = *(*str)++;
+		{
+			if (quote == '"' && **str == '$')
+				arg->interpet_env_var = 1;
+			else if (!quote && **str == '$')
+				arg->interpet_env_var = 1;
+			arg->arg[i++] = **str;
+		}
+		(*str)++;
 	}
 	if (**str)
 		(*str)++;
-	return (word);
 }
 
-char	**shell_split(char *str, char sep)
+void	shell_split(char **str, t_command *cmd)
 {
 	int		split_count;
-	char	**result;
-	int		word_i;
-	int		word_len;
+	t_arg	*args;
+	int		arg_i;
+	int		arg_len;
 
-	split_count = get_split_count(str, sep);
-	result = malloc(sizeof(char *) * (split_count + 1));
-	if (!result)
-		return (NULL);
-	word_i = 0;
-	while (*str)
+	split_count = get_split_count(*str);
+	args = malloc(sizeof(t_arg) * (split_count));
+	if (!args)
+		return ;
+	arg_i = 0;
+	while (**str && get_operator_type(*str) == 0)
 	{
-		if (*str == sep)
-			str++;
+		if (is_whitespace(**str))
+			(*str)++;
 		else
 		{
-			word_len = strlen_till_sep(str, sep);
-			result[word_i] = allocate_word(&str, word_len);
-			word_i++;
+			arg_len = get_arg_len(*str);
+			add_arg(str, &args[arg_i], arg_len);
+			printf("ARG %s\n", args[arg_i].arg);
+			arg_i++;
 		}
 	}
-	result[word_i] = NULL;
-	return (result);
+	cmd->args = args;
+	cmd->args_count = split_count;
+	cmd->cmd = &args[0];
 }

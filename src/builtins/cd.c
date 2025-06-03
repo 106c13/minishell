@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 18:57:28 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:35:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static void	update_env_pwds(t_shell *shell, char *old_pwd)
 
 int	change_dir(t_command *cmd, t_shell *shell)
 {
+	printf("UPDATE CD\n");
+	return (SUCCESS);
+	/*
 	char	*path;
 	int		args_count;
 	char	*old_pwd;
@@ -49,4 +52,5 @@ int	change_dir(t_command *cmd, t_shell *shell)
 		return (FAILURE);
 	}
 	return (SUCCESS);
+	*/
 }

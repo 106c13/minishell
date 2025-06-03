@@ -11,6 +11,7 @@ add check if last symbol in STDOUT is new line or not (to avoid shell prompt on 
 
 check bin permissions -> done???
 check if S_ISREG macros forbidden?
+find info why do i need global variable for signals
 
 Hakob:
 make func that will free cmd

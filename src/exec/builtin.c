@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/02 17:29:46 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:16:49 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	is_builtin(t_command *cmd)
 {
 	return (
-		ft_strcmp(cmd->cmd, "exit") == 0 ||
-		ft_strcmp(cmd->cmd, "env") == 0 ||
-		ft_strcmp(cmd->cmd, "unset") == 0 ||
+		ft_strcmp(cmd->cmd->arg, "exit") == 0 ||
+		ft_strcmp(cmd->cmd->arg, "env") == 0 ||
+		ft_strcmp(cmd->cmd->arg, "unset") == 0 ||
 		ft_strcmp(cmd->cmd, "export") == 0 ||
 		ft_strcmp(cmd->cmd , "pwd") == 0 ||
 		ft_strcmp(cmd->cmd, "cd") == 0 ||

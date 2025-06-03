@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 18:58:10 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:36:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static int	is_valid_arg(char *arg)
 
 int	export_env(t_command *cmd, t_shell *shell)
 {
+	printf("UPDATE EXPORT\n");
+	return (SUCCESS);
+	/*
 	int		args_count;
 	int		i;
 
@@ -60,4 +63,5 @@ int	export_env(t_command *cmd, t_shell *shell)
 			continue ;
 	}
 	return (SUCCESS);
+	*/
 }
