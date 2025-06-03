@@ -14,24 +14,18 @@
 
 int	unset_env(t_command *cmd, t_shell *shell)
 {
-	printf("UPDATE UNSET\n");
-	return (SUCCESS);
-	/*
-	int	args_count;
 	int	i;
 
 	cmd->args += 1;
-	args_count = get_args_count(cmd->args);
-	if (args_count == 0)
+	if (cmd->args_count == 0)
 	{
 		printf("unset: not enough arguments\n");
 		return (FAILURE);
 	}
 	i = -1;
-	while (cmd->args[++i] != NULL)
+	while (cmd->args[++i].arg != NULL)
 	{
-		del_env_pair(&shell->env_list, cmd->args[i]);
+		del_env_pair(&shell->env_list, cmd->args[i].arg);
 	}
 	return (SUCCESS);
-	*/
 }

@@ -16,7 +16,7 @@ int	print_env_list(t_command *cmd, t_shell *shell)
 {
 	t_env	*list;
 
-	if (get_args_count(cmd->args) != 1)
+	if (cmd->args_count != 1)
 	{
 		printf("env: too many arguments\n");
 		return (FAILURE);

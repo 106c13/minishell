@@ -92,6 +92,8 @@ int		ft_strlen(char *str);
 
 int		ft_strcmp(const char *s1, const char *s2);
 
+int		ft_strncmp(const char *s1, const char *s2, int n);
+
 char	*get_shell_prompt(t_shell *shell);
 
 char	*ft_strcpy(char *str);

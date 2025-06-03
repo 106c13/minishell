@@ -44,24 +44,18 @@ static int	is_valid_arg(char *arg)
 
 int	export_env(t_command *cmd, t_shell *shell)
 {
-	printf("UPDATE EXPORT\n");
-	return (SUCCESS);
-	/*
-	int		args_count;
 	int		i;
 
 	cmd->args += 1;
-	args_count = get_args_count(cmd->args);
-	if (args_count == 0)
+	if (cmd->args_count == 0)
 		return (print_export_env(shell->env_list), SUCCESS);
 	i = -1;
-	while (++i < args_count)
+	while (++i < cmd->args_count)
 	{
-		if (is_valid_arg(cmd->args[i]))
-			update_or_add_env(cmd->args[i], shell->env_list);
+		if (is_valid_arg(cmd->args[i].arg))
+			update_or_add_env(cmd->args[i].arg, shell->env_list);
 		else
 			continue ;
 	}
 	return (SUCCESS);
-	*/
 }

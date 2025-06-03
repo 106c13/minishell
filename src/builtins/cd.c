@@ -24,19 +24,14 @@ static void	update_env_pwds(t_shell *shell, char *old_pwd)
 
 int	change_dir(t_command *cmd, t_shell *shell)
 {
-	printf("UPDATE CD\n");
-	return (SUCCESS);
-	/*
 	char	*path;
-	int		args_count;
 	char	*old_pwd;
 	char	*tmp;
 
 	cmd->args += 1;
-	args_count = get_args_count(cmd->args);
-	if (args_count == 1)
+	if (cmd->args_count == 2)
 	{
-		path = cmd->args[0];
+		path = cmd->args[0].arg;
 		if (path[0] == '$')
 		{
 			tmp = get_env_val(shell->env_list, path + 1);
@@ -67,5 +62,4 @@ int	change_dir(t_command *cmd, t_shell *shell)
 		return (FAILURE);
 	}
 	return (SUCCESS);
-	*/
 }

@@ -27,7 +27,10 @@ void	print_cmd(t_command *cmd)
 		{
 			while (i < cmd->args_count)
 			{
-				printf("ARG %d: %s  expand: %d\n", i, cmd->args[i].arg, cmd->args[i].interpet_env_var);
+				if (cmd->args[i].interpet_env_var)
+					printf("\033[1;32mARG %d: %s\033[0m\n", i, cmd->args[i].arg);
+				else
+					printf("\033[1;31mARG %d: %s\033[0m\n", i, cmd->args[i].arg);
 				i++;  
 			}
 		}
@@ -48,7 +51,6 @@ t_command	*get_command(char	*input)
 	while (*input)
 	{
 		shell_split(&input, cmd);
-		print_cmd(cmd);
 		if (*input)
 		{
 			tmp = cmd;
@@ -64,7 +66,6 @@ t_command	*get_command(char	*input)
 t_command	*parse_command(char *input)
 {
 	t_command	*cmd;
-	char		**words;
 
 	input = trim_spaces(input);
 	if (*input == '\0')
@@ -72,6 +73,6 @@ t_command	*parse_command(char *input)
 	cmd = get_command(input);
 	if (!cmd)
 		return (NULL);
-	//print_cmd(cmd);
+	print_cmd(cmd);
 	return (cmd);
 }

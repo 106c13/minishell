@@ -16,7 +16,7 @@ int	print_working_dir(t_command *cmd, t_shell *shell)
 {
 	char	*pwd;
 
-	if (get_args_count(cmd->args) != 1)
+	if (cmd->args_count != 1)
 	{
 		printf("pwd: too many arguments\n");
 		return (FAILURE);

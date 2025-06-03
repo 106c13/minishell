@@ -20,19 +20,19 @@ static void	print_error_exit(char *cmd, char *msg, int code)
 
 static void	exec_local_bin(t_command *cmd, char **env_str_arr)
 {
-	if (access(cmd->cmd, F_OK) != 0)
+	if (access(cmd->cmd->arg, F_OK) != 0)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd->cmd, "No such file or directory", 127);
+		print_error_exit(cmd->cmd->arg, "No such file or directory", 127);
 	}
-	if (access(cmd->cmd, X_OK) != 0)
+	if (access(cmd->cmd->arg, X_OK) != 0)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd->cmd, "Permission denied", 126);
+		print_error_exit(cmd->cmd->arg, "Permission denied", 126);
 	}
-	execve(cmd->cmd, cmd->args, env_str_arr);
+	//execve(cmd->cmd, cmd->args, env_str_arr);
 	free_split(env_str_arr);
-	print_error_exit(cmd->cmd, "Execution failded", 126);
+	print_error_exit(cmd->cmd->arg, "Execution failded", 126);
 }
 
 static char	*get_bin_path(char *path, char *bin)
@@ -86,20 +86,20 @@ static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 	char	*bin;
 	int		exit_code;
 
-	bin = find_executable_path(cmd->cmd, shell);
+	bin = find_executable_path(cmd->cmd->arg, shell);
 	if (!bin)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd->cmd, "command not found", 127);
+		print_error_exit(cmd->cmd->arg, "command not found", 127);
 	}
-	execve(bin, cmd->args, env_str_arr);
+	//execve(bin, cmd->args, env_str_arr);
 	free(bin);
 	free_split(env_str_arr);
 	if (errno == EACCES)
 		exit_code = 126;
 	else
 		exit_code = 127;
-	print_error_exit(cmd->cmd, strerror(errno), exit_code);
+	print_error_exit(cmd->cmd->arg, strerror(errno), exit_code);
 }
 
 int	exec_bin(t_command *cmd, t_shell *shell)
@@ -115,7 +115,7 @@ int	exec_bin(t_command *cmd, t_shell *shell)
 		{
 			print_error_exit("minishell", "Failed to convert environment", 1);
 		}
-		if (str_contains(cmd->cmd, '/'))
+		if (str_contains(cmd->cmd->arg, '/'))
 		{
 			exec_local_bin(cmd, env_str_arr);
 		}

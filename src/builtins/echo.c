@@ -14,39 +14,33 @@
 
 int	echo(t_command *cmd, t_shell *shell)
 {
-	printf("UPDATE ECHO\n");
-	return (SUCCESS);
-	/*
 	char	n_flag;
-	int		args_count;
 	int		i;
 	char	*tmp;
 
 	(void)shell;
 	cmd->args += 1;
-	args_count = get_args_count(cmd->args);
 	n_flag = 0;
-	if (args_count >= 1 && ft_strcmp(cmd->args[0], "-n") == 0)
+	if (cmd->args_count >= 1 && ft_strcmp(cmd->args[0].arg, "-n") == 0)
 		n_flag = 1;
 	i = n_flag;
-	while (i < args_count)
+	while (i < cmd->args_count)
 	{
-		if (cmd->args[i][0] == '$')
+		if (cmd->args[i].arg[0] == '$')
 		{
-			tmp = get_env_val(shell->env_list, cmd->args[i] + 1);
+			tmp = get_env_val(shell->env_list, cmd->args[i].arg + 1);
 			if (tmp != NULL)
 			{
-				free(cmd->args[i]);
-				cmd->args[i] = ft_strdup(tmp);
+				free(cmd->args[i].arg);
+				cmd->args[i].arg = ft_strdup(tmp);
 			}
 		}
-		printf("%s", cmd->args[i]);
-		if (i < (args_count - 1))
+		printf("%s", cmd->args[i].arg);
+		if (i < (cmd->args_count - 1))
 			printf(" ");
 		i++;
 	}
 	if (n_flag == 0)
 		printf("\n");
 	return (SUCCESS);
-	*/
 }

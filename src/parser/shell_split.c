@@ -37,7 +37,6 @@ static int	get_split_count(char *str)
 			count++;
 		str++;
 	}
-	printf("ARGS COUNT: %d\n", count);
 	return (count);
 }
 
@@ -48,7 +47,7 @@ int	get_arg_len(char *str)
 
 	quote = 0;
 	i = 0;
-	while (*str && get_operator_type(str) == 0)
+	while (*str)
 	{
 		if (!quote && (*str == '"' || *str == '\''))
 			quote = *str;
@@ -56,11 +55,12 @@ int	get_arg_len(char *str)
 			quote = 0;
 		else if (!quote && is_whitespace(*str))
 			break ;
+		else if (!quote && get_operator_type(str) != 0)
+			break ;
 		else
 			i++;
 		str++;
 	}
-	printf("ARG LEN: %d\n", i);
 	return (i);
 }
 
@@ -94,6 +94,7 @@ void	add_arg(char **str, t_arg *arg, int size)
 	}
 	if (**str)
 		(*str)++;
+	
 }
 
 void	shell_split(char **str, t_command *cmd)
@@ -108,15 +109,23 @@ void	shell_split(char **str, t_command *cmd)
 	if (!args)
 		return ;
 	arg_i = 0;
-	while (**str && get_operator_type(*str) == 0)
+	while (**str)
 	{
 		if (is_whitespace(**str))
 			(*str)++;
+		else if (get_operator_type(*str) != 0)
+		{
+			cmd->oper = get_operator_type(*str);
+			if (cmd->oper < 3)
+				*str += 2;
+			else
+				(*str)++;
+			break ;
+		}
 		else
 		{
 			arg_len = get_arg_len(*str);
 			add_arg(str, &args[arg_i], arg_len);
-			printf("ARG %s\n", args[arg_i].arg);
 			arg_i++;
 		}
 	}
