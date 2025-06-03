@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 19:07:24 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:24:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,8 @@ int	parse_word(char	**words, t_command *cmd)
 			free(words[i]);
 			words[i] = NULL;
 			tmp = cmd;
+			cmd = create_command();
 			// TODO: Check malloc
-			cmd = malloc(sizeof(t_command) * 1);
-			cmd->cmd = NULL;
-			cmd->args = NULL;
-			cmd->next = NULL;
-			cmd->oper = 0;
 			tmp->next = cmd;
 			tmp->oper = op_type;
 		}
@@ -69,8 +65,6 @@ int	parse_word(char	**words, t_command *cmd)
 	}
 	return (0);
 }
-
-
 
 t_command	*parse_command(char *input)
 {
@@ -81,16 +75,12 @@ t_command	*parse_command(char *input)
 	if (*input == '\0')
 		return (NULL);
 	words = shell_split(input, ' ');
-	// add malloc check
-	cmd = malloc(sizeof(t_command) * 1);
-	cmd->cmd = NULL;
-	cmd->args = NULL;
-	cmd->next = NULL;
-	cmd->oper = 0;
+	cmd = create_command();
 	if (!cmd)
 		return (NULL);
 	if (parse_word(words, cmd) != 0)
 		return (NULL);
+	
 	//print_cmd(cmd);
 	return (cmd);
 }

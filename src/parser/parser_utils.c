@@ -39,3 +39,17 @@ void	free_command(t_command *cmd)
 		free(tmp);
 	}
 }
+
+t_command	*create_command()
+{
+	t_command	*cmd;
+
+	cmd = malloc(sizeof(t_command) * 1);
+	if (!cmd)
+		return (NULL);
+	cmd->cmd = NULL;
+	cmd->args = NULL;
+	cmd->next = NULL;
+	cmd->oper = 0;
+	return (cmd);
+}
