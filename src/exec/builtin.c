@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/02 17:29:46 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	if (ft_strcmp(cmd->cmd, "exit") == 0)
 		return (safe_shell_exit(shell));
 	if (ft_strcmp(cmd->cmd, "env") == 0)
-		return (print_env_list(shell));
+		return (print_env_list(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "unset") == 0)
 		return (unset_env(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "export") == 0)
 		return (export_env(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "pwd") == 0)
-		return (print_working_dir(shell));
+		return (print_working_dir(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "cd") == 0)
 		return (change_dir(cmd, shell));
 	if (ft_strcmp(cmd->cmd, "echo") == 0)

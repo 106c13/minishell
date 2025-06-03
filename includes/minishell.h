@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/02 17:24:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:25:40 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ int		safe_shell_exit(t_shell *shell);
 
 int		echo(t_command *cmd, t_shell *shell);
 
-int		print_env_list(t_shell *shell);
+int		print_env_list(t_command *cmd, t_shell *shell);
 
 int		change_dir(t_command *cmd, t_shell *shell);
 
-int		print_working_dir(t_shell *shell);
-
-int		clear_shell(void);
+int		print_working_dir(t_command *cmd, t_shell *shell);
 
 int		unset_env(t_command *cmd, t_shell *shell);
 
