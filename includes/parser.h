@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 19:00:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:22:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ typedef struct s_command
 {
 	char			*cmd;
 	char			**args;
-	int			oper;	
+	int				oper;	
 	struct s_command	*next;
 } t_command;
+
+typedef struct	s_arg
+{
+	char	*arg;
+	char	interpet_env_var;
+}	t_arg;
 
 t_command	*parse_command(char *cmd);
 
