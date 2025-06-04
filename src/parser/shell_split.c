@@ -30,8 +30,18 @@ static int	get_split_count(char *str)
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
-		if (!quote && !is_whitespace(*str) && is_whitespace(str[1]))
-			count++;
+		if (!quote)
+		{
+			if (!is_whitespace(*str) && is_whitespace(str[1]))
+				count++;
+			else if (!is_whitespace(*str) && get_operator_type(str + 1) != 0)
+			{
+				count++;
+				break ;
+			}
+			else if (is_whitespace(*str) && get_operator_type(str + 1) != 0)
+				break ;
+		}
 		str++;
 	}
 	//printf("TESTING: ARG COUNT: %d\n", count);

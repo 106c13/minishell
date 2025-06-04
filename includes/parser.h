@@ -13,6 +13,12 @@
 #ifndef PARSER_H
 # define PARSER_H
 
+typedef struct	s_file
+{
+	char	*name;
+	int	append;
+}	t_file;
+
 typedef struct	s_arg
 {
 	char	*arg;
@@ -24,6 +30,7 @@ typedef struct s_command
 {
 	t_arg				*cmd;
 	t_arg				*args;
+	t_arg				*output_files;
 	int					args_count;
 	char				**argv;
 	int					argc;

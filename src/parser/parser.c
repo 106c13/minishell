@@ -31,7 +31,7 @@ void	print_cmd(t_command *cmd)
 				else
 					printf("\033[1;31m");
 				printf("ARG %d: %s\033[0m\n", i, cmd->args[i].arg);
-				i++;  
+				i++; 
 			}
 		}
 		printf("OPERATOR: %d\n", cmd->oper);
