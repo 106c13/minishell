@@ -17,6 +17,7 @@ typedef struct	s_arg
 {
 	char	*arg;
 	int		interpet_env_var;
+	char	quoted;
 }	t_arg;
 
 typedef struct s_command
@@ -41,4 +42,6 @@ char		*trim_spaces(char *str);
 void		shell_split(char **str, t_command *cmd);
 
 int			get_operator_type(char *word);
+
+int	validate(char *input);
 #endif

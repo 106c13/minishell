@@ -73,6 +73,7 @@ void	add_arg(char **str, t_arg *arg, int size)
 	quote = 0;
 	i = 0;
 	arg->interpet_env_var = 0;
+	arg->quoted = 0;
 	if (!arg->arg)
 		return ;
 	arg->arg[size] = '\0';
@@ -85,7 +86,10 @@ void	add_arg(char **str, t_arg *arg, int size)
 		else
 		{
 			if (quote == '"' && **str == '$')
+			{
+				arg->quoted = 1;
 				arg->interpet_env_var = 1;
+			}
 			else if (!quote && **str == '$')
 				arg->interpet_env_var = 1;
 			arg->arg[i++] = **str;
@@ -94,7 +98,6 @@ void	add_arg(char **str, t_arg *arg, int size)
 	}
 	if (**str)
 		(*str)++;
-	
 }
 
 void	shell_split(char **str, t_command *cmd)

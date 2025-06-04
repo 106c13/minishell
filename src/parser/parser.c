@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 // ONLY for tests
 void	print_cmd(t_command *cmd)
 {
@@ -28,9 +27,13 @@ void	print_cmd(t_command *cmd)
 			while (i < cmd->args_count)
 			{
 				if (cmd->args[i].interpet_env_var)
-					printf("\033[1;32mARG %d: %s\033[0m\n", i, cmd->args[i].arg);
+					printf("\033[1;32m");
 				else
-					printf("\033[1;31mARG %d: %s\033[0m\n", i, cmd->args[i].arg);
+					printf("\033[1;31m");
+				if (cmd->args[i].quoted)
+					printf("ARG %d: \"%s\"\033[0m\n", i, cmd->args[i].arg);
+				else
+					printf("ARG %d: %s\033[0m\n", i, cmd->args[i].arg);
 				i++;  
 			}
 		}
@@ -58,21 +61,20 @@ t_command	*get_command(char	*input)
 			tmp->next = cmd;
 		}
 	}
-	
 	return (head);
 }
-
 
 t_command	*parse_command(char *input)
 {
 	t_command	*cmd;
 
 	input = trim_spaces(input);
-	if (*input == '\0')
+	if (validate(input) != 0)
 		return (NULL);
 	cmd = get_command(input);
 	if (!cmd)
 		return (NULL);
+	
 	print_cmd(cmd);
 	return (cmd);
 }
