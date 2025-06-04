@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 18:25:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:53:28 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,10 @@ int		str_contains(char *str, char c);
 char	*ft_strchr(const char *s, int c);
 
 char	*ft_substr(char *s, unsigned int start, size_t len);
+
+int		ft_isalnum(int c);
+
+/* interpret args*/
+char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
 
 #endif

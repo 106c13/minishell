@@ -4,8 +4,8 @@ MAIN = main.c signal.c
 BUILTINS = echo.c cd.c pwd.c export.c unset.c env.c exit.c
 EXEC = exec.c builtin.c bin.c
 ENV = env.c env_utils.c
-UTILS = ft_memcpy.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c utils.c ft_strcpy.c
 PARSER = parser.c parser_utils.c shell_split.c validator.c
+UTILS = ft_memcpy.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c utils.c ft_strcpy.c ft_isalnum.c interpret.c
 
 SRCS_DIR = src/
 OBJS_DIR = objs/

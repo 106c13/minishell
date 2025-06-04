@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/02 16:58:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:03:24 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	exec_local_bin(t_command *cmd, char **env_str_arr)
 		free_split(env_str_arr);
 		print_error_exit(cmd->cmd->arg, "Permission denied", 126);
 	}
-	//execve(cmd->cmd, cmd->args, env_str_arr);
+	execve(cmd->cmd->arg, cmd->argv, env_str_arr);
 	free_split(env_str_arr);
 	print_error_exit(cmd->cmd->arg, "Execution failded", 126);
 }
@@ -92,7 +92,7 @@ static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 		free_split(env_str_arr);
 		print_error_exit(cmd->cmd->arg, "command not found", 127);
 	}
-	//execve(bin, cmd->args, env_str_arr);
+	execve(bin, cmd->argv, env_str_arr);
 	free(bin);
 	free_split(env_str_arr);
 	if (errno == EACCES)

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:39:10 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 18:37:16 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:01:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ int	unset_env(t_command *cmd, t_shell *shell)
 {
 	int	i;
 
-	cmd->args += 1;
-	if (cmd->args_count == 0)
+	if (cmd->argc == 1)
 	{
 		printf("unset: not enough arguments\n");
 		return (FAILURE);
 	}
-	i = -1;
-	while (cmd->args[++i].arg != NULL)
+	i = 1;
+	while (cmd->argv[i] != NULL)
 	{
-		del_env_pair(&shell->env_list, cmd->args[i].arg);
+		del_env_pair(&shell->env_list, cmd->argv[i]);
+		i++;
 	}
 	return (SUCCESS);
 }

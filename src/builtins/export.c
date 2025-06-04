@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 18:36:25 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:58:06 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,13 @@ int	export_env(t_command *cmd, t_shell *shell)
 {
 	int		i;
 
-	cmd->args += 1;
-	if (cmd->args_count == 0)
+	if (cmd->argc == 1)
 		return (print_export_env(shell->env_list), SUCCESS);
-	i = -1;
-	while (++i < cmd->args_count)
+	i = 0;
+	while (++i < cmd->argc)
 	{
-		if (is_valid_arg(cmd->args[i].arg))
-			update_or_add_env(cmd->args[i].arg, shell->env_list);
+		if (is_valid_arg(cmd->argv[i]))
+			update_or_add_env(cmd->argv[i], shell->env_list);
 		else
 			continue ;
 	}
