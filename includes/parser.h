@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/03 20:10:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:18:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ typedef struct	s_arg
 typedef struct s_command
 {
 	t_arg				*cmd;
-	int					args_count;
 	t_arg				*args;
+	int					args_count;
+	char				**argv;
+	int					argc;
 	int					oper;
 	struct s_command	*next;
 }	t_command;

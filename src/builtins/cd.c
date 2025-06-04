@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 20:03:02 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:24:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ int	change_dir(t_command *cmd, t_shell *shell)
 	char	*old_pwd;
 	char	*tmp;
 
-	cmd->args += 1;
-	if (cmd->args_count == 2)
+	if (cmd->argc == 2)
 	{
-		path = cmd->args[0].arg;
+		path = cmd->argv[1];
 		if (path[0] == '$')
 		{
 			tmp = get_env_val(shell->env_list, path + 1);

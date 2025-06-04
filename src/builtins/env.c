@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:58:34 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/03 18:25:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:55:24 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	print_env_list(t_command *cmd, t_shell *shell)
 {
 	t_env	*list;
 
-	if (cmd->args_count != 1)
+	if (cmd->argc != 1)
 	{
 		printf("env: too many arguments\n");
 		return (FAILURE);
