@@ -24,19 +24,17 @@ static int	get_split_count(char *str)
 
 	count = 0;
 	quote = 0;
-	while (*str && get_operator_type(str) == 0)
+	while (*str)
 	{
 		if (!quote && (*str == '\'' || *str == '"'))
 			quote = *str;
-		else if (quote && *str == quote && is_whitespace(str[1]))
-		{
-			count++;
+		else if (*str == quote)
 			quote = 0;
-		}
-		else if (!quote && !is_whitespace(*str) && is_whitespace(str[1]))
+		if (!quote && !is_whitespace(*str) && is_whitespace(str[1]))
 			count++;
 		str++;
 	}
+	//printf("TESTING: ARG COUNT: %d\n", count);
 	return (count);
 }
 
@@ -47,13 +45,14 @@ int	get_arg_len(char *str)
 
 	quote = 0;
 	i = 0;
+	//printf("%s\n", str);
 	while (*str)
 	{
 		if (!quote && (*str == '"' || *str == '\''))
 			quote = *str;
-		else if (quote && *str == quote)
+		else if (*str == quote)
 			quote = 0;
-		else if (!quote && is_whitespace(*str))
+		if (!quote && is_whitespace(*str))
 			break ;
 		else if (!quote && get_operator_type(str) != 0)
 			break ;
@@ -61,6 +60,7 @@ int	get_arg_len(char *str)
 			i++;
 		str++;
 	}
+	//printf("TESTING: ARG LEN: %d\n", i);
 	return (i);
 }
 
@@ -83,21 +83,17 @@ void	add_arg(char **str, t_arg *arg, int size)
 			quote = **str;
 		else if (quote && **str == quote)
 			quote = 0;
-		else
+		
+		if (quote == '"' && **str == '$')
 		{
-			if (quote == '"' && **str == '$')
-			{
-				arg->quoted = 1;
-				arg->interpet_env_var = 1;
-			}
-			else if (!quote && **str == '$')
-				arg->interpet_env_var = 1;
-			arg->arg[i++] = **str;
+			arg->quoted = 1;
+			arg->interpet_env_var = 1;
 		}
+		else if (!quote && **str == '$')
+			arg->interpet_env_var = 1;
+		arg->arg[i++] = **str;
 		(*str)++;
 	}
-	if (**str)
-		(*str)++;
 }
 
 void	shell_split(char **str, t_command *cmd)

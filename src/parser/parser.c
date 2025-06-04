@@ -30,10 +30,7 @@ void	print_cmd(t_command *cmd)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				if (cmd->args[i].quoted)
-					printf("ARG %d: \"%s\"\033[0m\n", i, cmd->args[i].arg);
-				else
-					printf("ARG %d: %s\033[0m\n", i, cmd->args[i].arg);
+				printf("ARG %d: %s\033[0m\n", i, cmd->args[i].arg);
 				i++;  
 			}
 		}
