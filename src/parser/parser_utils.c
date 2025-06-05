@@ -53,3 +53,23 @@ t_command	*create_command()
 	cmd->oper = 0;
 	return (cmd);
 }
+
+int	get_unquoted_len(char	*str)
+{
+	char	quote;
+	int		size;
+
+	size = 0;
+	quote = 0;
+	while (*str)
+	{
+		if (!quote && (*str == '\'' || *str == '"'))
+			quote = *str;
+		else if (*str == quote)
+			quote = 0;
+		else
+			size++;
+		str++;
+	}
+	return (size);
+}

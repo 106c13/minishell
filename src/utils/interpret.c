@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 21:09:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:54:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,13 +122,14 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 		{
 			expanded = replace_env_vars(cmd->args[i].arg, quoted, shell->env_list);
 			if (expanded && (expanded[0] != '\0' || quoted))
-				argv[argc++] = expanded;
+				argv[argc++] = clear_quotes(expanded);
 			else
 				free(expanded); // NULL or useless → skip
 		}
 		else
 		{
 			argv[argc] = ft_strdup(cmd->args[i].arg);
+			argv[argc] = clear_quotes(argv[argc]);
 			argc++;
 		}
 	}
