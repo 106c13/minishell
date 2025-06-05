@@ -16,13 +16,13 @@ char	*trim_spaces(char *str)
 int	get_operator_type(char *word)
 {
 	if (ft_strncmp(word, "&&", 2) == 0)
-		return (1);
+		return (AND);
 	if (ft_strncmp(word, "||", 2) == 0)
-		return (2);
+		return (OR);
 	if (ft_strncmp(word, "&", 1) == 0)
-		return (3);
+		return (BG);
 	if (ft_strncmp(word, "|", 1) == 0)
-		return (4);
+		return (PIPE);
 	return (0);
 }
 

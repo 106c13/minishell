@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/03 19:57:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:23:41 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	shell_split(char **str, t_command *cmd)
 		else if (get_operator_type(*str) != 0)
 		{
 			cmd->oper = get_operator_type(*str);
-			if (cmd->oper < 3)
+			if (cmd->oper == OR || cmd->oper == AND)
 				*str += 2;
 			else
 				(*str)++;

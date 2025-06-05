@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 16:57:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:42:52 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,18 @@ static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
 	char	*env_val;
 	char	*tmp;
 
+	int		quote;
+
 	res = ft_strdup("");
 	i = 0;
+	quote = 0;
 	while (input_cmd[i])
 	{
-		if (input_cmd[i] == '$' && input_cmd[i + 1] && ft_isalnum(input_cmd[i + 1]))
+		if (!quote && (input_cmd[i] == '\'' || input_cmd[i] == '"'))
+			quote = input_cmd[i];
+		else if (input_cmd[i] == quote)
+			quote = 0;
+		if (input_cmd[i] == '$' && input_cmd[i + 1] && ft_isalnum(input_cmd[i + 1]) && quote != '\'')
 		{
 			start = ++i;
 			while (ft_isalnum(input_cmd[i]) || input_cmd[i] == '_')
@@ -118,8 +125,8 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 	{
 		if (cmd->args[i].interpet_env_var)
 		{
-			expanded = replace_env_vars(cmd->args[i].arg, quoted, shell->env_list);
-			if (expanded && (expanded[0] != '\0' || quoted))
+			expanded = replace_env_vars(cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
+			if (expanded && (expanded[0] != '\0' || cmd->args[i].quoted))
 				argv[argc++] = clear_quotes(expanded);
 			else
 				free(expanded); // NULL or useless → skip

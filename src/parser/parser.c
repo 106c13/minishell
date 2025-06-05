@@ -6,13 +6,25 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/03 20:11:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:29:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // ONLY for tests
+void	print_oper(int	oper)
+{
+	if (oper == 11)
+		printf("OPERATOR: |\n");
+	if (oper == 12)
+		printf("OPERATOR: &\n");
+	if (oper == 13)
+		printf("OPERATOR: ||\n");
+	if (oper == 14)
+		printf("OPERATOR: &&\n");
+}
+
 void	print_cmd(t_command *cmd)
 {
 	int	i;
@@ -34,11 +46,12 @@ void	print_cmd(t_command *cmd)
 				i++; 
 			}
 		}
-		printf("OPERATOR: %d\n", cmd->oper);
+		print_oper(cmd->oper);
 		cmd = cmd->next;
 	}
 	printf("---------------end---------------\n");
 }
+// ============================
 
 t_command	*get_command(char	*input)
 {
@@ -66,7 +79,7 @@ t_command	*parse_command(char *input)
 	t_command	*cmd;
 
 	input = trim_spaces(input);
-	if (validate(input) != 0)
+	if (!*input || validate(input) != 0)
 		return (NULL);
 	cmd = get_command(input);
 	if (!cmd)

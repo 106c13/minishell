@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 20:03:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:08:47 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int	exec_bin(t_command *cmd, t_shell *shell)
 	}
 	else if (pid > 0) /* PARENT PROCESS */
 	{
+		// save status code
 		waitpid(pid, NULL, 0);
 	}
 	else /* FORK ERROR */
