@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 18:56:26 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:28:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*str_append_char_safe(char *str, char c)
 	return (new);
 }
 
-static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
+static char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env)
 {
 	char	*res;
 	int		i;
@@ -45,10 +45,12 @@ static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
 	quote = 0;
 	while (input_cmd[i])
 	{
+		// works with quotes
 		if (!quote && (input_cmd[i] == '\'' || input_cmd[i] == '"'))
 			quote = input_cmd[i];
 		else if (input_cmd[i] == quote)
 			quote = 0;
+		// work with env vars
 		if (input_cmd[i] == '$' && input_cmd[i + 1] && ft_isalnum(input_cmd[i + 1]) && quote != '\'')
 		{
 			start = ++i;
@@ -64,6 +66,19 @@ static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
 				free(tmp);
 			}
 		}
+		// word with $?
+		else if (input_cmd[i] == '$' && input_cmd[i + 1] && input_cmd[i + 1] == '?' && quote != '\'')
+		{
+			env_val = ft_itoa(shell->exec_result);
+			if (env_val != NULL)
+			{
+				tmp = res;
+				res = ft_strjoin(res, env_val);
+				free(tmp);
+			}
+			free(env_val);
+			i += 2;
+		}
 		else
 		{
 			res = str_append_char_safe(res, input_cmd[i++]);
@@ -78,7 +93,7 @@ static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
 }
 
 /* Count how many valid args in arr */
-static int	count_valid_args(t_command *cmd, t_env *env)
+static int	count_valid_args(t_shell *shell, t_command *cmd, t_env *env)
 {
 	int		count;
 	int		i;
@@ -94,7 +109,7 @@ static int	count_valid_args(t_command *cmd, t_env *env)
 			count++;
 		else
 		{
-			expanded = replace_env_vars(arg->arg, arg->quoted, env);
+			expanded = replace_env_vars(shell, arg->arg, arg->quoted, env);
 			if (expanded)
 			{
 				if (expanded[0] != '\0' || arg->quoted)
@@ -115,7 +130,7 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 	int		i;
 
 	// change
-	cmd->argc = count_valid_args(cmd, shell->env_list) ;
+	cmd->argc = count_valid_args(shell, cmd, shell->env_list) ;
 	argv = malloc(sizeof(char *) * (cmd->argc + 1));
 	if (!argv)
 		return (NULL);
@@ -125,7 +140,7 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 	{
 		if (cmd->args[i].interpet_env_var)
 		{
-			expanded = replace_env_vars(cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
+			expanded = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
 			if (expanded && (expanded[0] != '\0' || cmd->args[i].quoted))
 				argv[argc++] = clear_quotes(expanded);
 			else

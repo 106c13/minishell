@@ -20,7 +20,6 @@ minishell > minishell >
 
 BUILTINS
 handle -nnnnn echo flag
-handle exit leave status code
 handle $? in interpret
 
 Hakob:

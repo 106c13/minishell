@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 19:22:16 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:54:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 
 int		digits_only(char *str);
+
+char	*ft_itoa(int n);
 
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
