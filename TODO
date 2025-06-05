@@ -13,5 +13,7 @@ check bin permissions -> done???
 check if S_ISREG macros forbidden?
 find info why do i need global variable for signals
 
+do not forget about file descriptors
+
 Hakob:
 make func that will free cmd

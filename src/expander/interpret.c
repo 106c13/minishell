@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 16:54:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:57:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*str_append_char_safe(char *str, char c)
 	return (new);
 }
 
-static char	*replace_env_vars(char *input_cmd, int was_quoted, t_env *env)
+static char	*replace_env_vars(char *input_cmd, int quoted, t_env *env)
 {
 	char	*res;
 	int		i;
@@ -62,7 +62,7 @@ static char	*replace_env_vars(char *input_cmd, int was_quoted, t_env *env)
 			res = str_append_char_safe(res, input_cmd[i++]);
 		}
 	}
-	if (res[0] == '\0' && was_quoted)
+	if (res[0] == '\0' && quoted)
 	{
 		free(res);
 		return (NULL);
@@ -77,7 +77,6 @@ static int	count_valid_args(t_command *cmd, t_env *env)
 	int		i;
 	char	*expanded;
 	t_arg	*arg;
-	char	quoted = 1; // insted of cmd->quoted
 
 	count = 0;
 	i = 0;
@@ -88,10 +87,10 @@ static int	count_valid_args(t_command *cmd, t_env *env)
 			count++;
 		else
 		{
-			expanded = replace_env_vars(arg->arg, quoted, env);
+			expanded = replace_env_vars(arg->arg, arg->quoted, env);
 			if (expanded)
 			{
-				if (expanded[0] != '\0' || quoted)
+				if (expanded[0] != '\0' || arg->quoted)
 					count++;
 				free(expanded);
 			}
@@ -107,7 +106,6 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 	char	*expanded;
 	int		argc;
 	int		i;
-	int	quoted = 1;
 
 	// change
 	cmd->argc = count_valid_args(cmd, shell->env_list) ;
