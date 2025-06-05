@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 19:53:28 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:43 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_shell
 {
 	char	exec_result; // for $?
 	t_env	*env_list;
+	int		job_number;
 }	t_shell;
 
 /* exec */
