@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 17:42:52 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:56:26 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 			argc++;
 		}
 	}
+	argv[argc] = NULL;
 	cmd->argv = argv;
 	if (ft_strcmp(cmd->cmd->arg, cmd->argv[0]) != 0)
 	{

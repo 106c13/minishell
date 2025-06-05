@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/02 18:37:20 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	listen(t_shell *shell)
 		if (!input) // Ctrl-D
 		{
 			free(input);
-			safe_shell_exit(shell);
+			safe_shell_exit(NULL, shell);
 		}
 		if (input[0] != '\0')
 		{
