@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 19:53:28 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:22:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		exec_builtin(t_command *cmd, t_shell *shell);
 int		is_builtin(t_command *cmd);
 
 /* builtins */
-int		safe_shell_exit(t_shell *shell);
+int		safe_shell_exit(t_command *cmd, t_shell *shell);
 
 int		echo(t_command *cmd, t_shell *shell);
 
@@ -115,6 +115,12 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 
 int		ft_isalnum(int c);
+
+int		ft_atoi(const char *str);
+
+int		ft_isdigit(int c);
+
+int		digits_only(char *str);
 
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);

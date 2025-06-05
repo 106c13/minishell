@@ -108,4 +108,20 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	return (result);
 }
 
+int	digits_only(char *str)
+{
+	int	len;
+	int	i;
 
+	len = ft_strlen(str);
+	if (len == 0)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
