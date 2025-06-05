@@ -15,5 +15,14 @@ find info why do i need global variable for signals
 
 do not forget about file descriptors
 
+add status codes support
+minishell > minishell >
+
+BUILTINS
+handle -nnnnn echo flag
+handle exit leave status code
+handle $? in interpret
+
 Hakob:
 make func that will free cmd
+ls>file
