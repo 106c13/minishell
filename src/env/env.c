@@ -121,6 +121,7 @@ void	init_env_list(t_shell *shell, char **env_arr)
 	int		i;
 
 	shell->env_list = NULL;
+	shell->job_list = NULL;
 	last = NULL;
 	i = -1;
 	while (env_arr[++i])

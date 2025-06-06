@@ -33,11 +33,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct	s_job
+{
+	int	id;
+	pid_t	pid;
+	char	*command;
+	struct	s_job	*next;
+}	t_job;
+
 typedef struct s_shell
 {
 	char	exec_result; // for $?
 	t_env	*env_list;
-	int		job_number;
+	t_job	*job_list;
 }	t_shell;
 
 /* exec */

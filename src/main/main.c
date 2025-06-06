@@ -12,6 +12,41 @@
 
 #include "minishell.h"
 
+
+void collect_finished_jobs(t_shell *shell)
+{
+	t_job *curr = shell->job_list;
+	t_job *prev = NULL;
+	int status;
+	pid_t result;
+
+	while (curr)
+	{
+		result = waitpid(curr->pid, &status, WNOHANG);
+		if (result > 0)
+		{
+			printf("[%d] Done\t{command}\n", curr->id);
+			if (prev)
+				prev->next = curr->next;
+			else
+				shell->job_list = curr->next;
+			//free(curr->cmd_str);
+			t_job *to_free = curr;
+			free(to_free);
+		}
+		else
+			prev = curr;
+		curr = curr->next;
+	}
+}
+
+
+// ===========================================================
+
+
+
+
+
 /*
  * Function that listens user's commads
  */
@@ -22,6 +57,7 @@ static void	listen(t_shell *shell)
 
 	while (1)
 	{
+		collect_finished_jobs(shell);
 		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
 		if (!input) // Ctrl-D
 		{
