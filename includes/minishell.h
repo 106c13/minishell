@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 20:30:53 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:45:31 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,6 @@ char	*ft_itoa(int n);
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
 
+/* wildcards */
+void	replace_wildcards(t_command *cmd);
 #endif
