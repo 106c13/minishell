@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/06 18:54:46 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 17:16:57 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 			continue;
 		}
 		interpret_cmd_args(cmd, shell);
-		replace_wildcards(cmd);
+//		replace_wildcards(cmd);
 		if (is_builtin(cmd))
 		{
 			shell->exec_result = exec_builtin(cmd, shell);

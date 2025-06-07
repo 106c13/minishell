@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 20:28:55 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:05:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,69 +92,44 @@ static char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env
 	return (res);
 }
 
-/* Count how many valid args in arr */
-static int	count_valid_args(t_shell *shell, t_command *cmd, t_env *env)
-{
-	int		count;
-	int		i;
-	char	*expanded;
-	t_arg	*arg;
-
-	count = 0;
-	i = 0;
-	while (i < cmd->args_count)
-	{
-		arg = &cmd->args[i];
-		if (!arg->interpet_env_var)
-			count++;
-		else
-		{
-			expanded = replace_env_vars(shell, arg->arg, arg->quoted, env);
-			if (expanded)
-			{
-				if (expanded[0] != '\0' || arg->quoted)
-					count++;
-				free(expanded);
-			}
-		}
-		i++;
-	}
-	return (count);
-}
-
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 {
 	char	**argv;
-	char	*expanded;
-	int		argc;
+	char	*str;
 	int		i;
 
-	// change
-	cmd->argc = count_valid_args(shell, cmd, shell->env_list) ;
-	argv = malloc(sizeof(char *) * (cmd->argc + 1));
-	if (!argv)
-		return (NULL);
+	argv = NULL;
 	i = -1;
-	argc = 0;
 	while (++i < cmd->args_count)
 	{
-		if (cmd->args[i].interpet_env_var)
+		if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*'))
 		{
-			expanded = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
-			if (expanded && (expanded[0] != '\0' || cmd->args[i].quoted))
-				argv[argc++] = clear_quotes(expanded);
+			// cmd->args[i].quoted always 0
+			printf("arg: %s\n", cmd->args[i].arg);
+			argv = replace_wildcards(cmd->args[i].arg, argv);
+		}
+		else if (cmd->args[i].interpet_env_var)
+		{
+			str = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
+			str = clear_quotes(str);
+			if (str && (str[0] != '\0' || cmd->args[i].quoted))
+			{
+				argv = str_arr_append(argv, str);
+			}
 			else
-				free(expanded); // NULL or useless → skip
+			{
+				free(str); // NULL or useless → skip
+			}
 		}
 		else
 		{
-			argv[argc] = ft_strdup(cmd->args[i].arg);
-			argv[argc] = clear_quotes(argv[argc]);
-			argc++;
+			str = ft_strdup(cmd->args[i].arg);
+			str = clear_quotes(str);
+			argv = str_arr_append(argv, str);
 		}
 	}
-	argv[argc] = NULL;
 	cmd->argv = argv;
+	cmd->argc = get_args_count(argv);
 	if (ft_strcmp(cmd->cmd->arg, cmd->argv[0]) != 0)
 	{
 		free(cmd->cmd->arg);

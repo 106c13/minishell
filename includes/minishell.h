@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/06 18:45:31 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 17:44:15 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,13 @@ int		digits_only(char *str);
 
 char	*ft_itoa(int n);
 
+char	**str_arr_append(char **arr, char *str);
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
 
 /* wildcards */
-void	replace_wildcards(t_command *cmd);
+char	**replace_wildcards(char *arg, char **argv);
+
+int		match_pattern(char *pattern, char *filename);
+
 #endif
