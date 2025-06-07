@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/05/30 18:14:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:37:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	print_export_env(t_env *env)
 {
 	int		env_len;
 	int		printed_count;
-	int		pos;
 	t_env	*tmp;
 
 	env_len = envlen(env);
@@ -53,8 +52,7 @@ void	print_export_env(t_env *env)
 		tmp = env;
 		while (tmp)
 		{
-			pos = get_env_sort_pos(tmp->key, env);
-			if (pos == printed_count)
+			if (get_env_sort_pos(tmp->key, env) == printed_count)
 			{
 				if (ft_strcmp(tmp->key, "_") != 0)
 				{

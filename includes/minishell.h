@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 17:44:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:34:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct	s_job
+typedef struct s_job
 {
-	int	id;
-	pid_t	pid;
-	char	*command;
-	struct	s_job	*next;
+	int				id;
+	pid_t			pid;
+	char			*command;
+	struct s_job	*next;
 }	t_job;
 
 typedef struct s_shell
 {
-	char	exec_result; // for $?
+	int		exec_result;
 	t_env	*env_list;
 	t_job	*job_list;
 }	t_shell;

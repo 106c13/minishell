@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:44:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 18:17:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:15:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	disable_echoctl(void)
 void	setup_signals(void)
 {
 	disable_echoctl();
-	signal(SIGINT, handle_sigint); // handle Ctrl-C
-	signal(SIGQUIT, SIG_IGN); // Ignore Ctrl-backslash
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 }
-

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:58:34 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 20:55:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:21:22 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ int	print_env_list(t_command *cmd, t_shell *shell)
 	}
 	return (SUCCESS);
 }
-

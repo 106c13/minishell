@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:05:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:35:40 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 		if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*'))
 		{
 			// cmd->args[i].quoted always 0
-			printf("arg: %s\n", cmd->args[i].arg);
 			argv = replace_wildcards(cmd->args[i].arg, argv);
 		}
 		else if (cmd->args[i].interpet_env_var)

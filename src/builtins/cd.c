@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/06 18:57:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:27:49 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,39 +26,17 @@ int	change_dir(t_command *cmd, t_shell *shell)
 {
 	char	*path;
 	char	*old_pwd;
-	char	*tmp;
 
-	if (cmd->argc == 2)
+	if (cmd->argc != 2)
+		return (printf("minishell: cd: Wrong arguments count\n"),
+			FAILURE);
+	path = cmd->argv[1];
+	old_pwd = getcwd(NULL, 0);
+	if (chdir(path) != 0)
 	{
-		path = cmd->argv[1];
-		if (path[0] == '$')
-		{
-			tmp = get_env_val(shell->env_list, path + 1);
-			if (tmp != NULL)
-			{
-				free(path);
-				path = ft_strdup(tmp);
-			}
-			else
-			{
-				printf("minishell: cd: Not enough arguments\n");
-				return (FAILURE);
-			}
-		}
-		old_pwd = getcwd(NULL, 0);
-		if (chdir(path) != 0)
-		{
-			free(old_pwd);
-			printf("minishell: cd: %s: No such file or directory\n", path);
-			return (FAILURE);
-		}
-		update_env_pwds(shell, old_pwd);
-		free(old_pwd);
+		printf("minishell: cd: %s: No such file or directory\n", path);
+		return (free(old_pwd), FAILURE);
 	}
-	else
-	{
-		printf("minishell: cd: Wrong arguments count\n");
-		return (FAILURE);
-	}
-	return (SUCCESS);
+	update_env_pwds(shell, old_pwd);
+	return (free(old_pwd), SUCCESS);
 }

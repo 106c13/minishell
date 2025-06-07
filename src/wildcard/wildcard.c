@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 17:47:34 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:10:29 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,11 @@ char	**replace_wildcards(char *arg, char **argv)
 	dir = opendir(".");
 	if (!dir)
 		return (str_arr_append(argv, arg));
-	while ((entry = readdir(dir)) != NULL)
+	while (1)
 	{
+		entry = readdir(dir);
+		if (entry == NULL)
+			break ;
 		if (entry->d_name[0] == '.' && arg[0] != '.')
 			continue ;
 		if (match_pattern(arg, entry->d_name))
