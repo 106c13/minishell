@@ -25,3 +25,9 @@ handle $? in interpret
 Hakob:
 make func that will free cmd
 ls>file
+
+ls>a
+echo hello' '$USER'$USER'
+echo "$?"
+ls &
+

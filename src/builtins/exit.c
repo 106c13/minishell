@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:41:25 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 19:26:05 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:18:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 		if (digits_only(cmd->argv[1]))
 			exit_code = ft_atoi(cmd->argv[1]) % 256;
 		else
-			printf("minishell: exit: %s: numeric argument required\n", cmd->argv[1]);
+		{
+			printf("minishell: exit: %s: numeric argument required\n",
+				cmd->argv[1]);
+		}
 	}
 	rl_clear_history();
 	free_env_list(shell);
 	exit(exit_code);
-	// clear other data
 }
+/* do not forget to clean cmd & other data */

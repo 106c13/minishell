@@ -6,45 +6,16 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/06 19:01:53 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:10:29 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//#include "minishell.h"
-//#include <dirent.c>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
 #include "minishell.h"
 
-char	**str_arr_append(char **arr, char *str)
-{
-	char	**new_arr;
-	int		len;
-	int		i;
-
-	if (arr == NULL)
-		len = 0;
-	else
-		len = get_args_count(arr);
-	new_arr = malloc(sizeof(char *) * (len + 2));
-	if (!new_arr)
-		return (arr);
-	i = 0;
-	while (i < len)
-	{
-		new_arr[i] = arr[i];
-		i++;
-	}
-	if (arr != NULL)
-		free(arr);
-	new_arr[i++] = ft_strdup(str);
-	new_arr[i] = NULL;
-	return (new_arr);
-}
-
-static int	match_pattern(char *pattern, char *filename)
+int	match_pattern(char *pattern, char *filename)
 {
 	if (*pattern == '\0' && *filename == '\0')
 		return (1);
@@ -68,38 +39,32 @@ static int	match_pattern(char *pattern, char *filename)
 		return (0);
 }
 
-void	replace_wildcards(t_command *cmd)
+// when passing arg here it should 100 % be not quoted and contains * sign
+char	**replace_wildcards(char *arg, char **argv)
 {
-	int				i;
 	DIR				*dir;
 	struct dirent	*entry;
-	char			**new_argv;
+	char			match_found;
 
-	i = -1;
-	new_argv = NULL;
-	while (cmd->argv[++i])
+	match_found = 0;
+	dir = opendir(".");
+	if (!dir)
+		return (str_arr_append(argv, arg));
+	while (1)
 	{
-		if (i == 0 || !str_contains(cmd->argv[i], '*'))
-		{
-			new_argv = str_arr_append(new_argv, cmd->argv[i]);
+		entry = readdir(dir);
+		if (entry == NULL)
+			break ;
+		if (entry->d_name[0] == '.' && arg[0] != '.')
 			continue ;
-		}
-		dir = opendir(".");
-		if (!dir)
-			continue ;
-		while ((entry = readdir(dir)) != NULL)
+		if (match_pattern(arg, entry->d_name))
 		{
-			if (entry->d_name[0] == '.')
-				continue ;
-			if (match_pattern(cmd->argv[i], entry->d_name))
-				new_argv = str_arr_append(new_argv, entry->d_name);
+			argv = str_arr_append(argv, entry->d_name);
+			match_found = 1;
 		}
-		closedir(dir);
 	}
-	if (new_argv != NULL)
-	{
-		free_split(cmd->argv);
-		cmd->argv = new_argv;
-		cmd->argc = get_args_count(cmd->argv);
-	}
+	closedir(dir);
+	if (!match_found)
+		argv = str_arr_append(argv, arg);
+	return (argv);
 }

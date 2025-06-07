@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 19:22:33 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:17:24 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	is_builtin(t_command *cmd)
 {
 	return (
-		ft_strcmp(cmd->cmd->arg, "exit") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "env") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "unset") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "export") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "pwd") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "cd") == 0 ||
-		ft_strcmp(cmd->cmd->arg, "echo") == 0
+		ft_strcmp(cmd->cmd->arg, "exit") == 0
+		|| ft_strcmp(cmd->cmd->arg, "env") == 0
+		|| ft_strcmp(cmd->cmd->arg, "unset") == 0
+		|| ft_strcmp(cmd->cmd->arg, "export") == 0
+		|| ft_strcmp(cmd->cmd->arg, "pwd") == 0
+		|| ft_strcmp(cmd->cmd->arg, "cd") == 0
+		|| ft_strcmp(cmd->cmd->arg, "echo") == 0
 	);
 }
 

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:21:00 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 18:24:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:12:29 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strcpy(char	*str)
 {
-	int	size;
+	int		size;
 	char	*dest;
 
 	size = ft_strlen(str);

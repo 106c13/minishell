@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 18:08:47 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:33:24 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,11 @@ char	*find_executable_path(char *cmd, t_shell *shell)
 		full_path = get_bin_path(split_path[i], cmd);
 		if (!full_path)
 			continue ;
-		if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && access(full_path, X_OK) == 0)
-		{
-			free_split(split_path);
-			return (full_path);
-		}
+		if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode)
+			&& access(full_path, X_OK) == 0)
+			return (free_split(split_path), full_path);
 		else
-		{
 			free(full_path);
-		}
 	}
 	free_split(split_path);
 	return (NULL);
@@ -102,34 +98,26 @@ static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 	print_error_exit(cmd->cmd->arg, strerror(errno), exit_code);
 }
 
+/* pid = 0 kid, pid > 0 parent */
 int	exec_bin(t_command *cmd, t_shell *shell)
 {
 	char	**env_str_arr;
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == 0) /* CHILD PROCESS */
+	if (pid == 0)
 	{
 		env_str_arr = env_list_to_str_arr(shell->env_list);
 		if (!env_str_arr)
-		{
 			print_error_exit("minishell", "Failed to convert environment", 1);
-		}
 		if (str_contains(cmd->cmd->arg, '/'))
-		{
 			exec_local_bin(cmd, env_str_arr);
-		}
 		else
-		{
 			exec_path_bin(cmd, env_str_arr, shell);
-		}
 	}
-	else if (pid > 0) /* PARENT PROCESS */
-	{
-		// save status code
-		waitpid(pid, NULL, 0);
-	}
-	else /* FORK ERROR */
+	else if (pid > 0)
+		waitpid(pid, &shell->exec_result, 0);
+	else
 	{
 	}
 	return (SUCCESS);
