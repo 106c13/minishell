@@ -6,12 +6,9 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/06 19:01:53 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/07 17:06:20 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//#include "minishell.h"
-//#include <dirent.c>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,6 +76,7 @@ void	replace_wildcards(t_command *cmd)
 	new_argv = NULL;
 	while (cmd->argv[++i])
 	{
+		// cmd name
 		if (i == 0 || !str_contains(cmd->argv[i], '*'))
 		{
 			new_argv = str_arr_append(new_argv, cmd->argv[i]);
@@ -89,7 +87,7 @@ void	replace_wildcards(t_command *cmd)
 			continue ;
 		while ((entry = readdir(dir)) != NULL)
 		{
-			if (entry->d_name[0] == '.')
+			if (entry->d_name[0] == '.' && cmd->argv[i][0] != '.')
 				continue ;
 			if (match_pattern(cmd->argv[i], entry->d_name))
 				new_argv = str_arr_append(new_argv, entry->d_name);
