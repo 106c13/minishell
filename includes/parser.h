@@ -17,6 +17,8 @@ typedef struct	s_file
 {
 	char	*name;
 	int	append;
+	int		interpet_env_var;
+	
 }	t_file;
 
 typedef struct	s_arg
@@ -32,6 +34,7 @@ typedef struct s_command
 	t_arg				*args;
 	t_arg				*output_files;
 	int					args_count;
+	int					files_count;
 	char				**argv;
 	int					argc;
 	int					oper;

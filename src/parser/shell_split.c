@@ -17,26 +17,73 @@ static	int	is_whitespace(char c)
 	return (!c || c == ' ' || c == '\t');
 }
 
-static int	get_split_count(char *str)
+int	get_fname_size(char **str)
 {
-	int		count;
+	char	quote;
+	int	size;
+	int	is_fname;
+
+	quote = 0;
+	size = 0;
+	is_fname = 0;
+	if (**str == '>')
+		(*str)++;
+	if (**str == '>')
+		(*str)++;
+	while(**str)
+	{
+		if (!quote && (**str == '\'' || **str == '"'))
+		{
+			quote = **str;
+			is_fname = 1;
+		}
+		else if (**str == quote)
+			quote = 0;
+		if (!quote)
+		{
+			if (**str == '>')
+				break ;
+			else if (!is_whitespace(**str))
+			{
+				is_fname = 1;
+				size++;
+			}
+			else if (is_fname)
+				break ;
+		}
+		else if (is_fname)
+			size++;
+		(*str)++;
+	}
+	//printf("File size: %d\n", size);
+	return (size);
+}
+
+static void	get_split_count(char *str, t_command *cmd)
+{
 	char	quote;
 
-	count = 0;
 	quote = 0;
 	while (*str)
 	{
+		//printf("%s %d\n", str, quote);
 		if (!quote && (*str == '\'' || *str == '"'))
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
 		if (!quote)
 		{
-			if (!is_whitespace(*str) && is_whitespace(str[1]))
-				count++;
+			if (*str == '>')
+			{
+				get_fname_size(&str);
+				cmd->files_count++;
+				continue ;
+			}
+			else if (!is_whitespace(*str) && is_whitespace(str[1]))
+				cmd->args_count++;
 			else if (!is_whitespace(*str) && get_operator_type(str + 1) != 0)
 			{
-				count++;
+				cmd->args_count++;
 				break ;
 			}
 			else if (is_whitespace(*str) && get_operator_type(str + 1) != 0)
@@ -44,8 +91,7 @@ static int	get_split_count(char *str)
 		}
 		str++;
 	}
-	//printf("TESTING: ARG COUNT: %d\n", count);
-	return (count);
+	//printf("TESTING: ARG COUNT: %d %d\n", cmd->args_count, cmd->files_count);
 }
 
 int	get_arg_len(char *str)
@@ -65,6 +111,8 @@ int	get_arg_len(char *str)
 		if (!quote && is_whitespace(*str))
 			break ;
 		else if (!quote && get_operator_type(str) != 0)
+			break ;
+		else if (!quote && *str == '>')
 			break ;
 		else
 			i++;
@@ -104,20 +152,25 @@ void	add_arg(char **str, t_arg *arg, int size)
 		arg->arg[i++] = **str;
 		(*str)++;
 	}
+	//printf("STOPED: %s\n", *str);
 }
 
 void	shell_split(char **str, t_command *cmd)
 {
-	int		split_count;
 	t_arg	*args;
+	t_arg	*output_files;
+	char	*tmp;
 	int		arg_i;
+	int		file_i;
 	int		arg_len;
 
-	split_count = get_split_count(*str);
-	args = malloc(sizeof(t_arg) * (split_count));
-	if (!args)
+	get_split_count(*str, cmd);
+	args = malloc(sizeof(t_arg) * (cmd->args_count));
+	output_files = malloc(sizeof(t_arg) * (cmd->files_count));
+	if (!args || !output_files)
 		return ;
 	arg_i = 0;
+	file_i = 0;
 	while (**str)
 	{
 		if (is_whitespace(**str))
@@ -131,6 +184,19 @@ void	shell_split(char **str, t_command *cmd)
 				(*str)++;
 			break ;
 		}
+		else if (**str == '>')
+		{
+			if (**str == '>')
+				(*str)++;
+			if (**str == '>')
+				(*str)++;
+			while (**str == ' ')
+				(*str)++;
+			tmp = *str;
+			arg_len = get_fname_size(&tmp);
+			add_arg(str, &output_files[file_i], arg_len);
+			file_i++;
+		}
 		else
 		{
 			arg_len = get_arg_len(*str);
@@ -139,6 +205,6 @@ void	shell_split(char **str, t_command *cmd)
 		}
 	}
 	cmd->args = args;
-	cmd->args_count = split_count;
+	cmd->output_files = output_files;
 	cmd->cmd = &args[0];
 }

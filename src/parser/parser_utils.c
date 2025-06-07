@@ -49,6 +49,8 @@ t_command	*create_command()
 		return (NULL);
 	cmd->cmd = NULL;
 	cmd->args = NULL;
+	cmd->args_count = 0;
+	cmd->files_count = 0;
 	cmd->next = NULL;
 	cmd->oper = 0;
 	return (cmd);

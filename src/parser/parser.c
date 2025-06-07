@@ -46,6 +46,19 @@ void	print_cmd(t_command *cmd)
 				i++; 
 			}
 		}
+		if (cmd->output_files)
+		{
+			i = 0;
+			while (i < cmd->files_count)
+			{
+				if (cmd->output_files[i].interpet_env_var)
+					printf("\033[1;32m");
+				else
+					printf("\033[1;31m");
+				printf("FILE %d: %s\033[0m\n", i, cmd->output_files[i].arg);
+				i++; 
+			}
+		}
 		print_oper(cmd->oper);
 		cmd = cmd->next;
 	}
@@ -85,6 +98,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-//	print_cmd(cmd);
+	print_cmd(cmd);
 	return (cmd);
 }
