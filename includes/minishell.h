@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:34:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:07:51 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <string.h>
+# include <fcntl.h>
 
 # include "parser.h"
 # include "defines.h"

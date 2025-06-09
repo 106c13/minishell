@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:33:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:53:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,13 @@ static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 int	exec_bin(t_command *cmd, t_shell *shell)
 {
 	char	**env_str_arr;
-	pid_t	pid;
 
-	pid = fork();
-	if (pid == 0)
-	{
-		env_str_arr = env_list_to_str_arr(shell->env_list);
-		if (!env_str_arr)
-			print_error_exit("minishell", "Failed to convert environment", 1);
-		if (str_contains(cmd->cmd->arg, '/'))
-			exec_local_bin(cmd, env_str_arr);
-		else
-			exec_path_bin(cmd, env_str_arr, shell);
-	}
-	else if (pid > 0)
-		waitpid(pid, &shell->exec_result, 0);
+	env_str_arr = env_list_to_str_arr(shell->env_list);
+	if (!env_str_arr)
+		print_error_exit("minishell", "Failed to convert environment", 1);
+	if (str_contains(cmd->cmd->arg, '/'))
+		exec_local_bin(cmd, env_str_arr);
 	else
-	{
-	}
+		exec_path_bin(cmd, env_str_arr, shell);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 17:16:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:31:12 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,45 @@ int	get_job_id(t_job *job, pid_t pid)
 
 
 
+int	setup_redirection(t_command *cmd)
+{
+		int	i;
+		int	fd;
+		int	bfd;
+
+		i = 0;
+		bfd = dup(STDOUT_FILENO);
+		while (i < cmd->files_count)
+		{
+			fd = open(cmd->output_files[i].arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (fd == -1)
+				return (-1);
+			i++;
+			if (i == cmd->files_count)
+				dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		return (bfd);
+}
+
+void	restore_fd(int	fd)
+{
+		if (fd < 0)
+			return ;
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+}
+
 
 
 int	exec_in_bg(t_command *cmd, t_shell *shell)
 {
 	pid_t	pid;
+	int		bfd;
 
+
+
+	bfd = -1;
 	pid = fork();
 	if (pid > 0)
 	{
@@ -74,6 +107,8 @@ int	exec_in_bg(t_command *cmd, t_shell *shell)
 	}
 	if (pid == 0) // CHILD
 	{
+		if (cmd->files_count != 0)
+			bfd = setup_redirection(cmd);
 		interpret_cmd_args(cmd, shell);
 		if (is_builtin(cmd))
 		{
@@ -83,15 +118,19 @@ int	exec_in_bg(t_command *cmd, t_shell *shell)
 		{
 			shell->exec_result = exec_bin(cmd, shell);
 		}
+		restore_fd(bfd);
 		exit(shell->exec_result);
 	}
+	
 	return (0); //Change in the future
 }
 
 void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 {
-	pid_t pid;
+	pid_t	pid;
+	int		bfd;
 
+	bfd = -1;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -100,15 +139,20 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 	}
 	if (pid == 0)
 	{
-		if (in_fd != -1)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		if (out_fd != -1)
-		{
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
+		if (cmd->files_count != 0)
+			setup_redirection(cmd);
+		else
+		{ 
+			if (in_fd != -1)
+			{
+				dup2(in_fd, STDIN_FILENO);
+				close(in_fd);
+			}
+			if (out_fd != -1)
+			{
+				dup2(out_fd, STDOUT_FILENO);
+				close(out_fd);
+			}
 		}
 		interpret_cmd_args(cmd, shell);
 		if (is_builtin(cmd))
@@ -116,7 +160,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 		else
 			exit(exec_bin(cmd, shell));
 	}
-	else
+	else if (pid > 0)
 	{
 		if (in_fd != -1)
 			close(in_fd);
@@ -124,7 +168,47 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 			close(out_fd);
 		waitpid(pid, NULL, 0);
 	}
+	else
+	{
+		// handle this
+	}
 }
+
+int	exec_ordinary(t_command *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	int		bfd;
+
+	bfd = -1;
+	interpret_cmd_args(cmd, shell);
+	if (is_builtin(cmd))
+	{
+		if (cmd->files_count != 0)
+			bfd = setup_redirection(cmd);
+		shell->exec_result = exec_builtin(cmd, shell);
+		restore_fd(bfd);
+	}
+	else
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			if (cmd->files_count != 0)
+				bfd = setup_redirection(cmd);
+			shell->exec_result = exec_bin(cmd, shell);
+			restore_fd(bfd);
+			exit(shell->exec_result);
+		}
+		else if (pid > 0)
+			waitpid(pid, &shell->exec_result, 0);
+		else
+		{
+			// code the failed to make procces
+		}
+	}
+	return (0);
+}
+
 
 
 int	exec_cmd(t_command *cmd, t_shell *shell)
@@ -159,22 +243,15 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 			cmd = cmd->next;
 			continue;
 		}
-		interpret_cmd_args(cmd, shell);
-//		replace_wildcards(cmd);
-		if (is_builtin(cmd))
-		{
-			shell->exec_result = exec_builtin(cmd, shell);
-		}
 		else
-		{
-			shell->exec_result = exec_bin(cmd, shell);
-		}
+			exec_ordinary(cmd, shell);
 		//printf("EXEC STATUS: %d\n", shell->exec_result);
 		if (cmd->oper == AND && shell->exec_result != 0)
-			break ;
+			cmd = cmd->next;
 		if (cmd->oper == OR && shell->exec_result == 0)
-			break ;
-		cmd = cmd->next;
+			cmd = cmd->next;
+		if (cmd)
+			cmd = cmd->next;
 	}
 	return (shell->exec_result);
 }
