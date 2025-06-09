@@ -140,7 +140,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 	if (pid == 0)
 	{
 		if (cmd->files_count != 0)
-			setup_redirection(cmd);
+			bfd = setup_redirection(cmd);
 		else
 		{ 
 			if (in_fd != -1)
@@ -156,9 +156,11 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 		}
 		interpret_cmd_args(cmd, shell);
 		if (is_builtin(cmd))
-			exit(exec_builtin(cmd, shell));
+			shell->exec_result = exec_builtin(cmd, shell);
 		else
-			exit(exec_bin(cmd, shell));
+			shell->exec_result = exec_bin(cmd, shell);
+		restore_fd(bfd);
+		exit(shell->exec_result);
 	}
 	else if (pid > 0)
 	{
