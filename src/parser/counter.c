@@ -64,5 +64,5 @@ void	counter(char *str, t_command *cmd)
 		if (*str)
 			str++;
 	}
-	printf("TESTING: ARG COUNT: %d %d\n", cmd->args_count, cmd->files_count);
+	//printf("TESTING: ARG COUNT: %d %d\n", cmd->args_count, cmd->files_count);
 }
