@@ -30,4 +30,4 @@ ls>a
 echo hello' '$USER'$USER'
 echo "$?"
 ls &
-
+cat <>

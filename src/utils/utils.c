@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:11:07 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:11:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:47:36 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,18 @@ int	digits_only(char *str)
 		i++;
 	}
 	return (1);
+}
+
+int	strlen_till(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (i);
 }

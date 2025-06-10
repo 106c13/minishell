@@ -6,15 +6,14 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/04 20:58:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:51:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	update_or_add_env(char *arg, t_env *list)
-{
-	char	**split;
+{ char	**split;
 
 	if (str_contains(arg, '='))
 	{
@@ -38,7 +37,19 @@ static void	update_or_add_env(char *arg, t_env *list)
 
 static int	is_valid_arg(char *arg)
 {
-	(void)arg;
+	int	i;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (i == 0 && !(ft_isalpha(arg[i]) || arg[i] == '_'))
+			return (0);
+		if (!(ft_isalnum(arg[i]) || arg[i] == '_'))
+			return (0);
+		i++;
+	}
+	if (arg == NULL || arg[0] == '\0')
+		return (0);
 	return (1);
 }
 
@@ -54,7 +65,10 @@ int	export_env(t_command *cmd, t_shell *shell)
 		if (is_valid_arg(cmd->argv[i]))
 			update_or_add_env(cmd->argv[i], shell->env_list);
 		else
-			continue ;
+		{
+			cmd->argv[i][strlen_till(cmd->argv[i], '=')] = '\0';
+			printf("export: not an identifier: %s\n", cmd->argv[i]);
+		}
 	}
 	return (SUCCESS);
 }
