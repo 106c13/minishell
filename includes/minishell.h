@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/09 18:07:51 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/10 20:49:57 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 
 int		ft_isalnum(int c);
 
+int		ft_isalpha(int c);
+
 int		ft_atoi(const char *str);
 
 int		ft_isdigit(int c);
@@ -135,6 +137,8 @@ int		digits_only(char *str);
 char	*ft_itoa(int n);
 
 char	**str_arr_append(char **arr, char *str);
+
+int		strlen_till(char *str, char c);
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
 
