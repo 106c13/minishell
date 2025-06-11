@@ -171,6 +171,8 @@ int	shell_split(char **str, t_command *cmd)
 			printf("|%s|\n", *str);
 			if (**str == '"')
 				cmd->args[arg_i].quoted = 2;
+			else
+				cmd->args[arg_i].quoted = 0;
 			arg_len = get_arg_len(*str);
 			add_arg(str, &cmd->args[arg_i], arg_len);
 			printf("%d\n", cmd->args[arg_i].quoted);

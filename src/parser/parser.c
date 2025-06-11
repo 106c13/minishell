@@ -103,6 +103,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }
