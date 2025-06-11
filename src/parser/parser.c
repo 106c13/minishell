@@ -76,7 +76,8 @@ t_command	*get_command(char	*input)
 	head = cmd;
 	while (*input)
 	{
-		shell_split(&input, cmd);
+		if (shell_split(&input, cmd) != 0)
+			return (NULL);
 		if (*input)
 		{
 			tmp = cmd;

@@ -55,7 +55,8 @@ int			get_operator_type(char *word);
 int			get_unquoted_len(char	*stri);
 
 /* shell_split.c */
-void		shell_split(char **str, t_command *cmd);
+int		is_whitespace(char c);
+int		shell_split(char **str, t_command *cmd);
 
 /* validator.c */
 int			validate(char *input);
@@ -63,4 +64,7 @@ int			validate(char *input);
 /* tools.c */
 char		*clear_quotes(char *str);
 
+/* counter.c */
+void	counter(char *str, t_command *cmd);
+int	is_eow(char c);
 #endif

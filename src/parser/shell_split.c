@@ -12,86 +12,36 @@
 
 #include "minishell.h"
 
-static	int	is_whitespace(char c)
+int	is_whitespace(char c)
 {
 	return (!c || c == ' ' || c == '\t');
 }
 
-int	get_fname_size(char **str)
+int	get_fname_size(char *str)
 {
 	char	quote;
 	int	size;
-	int	is_fname;
 
 	quote = 0;
 	size = 0;
-	is_fname = 0;
-	if (**str == '>')
-		(*str)++;
-	if (**str == '>')
-		(*str)++;
-	while(**str)
+	if (*str == '>')
+		str++;
+	if (*str == '>')
+		str++;
+	str = trim_spaces(str);
+	while(*str)
 	{
-		if (!quote && (**str == '\'' || **str == '"'))
-		{
-			quote = **str;
-			is_fname = 1;
-		}
-		else if (**str == quote)
-			quote = 0;
-		if (!quote)
-		{
-			if (**str == '>')
-				break ;
-			else if (!is_whitespace(**str))
-			{
-				is_fname = 1;
-				size++;
-			}
-			else if (is_fname)
-				break ;
-		}
-		else if (is_fname)
-			size++;
-		(*str)++;
-	}
-	//printf("File size: %d\n", size);
-	return (size);
-}
-
-static void	get_split_count(char *str, t_command *cmd)
-{
-	char	quote;
-
-	quote = 0;
-	while (*str)
-	{
-		//printf("%s %d\n", str, quote);
 		if (!quote && (*str == '\'' || *str == '"'))
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
-		if (!quote)
-		{
-			if (*str == '>')
-			{
-				get_fname_size(&str);
-				cmd->files_count++;
-				continue ;
-			}
-			else if (!is_whitespace(*str) && is_whitespace(str[1]))
-				cmd->args_count++;
-			else if (!is_whitespace(*str) && get_operator_type(str + 1) != 0)
-			{
-				cmd->args_count++;
-				break ;
-			}
-			else if (is_whitespace(*str) && get_operator_type(str + 1) != 0)
-				break ;
-		}
+		size++;
+		if (!quote && is_eow(*(str + 1)))
+			break ;
 		str++;
 	}
-	//printf("TESTING: ARG COUNT: %d %d\n", cmd->args_count, cmd->files_count);
+	//printf("File size: %d\n", size);
+	return (size);
 }
 
 int	get_arg_len(char *str)
@@ -141,7 +91,6 @@ void	add_arg(char **str, t_arg *arg, int size)
 			quote = **str;
 		else if (quote && **str == quote)
 			quote = 0;
-		
 		if (quote == '"' && **str == '$')
 		{
 			arg->quoted = 1;
@@ -155,20 +104,54 @@ void	add_arg(char **str, t_arg *arg, int size)
 	//printf("STOPED: %s\n", *str);
 }
 
-void	shell_split(char **str, t_command *cmd)
+int	setup_command(char *str, t_command *cmd)
 {
-	t_arg	*args;
-	t_arg	*output_files;
-	char	*tmp;
+	counter(str, cmd);
+	cmd->args = malloc(sizeof(t_arg) * (cmd->args_count));
+	if (!cmd->args)
+		return (1);
+	cmd->output_files = malloc(sizeof(t_arg) * (cmd->files_count));
+	if (!cmd->output_files)
+	{
+		free(cmd->args);
+		return (1);
+	}
+	cmd->cmd = cmd->args;
+	return (0);
+}
+
+void	set_operator(char **str, t_command *cmd)
+{
+	cmd->oper = get_operator_type(*str);
+	if (cmd->oper == OR || cmd->oper == AND)
+		*str += 2;
+	else
+		(*str)++;
+}
+
+void	add_file(char **str, t_arg *file)
+{
+	int	size;
+
+	if (**str == '>')
+		(*str)++;
+	if (**str == '>')
+		(*str)++;
+	while (**str == ' ')
+		(*str)++;
+	size = get_fname_size(*str);
+	add_arg(str, file, size);
+}
+
+
+int	shell_split(char **str, t_command *cmd)
+{
 	int		arg_i;
 	int		file_i;
 	int		arg_len;
 
-	get_split_count(*str, cmd);
-	args = malloc(sizeof(t_arg) * (cmd->args_count));
-	output_files = malloc(sizeof(t_arg) * (cmd->files_count));
-	if (!args || !output_files)
-		return ;
+	if (setup_command(*str, cmd) != 0)
+		return (1);
 	arg_i = 0;
 	file_i = 0;
 	while (**str)
@@ -177,34 +160,17 @@ void	shell_split(char **str, t_command *cmd)
 			(*str)++;
 		else if (get_operator_type(*str) != 0)
 		{
-			cmd->oper = get_operator_type(*str);
-			if (cmd->oper == OR || cmd->oper == AND)
-				*str += 2;
-			else
-				(*str)++;
+			set_operator(str, cmd);
 			break ;
 		}
 		else if (**str == '>')
-		{
-			if (**str == '>')
-				(*str)++;
-			if (**str == '>')
-				(*str)++;
-			while (**str == ' ')
-				(*str)++;
-			tmp = *str;
-			arg_len = get_fname_size(&tmp);
-			add_arg(str, &output_files[file_i], arg_len);
-			file_i++;
-		}
+			add_file(str, &cmd->output_files[file_i++]);
 		else
 		{
 			arg_len = get_arg_len(*str);
-			add_arg(str, &args[arg_i], arg_len);
+			add_arg(str, &cmd->args[arg_i], arg_len);
 			arg_i++;
 		}
 	}
-	cmd->args = args;
-	cmd->output_files = output_files;
-	cmd->cmd = &args[0];
+	return (0);
 }
