@@ -42,7 +42,11 @@ void	print_cmd(t_command *cmd)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				printf("ARG %d: %s\033[0m\n", i, cmd->args[i].arg);
+				printf("ARG %d: %s\033[0m", i, cmd->args[i].arg);
+				if (cmd->args[i].quoted)
+					printf(" quoted\n");
+				else
+					printf("\n");
 				i++; 
 			}
 		}
@@ -99,6 +103,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-//	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }
