@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:35:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:38:43 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,14 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 	char	**argv;
 	char	*str;
 	int		i;
+	int		j;
+	char	**parts;
 
 	argv = NULL;
 	i = -1;
 	while (++i < cmd->args_count)
 	{
-		if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*'))
+		if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*') && !cmd->args[i].interpet_env_var)
 		{
 			// cmd->args[i].quoted always 0
 			argv = replace_wildcards(cmd->args[i].arg, argv);
@@ -111,14 +113,17 @@ char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
 		{
 			str = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
 			str = clear_quotes(str);
-			if (str && (str[0] != '\0' || cmd->args[i].quoted))
+			parts = ft_split(str, ' ');
+			free(str);
+			j = -1;
+			while (parts && parts[++j])
 			{
-				argv = str_arr_append(argv, str);
+				if (!cmd->args[i].quoted && str_contains(parts[j], '*'))
+					argv = replace_wildcards(parts[j], argv);
+				else if (parts[j][0] != '\0' || cmd->args[i].quoted)
+					argv = str_arr_append(argv, ft_strdup(parts[j]));
 			}
-			else
-			{
-				free(str); // NULL or useless → skip
-			}
+			free_split(parts);
 		}
 		else
 		{
