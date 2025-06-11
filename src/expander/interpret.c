@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 16:38:43 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:36:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*str_append_char_safe(char *str, char c)
 	return (new);
 }
 
-static char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env)
+char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env)
 {
 	char	*res;
 	int		i;
