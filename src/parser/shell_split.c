@@ -76,12 +76,12 @@ void	add_arg(char **str, t_arg *arg, int size)
 {
 	char	quote;
 	int		i;
+	
 
 	arg->arg = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
 	arg->interpet_env_var = 0;
-	arg->quoted = 0;
 	if (!arg->arg)
 		return ;
 	arg->arg[size] = '\0';
@@ -90,12 +90,13 @@ void	add_arg(char **str, t_arg *arg, int size)
 		if (!quote && (**str == '\'' || **str == '"'))
 			quote = **str;
 		else if (quote && **str == quote)
-			quote = 0;
-		if (quote == '"' && **str == '$')
 		{
-			arg->quoted = 1;
-			arg->interpet_env_var = 1;
+			quote = 0;
+			if (i != size - 1)
+				arg->quoted = 0;
 		}
+		if (quote == '"' && **str == '$')
+			arg->interpet_env_var = 1;
 		else if (!quote && **str == '$')
 			arg->interpet_env_var = 1;
 		arg->arg[i++] = **str;
@@ -167,8 +168,15 @@ int	shell_split(char **str, t_command *cmd)
 			add_file(str, &cmd->output_files[file_i++]);
 		else
 		{
+			printf("|%s|\n", *str);
+			if (**str == '"')
+				cmd->args[arg_i].quoted = 2;
 			arg_len = get_arg_len(*str);
 			add_arg(str, &cmd->args[arg_i], arg_len);
+			printf("%d\n", cmd->args[arg_i].quoted);
+			printf("|%s|\n", *str - 1);
+			if (*(*str - 1) == '"' && cmd->args[arg_i].quoted == 2)
+				cmd->args[arg_i].quoted = 1;
 			arg_i++;
 		}
 	}
