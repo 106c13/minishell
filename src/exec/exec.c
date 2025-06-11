@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 17:46:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:49:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 	}
 	if (pid == 0)
 	{
+		set_default_signals();
 		if (cmd->files_count != 0)
 			bfd = setup_redirection(cmd);
 		else
@@ -203,6 +204,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 		pid = fork();
 		if (pid == 0)
 		{
+			set_default_signals();
 			if (cmd->files_count != 0)
 				bfd = setup_redirection(cmd);
 			if (in_fd != -1)
