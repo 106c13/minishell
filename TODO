@@ -33,3 +33,4 @@ ls &
 cat <>
 
 set quoted flag only if whole str is quoted: 'cmd args' or "cmd args"
+remove & support

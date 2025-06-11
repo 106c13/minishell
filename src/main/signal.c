@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:44:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 18:15:38 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:40:53 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,26 @@ static void	disable_echoctl(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
+void	set_interactive_signals(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_execution_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_default_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
 void	setup_signals(void)
 {
 	disable_echoctl();
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	set_interactive_signals();
 }

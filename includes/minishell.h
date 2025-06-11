@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/10 20:49:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:30:04 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ char	**env_list_to_str_arr(t_env *env);
 
 /* signal.c */
 void	setup_signals(void);
+
+void	set_interactive_signals(void);
+
+void	set_execution_signals(void);
+
+void	set_default_signals(void);
 
 /* utils.c */
 int		get_args_count(char **args);

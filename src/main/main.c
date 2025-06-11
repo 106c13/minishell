@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 19:23:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:37:35 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static void	listen(t_shell *shell)
 	while (1)
 	{
 		collect_finished_jobs(shell);
+		set_interactive_signals();
 		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
+		set_execution_signals();
 		if (!input) // Ctrl-D
 		{
 			free(input);
