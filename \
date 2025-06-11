@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 17:46:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:30:15 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 	}
 }
 
-int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
+int exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 {
 	pid_t pid;
 	int bfd = -1;
@@ -195,7 +195,6 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 			close(in_fd);
 		}
 		shell->exec_result = exec_builtin(cmd, shell);
-		restore_fd(in_fd);
 		restore_fd(bfd);
 	}
 	else
@@ -211,7 +210,6 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 				close(in_fd);
 			}
 			shell->exec_result = exec_bin(cmd, shell);
-			restore_fd(in_fd);
 			restore_fd(bfd);
 			exit(shell->exec_result);
 		}
@@ -244,13 +242,11 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 		else if (cmd->oper == BG)
 		{
 			exec_in_bg(cmd, shell, prev_fd);
-			close(prev_fd);
 			prev_fd = -1;
 		}
 		else
 		{
 			exec_ordinary(cmd, shell, prev_fd);
-			close(prev_fd);
 			prev_fd = -1;
 		}
 		//printf("EXEC STATUS: %d\n", shell->exec_result);
