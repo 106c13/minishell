@@ -3,41 +3,38 @@
 int	count_in_quotes(char **str)
 {
 	char	quote;
+	int	size;
 
+	size = 0;
 	quote = **str;
 	(*str)++;
 	while (**str && **str != quote)
+	{
+		size++;
 		(*str)++;
-	return (1);
+	}
+	(*str)++;
+	return (size);
 }
 
 int	is_eow(char c)
 {
 	if (is_whitespace(c))
 		return (1);
-	if (c == '>' || c == '&' || c == '|')
+	if (c == '>' || c == '<' || c == '&' || c == '|')
 		return (1);
 	return (0);
 }
 
 int	count_in_file(char **str)
 {
-	int	in_file;
-
-	if (**str == '>')
-		(*str)++;
-	if (**str == '>')
-		(*str)++;
-	in_file = 0;
-	while (**str)
+	*str = trim_spaces(*str);
+	while (**str && !is_eow(**str))
 	{
-		if (!is_whitespace(**str))
-			in_file = 1;
 		if (**str == '\'' || **str == '"')
 			count_in_quotes(str);
-		else if (in_file && is_eow(*(*str + 1)))
-			break ;
-		(*str)++;
+		else
+			(*str)++;
 	}
 	return (1);
 }
@@ -50,19 +47,34 @@ void	counter(char *str, t_command *cmd)
 		if (*str == '\'' || *str == '"')
 		{
 			count_in_quotes(&str);
-			if (is_eow(*(str + 1)))
+			if (is_eow(*(str)))
 				cmd->args_count++;
 		}
 		else if (*str == '>')
 		{
+			if (*str == '>')
+				str++;
+			if (*str == '>')
+				str++;
 			count_in_file(&str);
-			if (is_eow(*(str + 1)))
-				cmd->files_count++;
+			if (is_eow(*(str)))
+				cmd->out_file_count++;
+		}
+		else if (*str == '<')
+		{
+			if (*str == '<')
+				str++;
+			count_in_file(&str);
+			if (is_eow(*(str)))
+				cmd->in_file_count++;
 		}
 		else if (!is_whitespace(*str) && is_eow(*(str + 1)))
+		{
 			cmd->args_count++;
-		if (*str)
+			str++;
+		}
+		else
 			str++;
 	}
-	//printf("TESTING: ARG COUNT: %d %d\n", cmd->args_count, cmd->files_count);
+	//printf("TESTING: ARG COUNT: %d %d %d\n", cmd->args_count, cmd->out_file_count, cmd->in_file_count);
 }

@@ -13,13 +13,6 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-typedef struct s_file
-{
-	char	*name;
-	int	append;
-	int		interpet_env_var;
-}	t_file;
-
 typedef struct s_arg
 {
 	char	*arg;
@@ -32,11 +25,13 @@ typedef struct s_command
 	t_arg				*cmd;
 	t_arg				*args;
 	t_arg				*output_files;
+	t_arg				*input_files;
 	int					args_count;
-	int					files_count;
+	int					out_file_count;
+	int					in_file_count;
 	char				**argv;
 	int					argc;
-	int					oper;
+	int					operator_type;
 	struct s_command	*next;
 }	t_command;
 
@@ -71,5 +66,6 @@ void	set_operator(char **str, t_command *cmd);
 
 /* counter.c */
 void	counter(char *str, t_command *cmd);
+int	count_in_quotes(char **str);
 int	is_eow(char c);
 #endif

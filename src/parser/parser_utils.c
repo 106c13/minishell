@@ -50,9 +50,10 @@ t_command	*create_command()
 	cmd->cmd = NULL;
 	cmd->args = NULL;
 	cmd->args_count = 0;
-	cmd->files_count = 0;
+	cmd->out_file_count = 0;
+	cmd->in_file_count = 0;
 	cmd->next = NULL;
-	cmd->oper = 0;
+	cmd->operator_type = 0;
 	return (cmd);
 }
 

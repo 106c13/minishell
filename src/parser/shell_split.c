@@ -12,63 +12,26 @@
 
 #include "minishell.h"
 
-
-int	get_fname_size(char *str)
+int	get_arg_len(char *str)
 {
-	char	quote;
 	int	size;
 
-	quote = 0;
 	size = 0;
-	if (*str == '>')
-		str++;
-	if (*str == '>')
-		str++;
 	str = trim_spaces(str);
-	while(*str)
+	while(!is_eow(*str))
 	{
-		if (!quote && is_quote(*str))
-			quote = *str;
-		else if (*str == quote)
-			quote = 0;
-		size++;
-		if (!quote && is_eow(*(str + 1)))
-			break ;
-		str++;
+		if (is_quote(*str))
+			size += count_in_quotes(&str) + 2;
+		else
+		{
+			size++;
+			str++;
+		}
 	}
-	//printf("File size: %d\n", size);
 	return (size);
 }
 
-int	get_arg_len(char *str)
-{
-	int	quote;
-	int	i;
-
-	quote = 0;
-	i = 0;
-	//printf("%s\n", str);
-	while (*str)
-	{
-		if (!quote && is_quote(*str))
-			quote = *str;
-		else if (*str == quote)
-			quote = 0;
-		if (!quote && is_whitespace(*str))
-			break ;
-		else if (!quote && get_operator_type(str) != 0)
-			break ;
-		else if (!quote && *str == '>')
-			break ;
-		else
-			i++;
-		str++;
-	}
-	//printf("TESTING: ARG LEN: %d\n", i);
-	return (i);
-}
-
-void	add_arg(char **str, t_arg *arg, int size)
+void	add_word(char **str, t_arg *arg, int size)
 {
 	char	quote;
 	int		i;
@@ -80,7 +43,6 @@ void	add_arg(char **str, t_arg *arg, int size)
 	arg->interpet_env_var = 0;
 	if (!arg->arg)
 		return ;
-	arg->arg[size] = '\0';
 	while (i < size)
 	{
 		if (!quote && is_quote(**str))
@@ -91,14 +53,12 @@ void	add_arg(char **str, t_arg *arg, int size)
 			if (i != size - 1)
 				arg->quoted = 0;
 		}
-		if (quote == '"' && **str == '$')
-			arg->interpet_env_var = 1;
-		else if (!quote && **str == '$')
+		if ((!quote || quote == '"') && **str == '$')
 			arg->interpet_env_var = 1;
 		arg->arg[i++] = **str;
 		(*str)++;
 	}
-	//printf("STOPED: %s\n", *str);
+	arg->arg[size] = '\0';
 }
 
 int	setup_command(char *str, t_command *cmd)
@@ -107,42 +67,64 @@ int	setup_command(char *str, t_command *cmd)
 	cmd->args = malloc(sizeof(t_arg) * (cmd->args_count));
 	if (!cmd->args)
 		return (1);
-	cmd->output_files = malloc(sizeof(t_arg) * (cmd->files_count));
+	cmd->output_files = malloc(sizeof(t_arg) * (cmd->out_file_count));
 	if (!cmd->output_files)
 	{
 		free(cmd->args);
+		return (1);
+	}
+	cmd->input_files = malloc(sizeof(t_arg) * (cmd->in_file_count));
+	if (!cmd->input_files)
+	{
+		free(cmd->args);
+		free(cmd->output_files);
 		return (1);
 	}
 	cmd->cmd = cmd->args;
 	return (0);
 }
 
-
 void	add_file(char **str, t_arg *file)
 {
 	int	size;
+	char	c;
 
-	if (**str == '>')
+	c = **str;
+	if (**str == c)
 		(*str)++;
-	if (**str == '>')
+	if (**str == c)
 		(*str)++;
 	while (**str == ' ')
 		(*str)++;
-	size = get_fname_size(*str);
-	add_arg(str, file, size);
+	size = get_arg_len(*str);
+	add_word(str, file, size);
 }
 
+void	add_arg(char **str, t_arg *arg)
+{
+	int	size;
+
+	if (is_quote(**str))
+		arg->quoted = 2;
+	else
+		arg->quoted = 0;
+	size = get_arg_len(*str);
+	add_word(str, arg, size);
+	if (is_quote(**str) && arg->quoted == 2)
+		arg->quoted = 1;
+}
 
 int	shell_split(char **str, t_command *cmd)
 {
 	int		arg_i;
-	int		file_i;
-	int		arg_len;
+	int		out_i;
+	int		in_i;
 
 	if (setup_command(*str, cmd) != 0)
 		return (1);
 	arg_i = 0;
-	file_i = 0;
+	out_i = 0;
+	in_i = 0;
 	while (**str)
 	{
 		if (is_whitespace(**str))
@@ -153,19 +135,11 @@ int	shell_split(char **str, t_command *cmd)
 			break ;
 		}
 		else if (**str == '>')
-			add_file(str, &cmd->output_files[file_i++]);
+			add_file(str, &cmd->output_files[out_i++]);
+		else if (**str == '<')
+			add_file(str, &cmd->input_files[in_i++]);
 		else
-		{
-			if (is_quote(**str))
-				cmd->args[arg_i].quoted = 2;
-			else
-				cmd->args[arg_i].quoted = 0;
-			arg_len = get_arg_len(*str);
-			add_arg(str, &cmd->args[arg_i], arg_len);
-			if (is_quote(**str) && cmd->args[arg_i].quoted == 2)
-				cmd->args[arg_i].quoted = 1;
-			arg_i++;
-		}
+			add_arg(str, &cmd->args[arg_i++]);	
 	}
 	return (0);
 }

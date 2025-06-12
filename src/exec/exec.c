@@ -94,13 +94,13 @@ int	setup_redirection(t_command *cmd)
 
 		i = 0;
 		bfd = dup(STDOUT_FILENO);
-		while (i < cmd->files_count)
+		while (i < cmd->out_file_count)
 		{
 			fd = open(cmd->output_files[i].arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd == -1)
 				return (-1);
 			i++;
-			if (i == cmd->files_count)
+			if (i == cmd->out_file_count)
 				dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
@@ -130,7 +130,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 	if (pid == 0)
 	{
 		set_default_signals();
-		if (cmd->files_count != 0)
+		if (cmd->out_file_count != 0)
 			bfd = setup_redirection(cmd);
 		else
 		{ 
@@ -174,7 +174,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 	interpret_cmd_args(cmd, shell);
 	if (is_builtin(cmd))
 	{
-		if (cmd->files_count != 0)
+		if (cmd->out_file_count != 0)
 			bfd = setup_redirection(cmd);
 		if (in_fd != -1)
 		{
@@ -191,7 +191,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 		if (pid == 0)
 		{
 			set_default_signals();
-			if (cmd->files_count != 0)
+			if (cmd->out_file_count != 0)
 				bfd = setup_redirection(cmd);
 			if (in_fd != -1)
 			{
@@ -220,7 +220,7 @@ int exec_cmd(t_command *cmd, t_shell *shell)
 
 	while (cmd)
 	{
-		if (cmd->oper == PIPE)
+		if (cmd->operator_type == PIPE)
 		{
 			pipe(pipefd);
 			exec_in_pipe(cmd, shell, pipefd, prev_fd);
@@ -237,9 +237,9 @@ int exec_cmd(t_command *cmd, t_shell *shell)
 			prev_fd = -1;
 		}
 
-		if (cmd->oper == AND && shell->exec_result != 0)
+		if (cmd->operator_type == AND && shell->exec_result != 0)
 			cmd = cmd->next;
-		else if (cmd->oper == OR && shell->exec_result == 0)
+		else if (cmd->operator_type == OR && shell->exec_result == 0)
 			cmd = cmd->next;
 		if (cmd)
 			cmd = cmd->next;

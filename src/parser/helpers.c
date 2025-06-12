@@ -24,8 +24,8 @@ int	is_whitespace(char c)
 
 void	set_operator(char **str, t_command *cmd)
 {
-	cmd->oper = get_operator_type(*str);
-	if (cmd->oper == OR || cmd->oper == AND)
+	cmd->operator_type = get_operator_type(*str);
+	if (cmd->operator_type == OR || cmd->operator_type == AND)
 		*str += 2;
 	else
 		(*str)++;

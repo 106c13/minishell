@@ -53,17 +53,27 @@ void	print_cmd(t_command *cmd)
 		if (cmd->output_files)
 		{
 			i = 0;
-			while (i < cmd->files_count)
+			while (i < cmd->out_file_count)
 			{
 				if (cmd->output_files[i].interpet_env_var)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				printf("FILE %d: %s\033[0m\n", i, cmd->output_files[i].arg);
+				printf("OUTPUT FILE %d: %s\033[0m\n", i, cmd->output_files[i].arg);
+				i++; 
+			}
+			i = 0;
+			while (i < cmd->in_file_count)
+			{
+				if (cmd->input_files[i].interpet_env_var)
+					printf("\033[1;32m");
+				else
+					printf("\033[1;31m");
+				printf("INPUT FILE %d: %s\033[0m\n", i, cmd->input_files[i].arg);
 				i++; 
 			}
 		}
-		print_oper(cmd->oper);
+		print_oper(cmd->operator_type);
 		cmd = cmd->next;
 	}
 	printf("---------------end---------------\n");
@@ -103,6 +113,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-//	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }
