@@ -22,6 +22,8 @@ BUILTINS
 handle -nnnnn echo flag
 handle $? in interpret
 
+echo *" $EXT" problem
+
 Hakob:
 make func that will free cmd
 ls>file

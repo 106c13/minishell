@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/07 18:20:59 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:27:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int			get_operator_type(char *word);
 int			get_unquoted_len(char	*stri);
 
 /* shell_split.c */
-int		is_whitespace(char c);
 int		shell_split(char **str, t_command *cmd);
 
 /* validator.c */
@@ -63,6 +62,12 @@ int			validate(char *input);
 
 /* tools.c */
 char		*clear_quotes(char *str);
+
+/* helpers.c */
+int		is_whitespace(char c);
+int	is_quote(char c);
+void	set_operator(char **str, t_command *cmd);
+
 
 /* counter.c */
 void	counter(char *str, t_command *cmd);
