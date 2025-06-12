@@ -6,46 +6,11 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 17:37:35 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:55:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-void collect_finished_jobs(t_shell *shell)
-{
-	t_job *curr = shell->job_list;
-	t_job *prev = NULL;
-	int status;
-	pid_t result;
-
-	while (curr)
-	{
-		result = waitpid(curr->pid, &status, WNOHANG);
-		if (result > 0)
-		{
-			printf("[%d] Done\t{command}\n", curr->id);
-			if (prev)
-				prev->next = curr->next;
-			else
-				shell->job_list = curr->next;
-			//free(curr->cmd_str);
-			t_job *to_free = curr;
-			free(to_free);
-		}
-		else
-			prev = curr;
-		curr = curr->next;
-	}
-}
-
-
-// ===========================================================
-
-
-
-
 
 /*
  * Function that listens user's commads
@@ -57,7 +22,6 @@ static void	listen(t_shell *shell)
 
 	while (1)
 	{
-		collect_finished_jobs(shell);
 		set_interactive_signals();
 		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
 		set_execution_signals();

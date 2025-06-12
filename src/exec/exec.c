@@ -6,13 +6,39 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 14:29:50 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:50:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
+void collect_finished_jobs(t_shell *shell)
+{
+	t_job *curr = shell->job_list;
+	t_job *prev = NULL;
+	int status;
+	pid_t result;
+
+	while (curr)
+	{
+		result = waitpid(curr->pid, &status, WNOHANG);
+		//printf("PID: %d STATUS: %d\n", curr->pid, status);
+		if (result > 0)
+		{
+			if (prev)
+				prev->next = curr->next;
+			else
+				shell->job_list = curr->next;
+			//free(curr->cmd_str);
+			t_job *to_free = curr;
+			free(to_free);
+		}
+		else
+			prev = curr;
+		curr = curr->next;
+	}
+}
 
 t_job	*create_job(pid_t pid, int id)
 {
@@ -89,45 +115,7 @@ void	restore_fd(int	fd)
 		close(fd);
 }
 
-
-
-int	exec_in_bg(t_command *cmd, t_shell *shell, int fd)
-{
-	pid_t	pid;
-	int		bfd;
-
-
-
-	bfd = -1;
-	pid = fork();
-	if (pid > 0)
-	{
-		add_job(shell, pid);
-		printf("[%d] %d\n", get_job_id(shell->job_list, pid), pid);
-	}
-	if (pid == 0) // CHILD
-	{
-		if (fd != -1)
-			dup2(fd, STDIN_FILENO);
-		if (cmd->files_count != 0)
-			bfd = setup_redirection(cmd);
-		interpret_cmd_args(cmd, shell);
-		if (is_builtin(cmd))
-		{
-			shell->exec_result = exec_builtin(cmd, shell);
-		}
-		else
-		{
-			shell->exec_result = exec_bin(cmd, shell);
-		}
-		restore_fd(bfd);
-		exit(shell->exec_result);
-	}
-	
-	return (0); //Change in the future
-}
-
-void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
+void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 {
 	pid_t	pid;
 	int		bfd;
@@ -146,16 +134,17 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 			bfd = setup_redirection(cmd);
 		else
 		{ 
-			if (in_fd != -1)
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-			}
-			if (out_fd != -1)
-			{
-				dup2(out_fd, STDOUT_FILENO);
-				close(out_fd);
-			}
+				if (in_fd != -1)
+				{
+					dup2(in_fd, STDIN_FILENO);
+					close(in_fd);
+				}
+				if (pipefd[1] != -1)
+				{
+					dup2(pipefd[1], STDOUT_FILENO);
+					close(pipefd[1]);
+					close(pipefd[0]);
+				}
 		}
 		interpret_cmd_args(cmd, shell);
 		if (is_builtin(cmd))
@@ -168,10 +157,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int in_fd, int out_fd)
 	}
 	else if (pid > 0)
 	{
-		if (in_fd != -1)
-			close(in_fd);
-		if (out_fd != -1)
-			close(out_fd);
+		add_job(shell, pid);
 		//waitpid(pid, NULL, 0);
 	}
 	else
@@ -227,41 +213,37 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 	return 0;
 }
 
-int	exec_cmd(t_command *cmd, t_shell *shell)
+int exec_cmd(t_command *cmd, t_shell *shell)
 {
-	int	pipefd[2];
-	int	prev_fd = -1;
+	int pipefd[2] = {-1, -1};
+	int prev_fd = -1;
 
 	while (cmd)
 	{
 		if (cmd->oper == PIPE)
 		{
 			pipe(pipefd);
-			exec_in_pipe(cmd, shell, prev_fd, pipefd[1]);
+			exec_in_pipe(cmd, shell, pipefd, prev_fd);
 			if (prev_fd != -1)
 				close(prev_fd);
 			close(pipefd[1]);
 			prev_fd = pipefd[0];
 		}
-		else if (cmd->oper == BG)
-		{
-			exec_in_bg(cmd, shell, prev_fd);
-			close(prev_fd);
-			prev_fd = -1;
-		}
 		else
 		{
 			exec_ordinary(cmd, shell, prev_fd);
-			close(prev_fd);
+			if (prev_fd != -1)
+				close(prev_fd);
 			prev_fd = -1;
 		}
-		//printf("EXEC STATUS: %d\n", shell->exec_result);
+
 		if (cmd->oper == AND && shell->exec_result != 0)
 			cmd = cmd->next;
-		if (cmd->oper == OR && shell->exec_result == 0)
+		else if (cmd->oper == OR && shell->exec_result == 0)
 			cmd = cmd->next;
 		if (cmd)
 			cmd = cmd->next;
 	}
-	return (shell->exec_result);
+	collect_finished_jobs(shell);
+	return shell->exec_result;
 }
