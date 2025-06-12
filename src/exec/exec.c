@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 17:09:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:50:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void collect_finished_jobs(t_shell *shell)
 	while (curr)
 	{
 		result = waitpid(curr->pid, &status, WNOHANG);
+		//printf("PID: %d STATUS: %d\n", curr->pid, status);
 		if (result > 0)
 		{
 			if (prev)
@@ -238,12 +239,11 @@ int exec_cmd(t_command *cmd, t_shell *shell)
 
 		if (cmd->oper == AND && shell->exec_result != 0)
 			cmd = cmd->next;
-		if (cmd->oper == OR && shell->exec_result == 0)
+		else if (cmd->oper == OR && shell->exec_result == 0)
 			cmd = cmd->next;
 		if (cmd)
 			cmd = cmd->next;
 	}
-
 	collect_finished_jobs(shell);
 	return shell->exec_result;
 }
