@@ -1,43 +1,30 @@
-FOR TODAY: fix all memory leaks
-
-check correctness of set_env_val function
-check correctness of buitlin cd implementation
-implement free_command function
-
-add better env parsing, cause some values can contain '=' sign, ans split will behave incorrect
-check export builitin func & implement valid of args
-
-add check if last symbol in STDOUT is new line or not (to avoid shell prompt on one line with prev output)
-
-check bin permissions -> done???
+fix all memory leaks
 check if S_ISREG macros forbidden?
 find info why do i need global variable for signals
-
 do not forget about file descriptors
 
-add status codes support
-minishell > minishell >
+STILL TO DO:
+a: add status codes support
+a: handle -nnnnn echo flag
+a: check correctness of set_env_val function
 
-BUILTINS
-handle -nnnnn echo flag
-handle $? in interpret
+h: make func that will free cmd
+h: remove & support
+h: one | two
+h: cat <>
+h: cat ><
 
-echo *" $EXT" problem
-
-Hakob:
-make func that will free cmd
-ls>file
-
-ls>a
-echo hello' '$USER'$USER'
-echo "$?"
-ls &
-cat <>
-
-set quoted flag only if whole str is quoted: 'cmd args' or "cmd args"
-remove & support
-one | two
-
-CMD=ls -la
->$CMD
->"$CMD"
+DONE:
+done - echo hello' '$USER'$USER'
+done - set quoted flag only if whole str is quoted: 'cmd args' or "cmd args"
+done - CMD=ls -la
+done - >$CMD
+done - >"$CMD"
+done - ls>a
+done - echo *" $EXT" problem
+done - echo "$?"
+done - handle $? in interpret
+done - check export builitin func & implement valid of args
+done - add better env parsing, cause some values can contain '=' sign, ans split will behave incorrect
+done - check bin permissions -> done???
+done - check correctness of buitlin cd implementation
