@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 17:50:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:30:25 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void collect_finished_jobs(t_shell *shell)
 
 	while (curr)
 	{
-		result = waitpid(curr->pid, &status, WNOHANG);
+		result = waitpid(curr->pid, &status, 0);
 		//printf("PID: %d STATUS: %d\n", curr->pid, status);
 		if (result > 0)
 		{
