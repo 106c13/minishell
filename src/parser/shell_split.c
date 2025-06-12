@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/05 18:23:41 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:22:36 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,15 +168,13 @@ int	shell_split(char **str, t_command *cmd)
 			add_file(str, &cmd->output_files[file_i++]);
 		else
 		{
-			printf("|%s|\n", *str);
 			if (**str == '"')
 				cmd->args[arg_i].quoted = 2;
 			else
 				cmd->args[arg_i].quoted = 0;
 			arg_len = get_arg_len(*str);
 			add_arg(str, &cmd->args[arg_i], arg_len);
-			printf("%d\n", cmd->args[arg_i].quoted);
-			printf("|%s|\n", *str - 1);
+
 			if (*(*str - 1) == '"' && cmd->args[arg_i].quoted == 2)
 				cmd->args[arg_i].quoted = 1;
 			arg_i++;
