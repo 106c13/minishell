@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 19:36:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:47:56 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,52 +92,66 @@ char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env)
 	return (res);
 }
 
-char	**interpret_cmd_args(t_command *cmd, t_shell *shell)
+char    **interpret_cmd_args(t_command *cmd, t_shell *shell)
 {
-	char	**argv;
-	char	*str;
-	int		i;
-	int		j;
-	char	**parts;
+    char    **argv;
+    char    *str;
+    int     i;
+    int     j;
+    char    **parts;
 
-	argv = NULL;
-	i = -1;
-	while (++i < cmd->args_count)
-	{
-		if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*') && !cmd->args[i].interpet_env_var)
-		{
-			// cmd->args[i].quoted always 0
-			argv = replace_wildcards(cmd->args[i].arg, argv);
-		}
-		else if (cmd->args[i].interpet_env_var)
-		{
-			str = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
-			str = clear_quotes(str);
-			parts = ft_split(str, ' ');
-			free(str);
-			j = -1;
-			while (parts && parts[++j])
-			{
-				if (!cmd->args[i].quoted && str_contains(parts[j], '*'))
-					argv = replace_wildcards(parts[j], argv);
-				else if (parts[j][0] != '\0' || cmd->args[i].quoted)
-					argv = str_arr_append(argv, ft_strdup(parts[j]));
-			}
-			free_split(parts);
-		}
-		else
-		{
-			str = ft_strdup(cmd->args[i].arg);
-			str = clear_quotes(str);
-			argv = str_arr_append(argv, str);
-		}
-	}
-	cmd->argv = argv;
-	cmd->argc = get_args_count(argv);
-	if (ft_strcmp(cmd->cmd->arg, cmd->argv[0]) != 0)
-	{
-		free(cmd->cmd->arg);
-		cmd->cmd->arg = cmd->argv[0];
-	}
-	return (argv);
+    argv = NULL;
+    i = -1;
+    while (++i < cmd->args_count)
+    {
+        if (!cmd->args[i].quoted && str_contains(cmd->args[i].arg, '*') && !cmd->args[i].interpet_env_var)
+        {
+            argv = replace_wildcards(cmd->args[i].arg, argv);
+        }
+        else if (cmd->args[i].interpet_env_var)
+        {
+            str = replace_env_vars(shell, cmd->args[i].arg, cmd->args[i].quoted, shell->env_list);
+            str = clear_quotes(str);
+            
+            // Check if the expanded string contains wildcard and is not quoted
+            if (!cmd->args[i].quoted && str_contains(str, '*'))
+            {
+                // Don't split by spaces - treat the whole string as one wildcard pattern
+                argv = replace_wildcards(str, argv);
+                free(str);
+            }
+            else if (cmd->args[i].quoted)
+            {
+                // Quoted arguments should be treated as single argument, no splitting
+                argv = str_arr_append(argv, str);
+            }
+            else
+            {
+                // Only split by spaces if no wildcards present and not quoted
+                parts = ft_split(str, ' ');
+                free(str);
+                j = -1;
+                while (parts && parts[++j])
+                {
+                    if (parts[j][0] != '\0')
+                        argv = str_arr_append(argv, ft_strdup(parts[j]));
+                }
+                free_split(parts);
+            }
+        }
+        else
+        {
+            str = ft_strdup(cmd->args[i].arg);
+            str = clear_quotes(str);
+            argv = str_arr_append(argv, str);
+        }
+    }
+    cmd->argv = argv;
+    cmd->argc = get_args_count(argv);
+    if (ft_strcmp(cmd->cmd->arg, cmd->argv[0]) != 0)
+    {
+        free(cmd->cmd->arg);
+        cmd->cmd->arg = cmd->argv[0];
+    }
+    return (argv);
 }

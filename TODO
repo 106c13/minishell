@@ -36,3 +36,8 @@ cat <>
 
 set quoted flag only if whole str is quoted: 'cmd args' or "cmd args"
 remove & support
+one | two
+
+CMD=ls -la
+>$CMD
+>"$CMD"
