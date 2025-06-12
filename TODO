@@ -7,12 +7,14 @@ STILL TO DO:
 a: add status codes support
 a: handle -nnnnn echo flag
 a: check correctness of set_env_val function
+a: heredoc
 
 h: make func that will free cmd
 h: remove & support
 h: one | two
 h: cat <>
 h: cat ><
+a: () brackets
 
 DONE:
 done - echo hello' '$USER'$USER'
