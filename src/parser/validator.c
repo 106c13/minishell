@@ -6,18 +6,6 @@ static int	ft_error(char *msg)
 	return (1);
 }
 
-int	is_quote(char c)
-{
-	return (c == '"' || c == '\'');
-}
-
-int	is_starts_with_operator(char *input)
-{
-	if (get_operator_type(input) != 0)
-		return (1);
-	return (0);
-}
-
 int	validate(char *input)
 {
 	int		op_type;
@@ -25,7 +13,7 @@ int	validate(char *input)
 
 	op_type = 0;
 	quote = 0;
-	if (is_starts_with_operator(input))
+	if (get_operator_type(input) != 0)
 		return (ft_error("Invalid input"));
 	while (*input)
 	{

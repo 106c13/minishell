@@ -6,16 +6,12 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/05 18:23:41 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:31:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_whitespace(char c)
-{
-	return (!c || c == ' ' || c == '\t');
-}
 
 int	get_fname_size(char *str)
 {
@@ -31,7 +27,7 @@ int	get_fname_size(char *str)
 	str = trim_spaces(str);
 	while(*str)
 	{
-		if (!quote && (*str == '\'' || *str == '"'))
+		if (!quote && is_quote(*str))
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
@@ -54,7 +50,7 @@ int	get_arg_len(char *str)
 	//printf("%s\n", str);
 	while (*str)
 	{
-		if (!quote && (*str == '"' || *str == '\''))
+		if (!quote && is_quote(*str))
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
@@ -87,7 +83,7 @@ void	add_arg(char **str, t_arg *arg, int size)
 	arg->arg[size] = '\0';
 	while (i < size)
 	{
-		if (!quote && (**str == '\'' || **str == '"'))
+		if (!quote && is_quote(**str))
 			quote = **str;
 		else if (quote && **str == quote)
 		{
@@ -121,14 +117,6 @@ int	setup_command(char *str, t_command *cmd)
 	return (0);
 }
 
-void	set_operator(char **str, t_command *cmd)
-{
-	cmd->oper = get_operator_type(*str);
-	if (cmd->oper == OR || cmd->oper == AND)
-		*str += 2;
-	else
-		(*str)++;
-}
 
 void	add_file(char **str, t_arg *file)
 {
@@ -168,16 +156,13 @@ int	shell_split(char **str, t_command *cmd)
 			add_file(str, &cmd->output_files[file_i++]);
 		else
 		{
-			printf("|%s|\n", *str);
-			if (**str == '"')
+			if (is_quote(**str))
 				cmd->args[arg_i].quoted = 2;
 			else
 				cmd->args[arg_i].quoted = 0;
 			arg_len = get_arg_len(*str);
 			add_arg(str, &cmd->args[arg_i], arg_len);
-			printf("%d\n", cmd->args[arg_i].quoted);
-			printf("|%s|\n", *str - 1);
-			if (*(*str - 1) == '"' && cmd->args[arg_i].quoted == 2)
+			if (is_quote(**str) && cmd->args[arg_i].quoted == 2)
 				cmd->args[arg_i].quoted = 1;
 			arg_i++;
 		}
