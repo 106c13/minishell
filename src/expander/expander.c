@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 18:59:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:59:50 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted)
 		else
 			res = str_append_char_safe(res, input_cmd[i++]);
 	}
+	res = str_append_char_safe(res, '\0');
 	if (res[0] == '\0' && quoted)
 		return (free(res), NULL);
 	return (res);
