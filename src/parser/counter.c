@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 20:15:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:11:00 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	skip_file(char **str, int *count)
 		*str += 2;
 	else
 		*str += 1;
-	if (mode == HEREDOC)
 	*str = trim_spaces(*str);
 	*str += count_in_file(*str);
 	if (is_eow(**str) && mode != HEREDOC)
@@ -78,5 +77,5 @@ void	counter(char *str, t_command *cmd)
 		else
 			str++;
 	}
-	//printf("TESTING: ARG COUNT: %d %d %d\n", cmd->args_count, cmd->out_file_count, cmd->in_file_count);
+	printf("TESTING: ARG COUNT: %d %d %d\n", cmd->args_count, cmd->out_file_count, cmd->in_file_count);
 }

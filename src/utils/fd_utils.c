@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 18:58:48 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:06:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int	redirect_from_file(t_command *cmd)
 {
-	int	fd;
-	int	backup_fd;
-	int	i;
+	int		i;
+	int		fd;
+	int		backup_fd;
+	t_file	file;
 
 	i = 0;
 	backup_fd = dup(STDIN_FILENO);
 	while (i < cmd->in_file_count)
 	{
-			fd = open(cmd->input_files[i].name, O_RDONLY);
+			file = cmd->input_files[i];
+			fd = open(file.name, O_RDONLY);
 			if (fd == -1)
 			{
-				printf("minishell: %s: No such file or directory\n", cmd->input_files[i].name);
+				printf("minishell: %s: No such file or directory\n", file.name);
 				return (-1);
 			}
 			i++;
@@ -38,15 +40,20 @@ int	redirect_from_file(t_command *cmd)
 
 int	redirect_to_file(t_command *cmd)
 {
-	int	i;
-	int	fd;
-	int	backup_fd;
+	int		i;
+	int		fd;
+	int		backup_fd;
+	t_file	file;
 
 	i = 0;
 	backup_fd = dup(STDOUT_FILENO);
 	while (i < cmd->out_file_count)
 	{
-		fd = open(cmd->output_files[i].name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		file = cmd->output_files[i];
+		if (file.mode == TRUNCATE)
+			fd = open(file.name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		else if (file.mode == APPEND)
+			fd = open(file.name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd == -1)
 			return (-1);
 		i++;
