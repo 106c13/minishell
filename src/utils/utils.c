@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:11:07 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 18:15:07 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:43:17 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,4 +165,19 @@ char	*str_append_char_safe(char *str, char c)
 	new[len + 1] = '\0';
 	free(str);
 	return (new);
+}
+
+int	has_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+			return (1);
+		i++;
+	}
+	return (0);
 }

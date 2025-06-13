@@ -5,9 +5,8 @@ do not forget about file descriptors
 
 STILL TO DO:
 a: add status codes support
-a: handle -nnnnn echo flag
 a: check correctness of set_env_val function
-a: heredoc
+a: heredoc - in process
 
 h: make func that will free cmd
 h: remove & support
@@ -30,3 +29,4 @@ done - check export builitin func & implement valid of args
 done - add better env parsing, cause some values can contain '=' sign, ans split will behave incorrect
 done - check bin permissions -> done???
 done - check correctness of buitlin cd implementation
+done - handle -nnnnn echo flag

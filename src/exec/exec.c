@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 19:07:37 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:45:20 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,11 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 	pid_t pid;
 	int out_fd = -1;
 	int in_fd = -1;
+	int	h_fd = -1;
 
 	expand_cmd_args(cmd, shell);
+	if (cmd->delimiter)
+		h_fd = process_heredoc(cmd->delimiter, shell);
 	if (is_builtin(cmd))
 	{
 		if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
@@ -151,6 +154,13 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 			shell->exec_result = 1;
 			return (1);
 		}
+		if (h_fd != -1)
+		{
+			in_fd = dup(STDIN_FILENO);
+			dup2(h_fd, STDIN_FILENO);
+			close(h_fd);
+		}
+
 		if (pfd != -1)
 		{
 			dup2(pfd, STDIN_FILENO);
@@ -169,6 +179,12 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 			{
 				shell->exec_result = 1;
 				return (1);
+			}
+			if (h_fd != -1)
+			{
+				in_fd = dup(STDIN_FILENO);
+				dup2(h_fd, STDIN_FILENO);
+				close(h_fd);
 			}
 			if (pfd != -1)
 			{

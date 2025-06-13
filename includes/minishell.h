@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 19:07:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:35:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int		setup_redirection(t_command *cmd, int *in_fd, int *out_fd);
 
 char	*str_append_char_safe(char *str, char c);
 
+int		has_quotes(char *str);
+
 /* interpret args*/
 char	**expand_cmd_args(t_command *cmd, t_shell *shell);
 
@@ -162,4 +164,5 @@ char	**replace_wildcards(char *arg, char **argv);
 
 int		match_pattern(char *pattern, char *filename);
 
+int		process_heredoc(char *delimiter, t_shell *shell);
 #endif
