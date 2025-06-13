@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 17:47:59 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:07:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,12 @@ void	restore_fd(int	*in_fd, int *out_fd);
 
 int		setup_redirection(t_command *cmd, int *in_fd, int *out_fd);
 
+char	*str_append_char_safe(char *str, char c);
 
 /* interpret args*/
-char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
+char	**expand_cmd_args(t_command *cmd, t_shell *shell);
 
-char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env);
+char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted);
 
 /* wildcards */
 char	**replace_wildcards(char *arg, char **argv);

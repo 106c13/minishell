@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 18:49:15 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:15:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,17 @@ int	count_in_file(char *str)
 
 void	skip_file(char **str, int *count)
 {
-	(*str)++;
-	if (**str == '>')
-		(*str)++;
+	int	mode;
+
+	mode = get_mode_type(*str);
+	if (mode == APPEND || mode == HEREDOC)
+		*str += 2;
+	else
+		*str += 1;
+	if (mode == HEREDOC)
 	*str = trim_spaces(*str);
 	*str += count_in_file(*str);
-	if (is_eow(**str))
+	if (is_eow(**str) && mode != HEREDOC)
 		(*count)++;
 }
 

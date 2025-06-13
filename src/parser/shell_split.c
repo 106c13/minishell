@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 19:03:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:08:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,46 +91,63 @@ void	add_word_f(char **str, t_file *file, int size)
 }
 //==================================================
 
-
-
-int	setup_command(char *str, t_command *cmd)
+int	get_mode_type(char	*mode)
 {
-	counter(str, cmd);
-	cmd->args = malloc(sizeof(t_arg) * (cmd->args_count));
-	if (!cmd->args)
-		return (1);
-	cmd->output_files = malloc(sizeof(t_arg) * (cmd->out_file_count));
-	if (!cmd->output_files)
-	{
-		free(cmd->args);
-		return (1);
-	}
-	cmd->input_files = malloc(sizeof(t_arg) * (cmd->in_file_count));
-	if (!cmd->input_files)
-	{
-		free(cmd->args);
-		free(cmd->output_files);
-		return (1);
-	}
-	cmd->cmd = cmd->args;
+	if (ft_strncmp(mode, ">>", 2) == 0)
+		return (APPEND);
+	if (ft_strncmp(mode, "<<", 2) == 0)
+		return (HEREDOC);
+	if (ft_strncmp(mode, ">", 1) == 0)
+		return (TRUNCATE);
+	if (ft_strncmp(mode, "<", 1) == 0)
+		return (INPUT);
 	return (0);
 }
 
-void	add_file(char **str, t_file *file)
+char	*ft_get_word(char **str)
 {
 	int	size;
-	char	c;
+	int	i;
+	char	*word;
 
-	c = **str;
-	if (**str == c)
+	size = get_arg_len(*str);
+	i = 0;
+	word = malloc(sizeof(char) * (size + 1));
+	if (!word)
+		return (NULL);
+	while (i < size)
+	{
+		word[i++] = **str;
 		(*str)++;
-	if (**str == c)
-		(*str)++;
+	}
+	return (word);
+}
+
+
+
+void	add_file(char **str, t_file *file, t_command *cmd)
+{
+	int	size;
+	int	mode;
+
+	mode = get_mode_type(*str);
+	if (mode == APPEND || mode == HEREDOC)
+		*str += 2;
+	else
+		*str += 1;
 	while (**str == ' ')
 		(*str)++;
+	if (mode == HEREDOC)
+	{
+		cmd->delimiter = ft_get_word(str);
+		return ;
+	}
+	file->mode = mode;
 	size = get_arg_len(*str);
 	add_word_f(str, file, size);
 }
+
+
 
 void	add_arg(char **str, t_arg *arg)
 {
@@ -167,9 +184,9 @@ int	shell_split(char **str, t_command *cmd)
 			break ;
 		}
 		else if (**str == '>')
-			add_file(str, &cmd->output_files[out_i++]);
+			add_file(str, &cmd->output_files[out_i++], cmd);
 		else if (**str == '<')
-			add_file(str, &cmd->input_files[in_i++]);
+			add_file(str, &cmd->input_files[in_i++], cmd);
 		else
 			add_arg(str, &cmd->args[arg_i++]);	
 	}

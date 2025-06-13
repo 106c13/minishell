@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:11:07 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/10 20:47:36 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:15:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,4 +149,20 @@ int	strlen_till(char *str, char c)
 		i++;
 	}
 	return (i);
+}
+
+char	*str_append_char_safe(char *str, char c)
+{
+	char	*new;
+	int		len;
+
+	len = ft_strlen(str);
+	new = malloc(sizeof(char) * (len + 2));
+	if (!new)
+		return (NULL);
+	ft_memcpy(new, str, len);
+	new[len] = c;
+	new[len + 1] = '\0';
+	free(str);
+	return (new);
 }

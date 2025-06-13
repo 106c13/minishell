@@ -2,12 +2,11 @@ NAME = minishell
 
 MAIN = main.c signal.c
 BUILTINS = echo.c cd.c pwd.c export.c unset.c env.c exit.c
-EXEC = exec.c builtin.c bin.c
+EXEC = exec.c builtin.c bin.c #add heredoc here
 ENV = env.c env_utils.c
 PARSER = parser.c parser_utils.c shell_split.c validator.c tools.c counter.c helpers.c
 UTILS = ft_memcpy.c ft_split.c ft_strcmp.c ft_strdup.c ft_strjoin.c utils.c ft_strcpy.c ft_isalnum.c ft_atoi.c ft_itoa.c fd_utils.c
-EXPANDER = interpret.c
-WILDCARD = wildcard.c
+EXPANDER = expander.c wildcard.c
 
 SRCS_DIR = src/
 OBJS_DIR = objs/
@@ -21,7 +20,6 @@ SRCS = \
         $(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
         $(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
         $(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
-        $(addprefix $(SRCS_DIR)wildcard/, $(WILDCARD))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

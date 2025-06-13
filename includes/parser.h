@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 18:57:36 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:17:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_command
 	char				**argv;
 	int					argc;
 	int					operator_type;
+	char				*delimiter;
 	struct s_command	*next;
 }	t_command;
 
@@ -60,15 +61,21 @@ int			get_unquoted_len(char	*stri);
 /* shell_split.c */
 int		shell_split(char **str, t_command *cmd);
 
+int	get_mode_type(char	*mode);
+
 /* validator.c */
 int			validate(char *input);
 
 /* tools.c */
 char		*clear_quotes(char *str);
 
+int	setup_command(char *str, t_command *cmd);
+
 /* helpers.c */
 int		is_whitespace(char c);
+
 int	is_quote(char c);
+
 void	set_operator(char **str, t_command *cmd);
 
 
