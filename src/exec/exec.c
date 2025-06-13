@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 20:45:20 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:30:08 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,13 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 		{ 
 				if (pfd != -1)
 				{
+					in_fd = dup(STDIN_FILENO);
 					dup2(pfd, STDIN_FILENO);
 					close(pfd);
 				}
 				if (pipefd[1] != -1)
 				{
+					out_fd = dup(STDOUT_FILENO);
 					dup2(pipefd[1], STDOUT_FILENO);
 					close(pipefd[1]);
 					close(pipefd[0]);
@@ -146,7 +148,14 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 
 	expand_cmd_args(cmd, shell);
 	if (cmd->delimiter)
+	{
 		h_fd = process_heredoc(cmd->delimiter, shell);
+		if (h_fd == -1)
+		{
+			shell->exec_result = 130;
+			return (1); 
+		}
+	}
 	if (is_builtin(cmd))
 	{
 		if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
@@ -163,6 +172,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 
 		if (pfd != -1)
 		{
+			in_fd = dup(STDIN_FILENO);
 			dup2(pfd, STDIN_FILENO);
 			close(pfd);
 		}
@@ -188,8 +198,9 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 			}
 			if (pfd != -1)
 			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
+				in_fd = dup(STDIN_FILENO);
+				dup2(pfd, STDIN_FILENO);
+				close(pfd);
 			}
 			shell->exec_result = exec_bin(cmd, shell);
 			restore_fd(&in_fd, &out_fd);
