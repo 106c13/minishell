@@ -6,13 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 20:33:47 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 21:10:23 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* write to pipe (child) */
 static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 {
 	char	*line;
@@ -66,6 +65,7 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	}
 	if (pid == 0)
 	{
+		set_default_signals();
 		close(pipefd[0]);
 		write_heredoc(pipefd[1], delimiter, shell);
 	}
@@ -73,12 +73,11 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	{
 		close(pipefd[1]);
 		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status))
-		{
-			close(pipefd[0]);
-			return (-1);
-		}
-		return (pipefd[0]);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			return (close(pipefd[0]), -1);
+		if (WIFEXITED(status) && WEXITSTATUS(status) == SUCCESS)
+			return (pipefd[0]);
+		close(pipefd[0]);
 	}
 	return (-1);
 }
