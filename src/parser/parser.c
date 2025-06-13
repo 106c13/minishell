@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/12 16:08:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:59:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	print_cmd(t_command *cmd)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				printf("OUTPUT FILE %d: %s\033[0m\n", i, cmd->output_files[i].arg);
+				printf("OUTPUT FILE %d: %s\033[0m\n", i, cmd->output_files[i].name);
 				i++; 
 			}
 			i = 0;
@@ -69,7 +69,7 @@ void	print_cmd(t_command *cmd)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				printf("INPUT FILE %d: %s\033[0m\n", i, cmd->input_files[i].arg);
+				printf("INPUT FILE %d: %s\033[0m\n", i, cmd->input_files[i].name);
 				i++; 
 			}
 		}
@@ -113,6 +113,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-	//print_cmd(cmd);
+	print_cmd(cmd);
 	return (cmd);
 }

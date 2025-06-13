@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 19:30:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:47:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	set_execution_signals(void);
 
 void	set_default_signals(void);
 
-/* utils.c */
+/* utils */
 int		get_args_count(char **args);
 
 int		ft_strlen(char *str);
@@ -145,6 +145,11 @@ char	*ft_itoa(int n);
 char	**str_arr_append(char **arr, char *str);
 
 int		strlen_till(char *str, char c);
+
+void	restore_fd(int	*in_fd, int *out_fd);
+
+int		setup_redirection(t_command *cmd, int *in_fd, int *out_fd);
+
 
 /* interpret args*/
 char	**interpret_cmd_args(t_command *cmd, t_shell *shell);

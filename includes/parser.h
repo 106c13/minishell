@@ -6,12 +6,20 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/12 13:27:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:57:36 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
+
+typedef struct s_file
+{
+	char	*name;
+	int		interpet_env_var;
+	char	quoted;
+	int		mode;
+}	t_file;
 
 typedef struct s_arg
 {
@@ -24,8 +32,8 @@ typedef struct s_command
 {
 	t_arg				*cmd;
 	t_arg				*args;
-	t_arg				*output_files;
-	t_arg				*input_files;
+	t_file				*output_files;
+	t_file				*input_files;
 	int					args_count;
 	int					out_file_count;
 	int					in_file_count;
@@ -66,6 +74,8 @@ void	set_operator(char **str, t_command *cmd);
 
 /* counter.c */
 void	counter(char *str, t_command *cmd);
-int	count_in_quotes(char **str);
-int	is_eow(char c);
+
+int		count_in_quotes(char *str);
+
+int		is_eow(char c);
 #endif

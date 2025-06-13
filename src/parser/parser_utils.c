@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/06/13 18:48:22 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*trim_spaces(char *str)
@@ -28,7 +40,7 @@ int	get_operator_type(char *word)
 
 void	free_command(t_command *cmd)
 {
-	t_command *tmp;
+	t_command	*tmp;
 
 	while (cmd)
 	{
@@ -40,7 +52,7 @@ void	free_command(t_command *cmd)
 	}
 }
 
-t_command	*create_command()
+t_command	*create_command(void)
 {
 	t_command	*cmd;
 
@@ -66,7 +78,7 @@ int	get_unquoted_len(char	*str)
 	quote = 0;
 	while (*str)
 	{
-		if (!quote && (*str == '\'' || *str == '"'))
+		if (!quote && is_quote(*str))
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;

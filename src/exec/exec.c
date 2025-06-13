@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 18:30:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:02:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,47 +80,16 @@ int	get_job_id(t_job *job, pid_t pid)
 	return (-1);
 }
 
-// =================================================
+//===============================================================================
 
-
-
-
-
-int	setup_redirection(t_command *cmd)
-{
-		int	i;
-		int	fd;
-		int	bfd;
-
-		i = 0;
-		bfd = dup(STDOUT_FILENO);
-		while (i < cmd->out_file_count)
-		{
-			fd = open(cmd->output_files[i].arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (fd == -1)
-				return (-1);
-			i++;
-			if (i == cmd->out_file_count)
-				dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
-		return (bfd);
-}
-
-void	restore_fd(int	fd)
-{
-		if (fd < 0)
-			return ;
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-}
-
-void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
+void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 {
 	pid_t	pid;
-	int		bfd;
+	int		out_fd;
+	int		in_fd;
 
-	bfd = -1;
+	out_fd = -1;
+	in_fd = -1;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -130,14 +99,17 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 	if (pid == 0)
 	{
 		set_default_signals();
-		if (cmd->out_file_count != 0)
-			bfd = setup_redirection(cmd);
-		else
+		if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
+		{
+			shell->exec_result = 1;
+			return ;
+		}
+		if (in_fd == -1 && out_fd == -1)
 		{ 
-				if (in_fd != -1)
+				if (pfd != -1)
 				{
-					dup2(in_fd, STDIN_FILENO);
-					close(in_fd);
+					dup2(pfd, STDIN_FILENO);
+					close(pfd);
 				}
 				if (pipefd[1] != -1)
 				{
@@ -151,8 +123,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 			shell->exec_result = exec_builtin(cmd, shell);
 		else
 			shell->exec_result = exec_bin(cmd, shell);
-		restore_fd(bfd);
-		close(bfd);
+		restore_fd(&in_fd, &out_fd);
 		exit(shell->exec_result);
 	}
 	else if (pid > 0)
@@ -166,24 +137,27 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 	}
 }
 
-int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
+int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 {
 	pid_t pid;
-	int bfd = -1;
+	int out_fd = -1;
+	int in_fd = -1;
 
 	interpret_cmd_args(cmd, shell);
 	if (is_builtin(cmd))
 	{
-		if (cmd->out_file_count != 0)
-			bfd = setup_redirection(cmd);
-		if (in_fd != -1)
+		if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
 		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
+			shell->exec_result = 1;
+			return (1);
+		}
+		if (pfd != -1)
+		{
+			dup2(pfd, STDIN_FILENO);
+			close(pfd);
 		}
 		shell->exec_result = exec_builtin(cmd, shell);
-		restore_fd(in_fd);
-		restore_fd(bfd);
+		restore_fd(&in_fd, &out_fd);
 	}
 	else
 	{
@@ -191,16 +165,18 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 		if (pid == 0)
 		{
 			set_default_signals();
-			if (cmd->out_file_count != 0)
-				bfd = setup_redirection(cmd);
-			if (in_fd != -1)
+			if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
+			{
+				shell->exec_result = 1;
+				return (1);
+			}
+			if (pfd != -1)
 			{
 				dup2(in_fd, STDIN_FILENO);
 				close(in_fd);
 			}
 			shell->exec_result = exec_bin(cmd, shell);
-			restore_fd(in_fd);
-			restore_fd(bfd);
+			restore_fd(&in_fd, &out_fd);
 			exit(shell->exec_result);
 		}
 		else if (pid > 0)

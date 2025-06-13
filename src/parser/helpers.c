@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:24:36 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/12 13:26:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:28:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,13 @@ void	set_operator(char **str, t_command *cmd)
 		*str += 2;
 	else
 		(*str)++;
+}
+
+int	is_eow(char c)
+{
+	if (is_whitespace(c))
+		return (1);
+	if (c == '>' || c == '<' || c == '&' || c == '|')
+		return (1);
+	return (0);
 }

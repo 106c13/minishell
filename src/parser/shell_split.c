@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/12 16:09:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:03:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,12 @@ int	get_arg_len(char *str)
 
 	size = 0;
 	str = trim_spaces(str);
-	while(!is_eow(*str))
+	while(!is_eow(str[size]))
 	{
-		if (is_quote(*str))
-			size += count_in_quotes(&str) + 2;
+		if (is_quote(str[size]))
+			size += count_in_quotes(&str[size]) + 2;
 		else
-		{
 			size++;
-			str++;
-		}
 	}
 	return (size);
 }
@@ -61,6 +58,41 @@ void	add_word(char **str, t_arg *arg, int size)
 	arg->arg[size] = '\0';
 }
 
+//==================TEMPRORARY======================
+
+void	add_word_f(char **str, t_file *file, int size)
+{
+	char	quote;
+	int		i;
+	
+
+	file->name = (char *)malloc(sizeof(char) * (size + 1));
+	quote = 0;
+	i = 0;
+	file->interpet_env_var = 0;
+	if (!file->name)
+		return ;
+	while (i < size)
+	{
+		if (!quote && is_quote(**str))
+			quote = **str;
+		else if (quote && **str == quote)
+		{
+			quote = 0;
+			if (i != size - 1)
+				file->quoted = 0;
+		}
+		if ((!quote || quote == '"') && **str == '$')
+			file->interpet_env_var = 1;
+		file->name[i++] = **str;
+		(*str)++;
+	}
+	file->name[size] = '\0';
+}
+//==================================================
+
+
+
 int	setup_command(char *str, t_command *cmd)
 {
 	counter(str, cmd);
@@ -84,7 +116,7 @@ int	setup_command(char *str, t_command *cmd)
 	return (0);
 }
 
-void	add_file(char **str, t_arg *file)
+void	add_file(char **str, t_file *file)
 {
 	int	size;
 	char	c;
@@ -97,7 +129,7 @@ void	add_file(char **str, t_arg *file)
 	while (**str == ' ')
 		(*str)++;
 	size = get_arg_len(*str);
-	add_word(str, file, size);
+	add_word_f(str, file, size);
 }
 
 void	add_arg(char **str, t_arg *arg)

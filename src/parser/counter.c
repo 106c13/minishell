@@ -1,44 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   counter.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/06/13 18:49:15 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	count_in_quotes(char **str)
+int	count_in_quotes(char *str)
 {
 	char	quote;
-	int	size;
+	int		size;
 
 	size = 0;
-	quote = **str;
-	(*str)++;
-	while (**str && **str != quote)
-	{
+	quote = *str;
+	str++;
+	while (str[size] && str[size] != quote)
 		size++;
-		(*str)++;
-	}
-	(*str)++;
 	return (size);
 }
 
-int	is_eow(char c)
+int	count_in_file(char *str)
 {
-	if (is_whitespace(c))
-		return (1);
-	if (c == '>' || c == '<' || c == '&' || c == '|')
-		return (1);
-	return (0);
-}
+	int	size;
 
-int	count_in_file(char **str)
-{
-	*str = trim_spaces(*str);
-	while (**str && !is_eow(**str))
+	size = 0;
+	while (!is_eow(str[size]))
 	{
-		if (**str == '\'' || **str == '"')
-			count_in_quotes(str);
+		if (str[size] == '\'' || str[size] == '"')
+			size += count_in_quotes(str) + 2;
 		else
-			(*str)++;
+			size++;
 	}
-	return (1);
+	return (size);
 }
 
+void	skip_file(char **str, int *count)
+{
+	(*str)++;
+	if (**str == '>')
+		(*str)++;
+	*str = trim_spaces(*str);
+	*str += count_in_file(*str);
+	if (is_eow(**str))
+		(*count)++;
+}
 
 void	counter(char *str, t_command *cmd)
 {
@@ -46,28 +57,14 @@ void	counter(char *str, t_command *cmd)
 	{
 		if (*str == '\'' || *str == '"')
 		{
-			count_in_quotes(&str);
+			str += count_in_quotes(str) + 2;
 			if (is_eow(*(str)))
 				cmd->args_count++;
 		}
 		else if (*str == '>')
-		{
-			if (*str == '>')
-				str++;
-			if (*str == '>')
-				str++;
-			count_in_file(&str);
-			if (is_eow(*(str)))
-				cmd->out_file_count++;
-		}
+			skip_file(&str, &cmd->out_file_count);
 		else if (*str == '<')
-		{
-			if (*str == '<')
-				str++;
-			count_in_file(&str);
-			if (is_eow(*(str)))
-				cmd->in_file_count++;
-		}
+			skip_file(&str, &cmd->in_file_count);
 		else if (!is_whitespace(*str) && is_eow(*(str + 1)))
 		{
 			cmd->args_count++;
