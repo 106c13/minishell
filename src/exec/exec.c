@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 18:30:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:39:33 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int in_fd)
 					close(pipefd[0]);
 				}
 		}
-		interpret_cmd_args(cmd, shell);
+		expand_cmd_args(cmd, shell);
 		if (is_builtin(cmd))
 			shell->exec_result = exec_builtin(cmd, shell);
 		else
@@ -171,7 +171,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int in_fd)
 	pid_t pid;
 	int bfd = -1;
 
-	interpret_cmd_args(cmd, shell);
+	expand_cmd_args(cmd, shell);
 	if (is_builtin(cmd))
 	{
 		if (cmd->out_file_count != 0)

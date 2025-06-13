@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 19:30:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:39:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,12 @@ char	**str_arr_append(char **arr, char *str);
 
 int		strlen_till(char *str, char c);
 
-/* interpret args*/
-char	**interpret_cmd_args(t_command *cmd, t_shell *shell);
+char	*str_append_char_safe(char *str, char c);
 
-char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted, t_env *env);
+/* interpret args*/
+char	**expand_cmd_args(t_command *cmd, t_shell *shell);
+
+char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted);
 
 /* wildcards */
 char	**replace_wildcards(char *arg, char **argv);
