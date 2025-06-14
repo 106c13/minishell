@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:44:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/11 17:40:53 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:46:02 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,6 @@ static void	handle_sigint(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-}
-
-/*
- * Disable print ^C
- */
-static void	disable_echoctl(void)
-{
-	struct termios	term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
 void	set_interactive_signals(void)
@@ -56,6 +44,10 @@ void	set_default_signals(void)
 
 void	setup_signals(void)
 {
-	disable_echoctl();
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	set_interactive_signals();
 }

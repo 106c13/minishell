@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 19:02:40 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:39:41 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	update_or_add_env(char *arg, t_env *list)
 	}
 	else
 	{
-		if (env_contains(list, arg))
+		if (get_env_val(list, arg) != NULL)
 			return ;
 		else
 			set_env_val(list, arg, NULL);

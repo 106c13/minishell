@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 20:35:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:39:03 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ void	del_env_pair(t_env **env_list, char *key);
 void	print_export_env(t_env *env);
 
 int		envlen(t_env *env);
-
-int		env_contains(t_env *env, char *key);
 
 char	**env_list_to_str_arr(t_env *env);
 

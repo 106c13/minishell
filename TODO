@@ -6,14 +6,15 @@ do not forget about file descriptors
 STILL TO DO:
 a: add status codes support
 a: check correctness of set_env_val function
-a: heredoc - in process
 
 h: make func that will free cmd
 h: remove & support
 h: one | two
 h: cat <>
 h: cat ><
-a: () brackets
+h: () brackets
+h: cat << end | grep some_word
+
 
 DONE:
 done - echo hello' '$USER'$USER'
@@ -30,3 +31,4 @@ done - add better env parsing, cause some values can contain '=' sign, ans split
 done - check bin permissions -> done???
 done - check correctness of buitlin cd implementation
 done - handle -nnnnn echo flag
+done - heredoc

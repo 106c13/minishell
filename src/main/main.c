@@ -6,15 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 15:55:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:45:00 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
- * Function that listens user's commads
- */
 static void	listen(t_shell *shell)
 {
 	char		*input;
@@ -25,7 +22,7 @@ static void	listen(t_shell *shell)
 		set_interactive_signals();
 		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
 		set_execution_signals();
-		if (!input) // Ctrl-D
+		if (!input)
 		{
 			free(input);
 			safe_shell_exit(NULL, shell);
@@ -35,7 +32,7 @@ static void	listen(t_shell *shell)
 			add_history(input);
 			cmd = parse_command(input);
 			free(input);
-			if (cmd == NULL) // give parsing error to user
+			if (cmd == NULL)
 				continue ;
 			exec_cmd(cmd, shell);
 		}

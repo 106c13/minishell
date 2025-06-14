@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 21:06:10 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:52:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int	redirect_from_file(t_command *cmd)
 	backup_fd = dup(STDIN_FILENO);
 	while (i < cmd->in_file_count)
 	{
-			file = cmd->input_files[i];
-			fd = open(file.name, O_RDONLY);
-			if (fd == -1)
-			{
-				printf("minishell: %s: No such file or directory\n", file.name);
-				return (-1);
-			}
-			i++;
-			if (i == cmd->in_file_count)
-				dup2(fd, STDIN_FILENO);
-			close(fd);
+		file = cmd->input_files[i];
+		fd = open(file.name, O_RDONLY);
+		if (fd == -1)
+		{
+			printf("minishell: %s: No such file or directory\n", file.name);
+			return (-1);
+		}
+		i++;
+		if (i == cmd->in_file_count)
+			dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 	return (backup_fd);
 }
@@ -83,17 +83,16 @@ int	setup_redirection(t_command *cmd, int *in_fd, int *out_fd)
 
 void	restore_fd(int	*in_fd, int *out_fd)
 {
-		if (*in_fd >= 0)
-		{
-			dup2(*in_fd, STDIN_FILENO);
-			close(*in_fd);
-			*in_fd = -1;
-		}
-		if (*out_fd >= 0)
-		{
-			dup2(*out_fd, STDOUT_FILENO);
-			close(*out_fd);
-			*out_fd = -1;
-		}
+	if (*in_fd >= 0)
+	{
+		dup2(*in_fd, STDIN_FILENO);
+		close(*in_fd);
+		*in_fd = -1;
+	}
+	if (*out_fd >= 0)
+	{
+		dup2(*out_fd, STDOUT_FILENO);
+		close(*out_fd);
+		*out_fd = -1;
+	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 20:51:26 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/07 17:16:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:47:53 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,30 +102,4 @@ char	**ft_split(const char *str, char c)
 	}
 	result[word_i] = NULL;
 	return (result);
-}
-
-char	**str_arr_append(char **arr, char *str)
-{
-	char	**new_arr;
-	int		len;
-	int		i;
-
-	if (arr == NULL)
-		len = 0;
-	else
-		len = get_args_count(arr);
-	new_arr = malloc(sizeof(char *) * (len + 2));
-	if (!new_arr)
-		return (arr);
-	i = 0;
-	while (i < len)
-	{
-		new_arr[i] = arr[i];
-		i++;
-	}
-	if (arr != NULL)
-		free(arr);
-	new_arr[i++] = ft_strdup(str);
-	new_arr[i] = NULL;
-	return (new_arr);
 }
