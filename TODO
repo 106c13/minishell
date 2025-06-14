@@ -14,7 +14,7 @@ h: cat <>
 h: cat ><
 h: () brackets
 h: cat << end | grep some_word
-
+h: echo hello > file1 file2
 
 DONE:
 done - echo hello' '$USER'$USER'

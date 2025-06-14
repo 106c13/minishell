@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   defines.h                                          :+:      :+:    :+:   */
+/*   expand_files.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 15:23:07 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 14:18:16 by azolotar         ###   ########.fr       */
+/*   Created: 2025/06/14 14:41:36 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/14 15:05:17 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINES_H
-# define DEFINES_H
+#include "minishell.h"
 
-# define SUCCESS 0
-# define FAILURE 1
-# define PIPE 11
-# define BG 12
-# define OR	13
-# define AND 14
-# define TRUNCATE 21
-# define APPEND 22
-# define INPUT	23
-# define HEREDOC 24
+void	expand_input_files(t_command *cmd, t_shell *shell)
+{
+	(void)cmd;
+	(void)shell;
+}
 
-#endif
+void	expand_output_files(t_command *cmd, t_shell *shell)
+{
+	(void)cmd;
+	(void)shell;
+}
