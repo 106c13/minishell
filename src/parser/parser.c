@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/14 14:25:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:37:43 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ void	print_cmd(t_command *cmd)
 	printf("---------------cmd---------------\n");
 	while (cmd)
 	{
-		printf("COMMAND: %s\n", cmd->cmd->arg);
+		printf("COMMAND: %s\n", cmd->cmd->str);
 		i = 0;
 		if (cmd->args)
 		{
 			while (i < cmd->args_count)
 			{
-				if (cmd->args[i].interpet_env_var)
+				if (cmd->args[i].interpret_env_var)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
-				printf("ARG %d: %s\033[0m", i, cmd->args[i].arg);
+				printf("ARG %d: %s\033[0m", i, cmd->args[i].str);
 				if (cmd->args[i].quoted)
 					printf(" quoted\n");
 				else
@@ -55,7 +55,7 @@ void	print_cmd(t_command *cmd)
 			i = 0;
 			while (i < cmd->out_file_count)
 			{
-				if (cmd->output_files[i].interpet_env_var)
+				if (cmd->output_files[i].interpret_env_var)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");
@@ -72,7 +72,7 @@ void	print_cmd(t_command *cmd)
 			i = 0;
 			while (i < cmd->in_file_count)
 			{
-				if (cmd->input_files[i].interpet_env_var)
+				if (cmd->input_files[i].interpret_env_var)
 					printf("\033[1;32m");
 				else
 					printf("\033[1;31m");

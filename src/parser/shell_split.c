@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 20:08:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:39:34 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void	add_word(char **str, t_arg *arg, int size)
 	int		i;
 	
 
-	arg->arg = (char *)malloc(sizeof(char) * (size + 1));
+	arg->str = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
-	arg->interpet_env_var = 0;
-	if (!arg->arg)
+	arg->interpret_env_var = 0;
+	if (!arg->str)
 		return ;
 	while (i < size)
 	{
@@ -51,11 +51,11 @@ void	add_word(char **str, t_arg *arg, int size)
 				arg->quoted = 0;
 		}
 		if ((!quote || quote == '"') && **str == '$')
-			arg->interpet_env_var = 1;
-		arg->arg[i++] = **str;
+			arg->interpret_env_var = 1;
+		arg->str[i++] = **str;
 		(*str)++;
 	}
-	arg->arg[size] = '\0';
+	arg->str[size] = '\0';
 }
 
 //==================TEMPRORARY======================
@@ -69,7 +69,7 @@ void	add_word_f(char **str, t_file *file, int size)
 	file->name = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
-	file->interpet_env_var = 0;
+	file->interpret_env_var = 0;
 	if (!file->name)
 		return ;
 	while (i < size)
@@ -83,7 +83,7 @@ void	add_word_f(char **str, t_file *file, int size)
 				file->quoted = 0;
 		}
 		if ((!quote || quote == '"') && **str == '$')
-			file->interpet_env_var = 1;
+			file->interpret_env_var = 1;
 		file->name[i++] = **str;
 		(*str)++;
 	}

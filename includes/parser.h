@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/14 15:04:43 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:38:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 typedef struct s_file
 {
 	char	*name;
-	int		interpet_env_var;
+	int		interpret_env_var;
 	char	quoted;
 	int		mode;
 }	t_file;
 
 typedef struct s_arg
 {
-	char	*arg;
-	int		interpet_env_var;
+	char	*str;
+	int		interpret_env_var;
 	char	quoted;
 
 	char	file; /* 0 - not file, 1 - input file, 2 - output file */

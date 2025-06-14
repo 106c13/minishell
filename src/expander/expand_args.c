@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 15:07:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:36:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char	**expand_cmd_args(t_command *cmd, t_shell *shell)
 	while (++i < cmd->args_count)
 	{
 		arg = &cmd->args[i];
-		if (!arg->quoted && str_contains(arg->arg, '*'))
-			argv = replace_wildcards(arg->arg, argv);
-		else if (arg->interpet_env_var)
+		if (!arg->quoted && str_contains(arg->str, '*'))
+			argv = replace_wildcards(arg->str, argv);
+		else if (arg->interpret_env_var)
 		{
-			str = replace_env_vars(shell, arg->arg, arg->quoted);
+			str = replace_env_vars(shell, arg->str, arg->quoted);
 			str = clear_quotes(str);
 			if (!arg->quoted && str_contains(str, '*'))
 				argv = replace_wildcards(str, argv);
@@ -57,7 +57,7 @@ char	**expand_cmd_args(t_command *cmd, t_shell *shell)
 		}
 		else
 		{
-			str = ft_strdup(cmd->args[i].arg);
+			str = ft_strdup(cmd->args[i].str);
 			str = clear_quotes(str);
 			argv = str_arr_append(argv, str);
 			free(str);
@@ -65,10 +65,10 @@ char	**expand_cmd_args(t_command *cmd, t_shell *shell)
 	}
 	cmd->argv = argv;
 	cmd->argc = get_args_count(argv);
-	if (ft_strcmp(cmd->cmd->arg, cmd->argv[0]) != 0)
+	if (ft_strcmp(cmd->cmd->str, cmd->argv[0]) != 0)
 	{
-		free(cmd->cmd->arg);
-		cmd->cmd->arg = ft_strdup(cmd->argv[0]);
+		free(cmd->cmd->str);
+		cmd->cmd->str = ft_strdup(cmd->argv[0]);
 	}
 	return (argv);
 }
