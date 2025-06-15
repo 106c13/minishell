@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 15:49:07 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:02:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 # include "parser.h"
 # include "defines.h"
+
+extern int	g_last_status;
 
 typedef struct s_env
 {
@@ -57,6 +59,8 @@ int		exec_bin(t_command *cmd, t_shell *shell);
 int		exec_builtin(t_command *cmd, t_shell *shell);
 
 int		is_builtin(t_command *cmd);
+
+void 	set_exec_result(t_shell *shell, int status);
 
 /* builtins */
 int		safe_shell_exit(t_command *cmd, t_shell *shell);

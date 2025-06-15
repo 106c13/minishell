@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:44:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:46:02 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:56:28 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <termios.h>
 #include <readline/readline.h>
 
+int	g_last_status = 0;
+
 static void	handle_sigint(int sig)
 {
-	(void)sig;
+	g_last_status = 128 + sig;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();

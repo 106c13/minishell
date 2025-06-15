@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 14:43:27 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:06:23 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void collect_finished_jobs(t_shell *shell)
 	while (curr)
 	{
 		result = waitpid(curr->pid, &status, 0);
+		set_exec_result(shell, status);
 		//printf("PID: %d STATUS: %d\n", curr->pid, status);
 		if (result > 0)
 		{
@@ -96,10 +97,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 	{
 		h_fd = process_heredoc(cmd->delimiter, shell);
 		if (h_fd == -1)
-		{
-			shell->exec_result = 130;
 			return ; 
-		}
 	}
 	pid = fork();
 	if (pid < 0)
@@ -148,7 +146,8 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 	else if (pid > 0)
 	{
 		add_job(shell, pid);
-		//waitpid(pid, NULL, 0);
+		//waitpid(pid, NULL, 0); 
+		// set_exec_result
 	}
 	else
 	{
@@ -168,10 +167,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 	{
 		h_fd = process_heredoc(cmd->delimiter, shell);
 		if (h_fd == -1)
-		{
-			shell->exec_result = 130;
 			return (1); 
-		}
 	}
 	if (is_builtin(cmd))
 	{
@@ -233,6 +229,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 			if (h_fd != -1)
 				close(h_fd);
 			waitpid(pid, &shell->exec_result, 0);
+			set_exec_result(shell, shell->exec_result);
 		}
 	}
 	return 0;

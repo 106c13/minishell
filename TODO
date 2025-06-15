@@ -15,6 +15,7 @@ h: cat ><
 h: () brackets
 h: cat << end | grep some_word
 h: echo hello > file1 file2
+h: delimiter has trash symbols
 
 DONE:
 done - echo hello' '$USER'$USER'
