@@ -6,6 +6,7 @@ do not forget about file descriptors
 STILL TO DO:
 a: add status codes support
 a: check correctness of set_env_val function
+a: heredoc ctrl D
 
 h: make func that will free cmd
 h: remove & support
