@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/14 16:39:34 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:44:42 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,39 +58,6 @@ void	add_word(char **str, t_arg *arg, int size)
 	arg->str[size] = '\0';
 }
 
-//==================TEMPRORARY======================
-
-void	add_word_f(char **str, t_file *file, int size)
-{
-	char	quote;
-	int		i;
-	
-
-	file->name = (char *)malloc(sizeof(char) * (size + 1));
-	quote = 0;
-	i = 0;
-	file->interpret_env_var = 0;
-	if (!file->name)
-		return ;
-	while (i < size)
-	{
-		if (!quote && is_quote(**str))
-			quote = **str;
-		else if (quote && **str == quote)
-		{
-			quote = 0;
-			if (i != size - 1)
-				file->quoted = 0;
-		}
-		if ((!quote || quote == '"') && **str == '$')
-			file->interpret_env_var = 1;
-		file->name[i++] = **str;
-		(*str)++;
-	}
-	file->name[size] = '\0';
-}
-//==================================================
-
 int	get_mode_type(char	*mode)
 {
 	if (ft_strncmp(mode, ">>", 2) == 0)
@@ -123,17 +90,14 @@ char	*ft_get_word(char **str)
 	return (word);
 }
 
-
-
-void	add_file(char **str, t_file *file, t_command *cmd)
+void	add_arg(char **str, t_command *cmd, int *arg_i)
 {
 	int	size;
 	int	mode;
-
 	mode = get_mode_type(*str);
 	if (mode == APPEND || mode == HEREDOC)
 		*str += 2;
-	else
+	else if (mode == TRUNCATE || mode == INPUT)
 		*str += 1;
 	while (**str == ' ')
 		(*str)++;
@@ -142,38 +106,32 @@ void	add_file(char **str, t_file *file, t_command *cmd)
 		cmd->delimiter = ft_get_word(str);
 		return ;
 	}
-	file->mode = mode;
-	size = get_arg_len(*str);
-	add_word_f(str, file, size);
-}
-
-
-
-void	add_arg(char **str, t_arg *arg)
-{
-	int	size;
-
+	cmd->args[*arg_i].append = 0;
+	cmd->args[*arg_i].file = 0;
 	if (is_quote(**str))
-		arg->quoted = 2;
+		cmd->args[*arg_i].quoted = 2;
 	else
-		arg->quoted = 0;
+		cmd->args[*arg_i].quoted = 0;
+	if (mode == APPEND)
+		cmd->args[*arg_i].append = 1;
+	if (mode == APPEND || mode == TRUNCATE)
+		cmd->args[*arg_i].file = 2;
+	if (mode == INPUT)
+		cmd->args[*arg_i].file = 1;
 	size = get_arg_len(*str);
-	add_word(str, arg, size);
-	if (is_quote(**str) && arg->quoted == 2)
-		arg->quoted = 1;
+	add_word(str, &cmd->args[*arg_i], size);
+	if (is_quote(**str) && cmd->args[*arg_i].quoted == 2)
+		cmd->args[*arg_i].quoted = 1;
+	(*arg_i)++;
 }
 
 int	shell_split(char **str, t_command *cmd)
 {
 	int		arg_i;
-	int		out_i;
-	int		in_i;
 
 	if (setup_command(*str, cmd) != 0)
 		return (1);
 	arg_i = 0;
-	out_i = 0;
-	in_i = 0;
 	while (**str)
 	{
 		if (is_whitespace(**str))
@@ -184,11 +142,11 @@ int	shell_split(char **str, t_command *cmd)
 			break ;
 		}
 		else if (**str == '>')
-			add_file(str, &cmd->output_files[out_i++], cmd);
+			add_arg(str, cmd, &arg_i);	
 		else if (**str == '<')
-			add_file(str, &cmd->input_files[in_i++], cmd);
+			add_arg(str, cmd, &arg_i);	
 		else
-			add_arg(str, &cmd->args[arg_i++]);	
+			add_arg(str, cmd, &arg_i);	
 	}
 	return (0);
 }

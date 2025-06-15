@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/14 13:52:11 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:48:39 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,22 @@ int	redirect_from_file(t_command *cmd)
 	int		i;
 	int		fd;
 	int		backup_fd;
-	t_file	file;
+	t_arg	file;
 
 	i = 0;
 	backup_fd = dup(STDIN_FILENO);
-	while (i < cmd->in_file_count)
+	while (i < cmd->args_count)
 	{
-		file = cmd->input_files[i];
-		fd = open(file.name, O_RDONLY);
+		file = cmd->args[i++];
+		if (file.file != 1)
+			continue ;
+		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
 		{
-			printf("minishell: %s: No such file or directory\n", file.name);
+			printf("minishell: %s: No such file or directory\n", file.str);
 			return (-1);
 		}
-		i++;
-		if (i == cmd->in_file_count)
+		if (i == cmd->args_count)
 			dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
@@ -43,21 +44,22 @@ int	redirect_to_file(t_command *cmd)
 	int		i;
 	int		fd;
 	int		backup_fd;
-	t_file	file;
+	t_arg	file;
 
 	i = 0;
 	backup_fd = dup(STDOUT_FILENO);
-	while (i < cmd->out_file_count)
+	while (i < cmd->args_count)
 	{
-		file = cmd->output_files[i];
-		if (file.mode == TRUNCATE)
-			fd = open(file.name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else if (file.mode == APPEND)
-			fd = open(file.name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		file = cmd->args[i++];
+		if (file.file != 2)
+			continue ;
+		if (file.append)
+			fd = open(file.str, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		else
+			fd = open(file.str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
 			return (-1);
-		i++;
-		if (i == cmd->out_file_count)
+		if (i == cmd->args_count)
 			dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}

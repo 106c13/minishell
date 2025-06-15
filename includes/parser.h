@@ -6,20 +6,12 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/14 16:38:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:16:20 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
-
-typedef struct s_file
-{
-	char	*name;
-	int		interpret_env_var;
-	char	quoted;
-	int		mode;
-}	t_file;
 
 typedef struct s_arg
 {
@@ -27,8 +19,8 @@ typedef struct s_arg
 	int		interpret_env_var;
 	char	quoted;
 
-	char	file; /* 0 - not file, 1 - input file, 2 - output file */
-	int		mode;
+	char	file; /* 0 - not file, 1 - infile 2 - outfile */
+	char	append; /* 0 or 1 */
 }	t_arg;
 
 typedef struct s_command
@@ -37,11 +29,7 @@ typedef struct s_command
 
 	t_arg				*args;
 	int					args_count;
-
-	t_file				*output_files;
 	int					out_file_count;
-
-	t_file				*input_files;
 	int					in_file_count;
 
 	char				**argv;
