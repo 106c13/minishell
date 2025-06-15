@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 17:06:23 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:43:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 					close(pipefd[0]);
 				}
 		}
-		expand_cmd_args(cmd, shell);
+		expand_args(cmd, shell);
 		if (is_builtin(cmd))
 			shell->exec_result = exec_builtin(cmd, shell);
 		else
@@ -162,7 +162,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 	int in_fd = -1;
 	int	h_fd = -1;
 
-	expand_cmd_args(cmd, shell);
+	expand_args(cmd, shell);
 	if (cmd->delimiter)
 	{
 		h_fd = process_heredoc(cmd->delimiter, shell);

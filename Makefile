@@ -8,7 +8,7 @@ EXEC = \
 ENV = \
 	env_init.c env_utils.c env_helpers.c
 EXPANDER = \
-	expand_args.c expand_utils.c \
+	expand.c expand_utils.c \
 	wildcard.c args.c
 BUILTINS = \
 	echo.c cd.c pwd.c \

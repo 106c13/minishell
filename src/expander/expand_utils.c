@@ -6,13 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 15:07:12 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:38:35 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*append_exec_result(char *str, t_shell *shell)
+static char	*append_exec_result(char *str, t_shell *shell, int *i)
 {
 	char	*val;
 	char	*tmp;
@@ -21,7 +21,10 @@ static char	*append_exec_result(char *str, t_shell *shell)
 	tmp = str;
 	str = ft_strjoin(str, val);
 	free(tmp);
-	free(val); return (str); }
+	free(val);
+	*i += 2;
+	return (str);
+}
 
 static char	*append_env_val(char *str, char *input_cmd, int *i, t_env *env)
 {
@@ -45,6 +48,16 @@ static char	*append_env_val(char *str, char *input_cmd, int *i, t_env *env)
 	return (str);
 }
 
+static char	setup_quote(char *input_cmd, char quote, int i)
+{
+	if (quote == 0 && (input_cmd[i] == '\'' || input_cmd[i] == '"'))
+		return (input_cmd[i]);
+	else if (input_cmd[i] == quote)
+		return (0);
+	else
+		return (quote);
+}
+
 char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted)
 {
 	char	*res;
@@ -56,21 +69,13 @@ char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted)
 	quote = 0;
 	while (input_cmd[i])
 	{
-		if (quote == 0 && (input_cmd[i] == '\'' || input_cmd[i] == '"'))
-			quote = input_cmd[i];
-		else if (input_cmd[i] == quote)
-			quote = 0;
+		quote = setup_quote(input_cmd, quote, i);
 		if (input_cmd[i] == '$' && input_cmd[i + 1] && quote != '\'')
 		{
 			if (input_cmd[i + 1] == '?')
-			{
-				res = append_exec_result(res, shell);
-				i += 2;
-			}
+				res = append_exec_result(res, shell, &i);
 			else if (ft_isalnum(input_cmd[i + 1]))
-			{
 				res = append_env_val(res, input_cmd, &i, shell->env_list);
-			}
 		}
 		else
 			res = str_append_char_safe(res, input_cmd[i++]);

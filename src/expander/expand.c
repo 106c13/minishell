@@ -1,11 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_args.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */ /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */ /*   Updated: 2025/06/14 16:36:59 by azolotar         ###   ########.fr       */
-/*                                                                            */ /* ************************************************************************** */
+/*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/15 19:42:26 by azolotar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_args(t_arg *arr, int len);
@@ -35,49 +39,14 @@ static t_arg	*append_split_args(t_arg *new_args, char *str, int *count)
 	return (new_args);
 }
 
-char	**args_to_argv(t_arg *args, int args_count)
-{
-	char	**argv;
-	int		i;
-	int		argc;
-	int		j;
-
-	if (!args || args_count == 0)
-		return (NULL);
-	argc = 0;
-	i = 0;
-	while (i < args_count)
-	{
-		if (args[i].file == 0)
-			argc += 1;
-		i++;
-	}
-	argv = malloc(sizeof(char *) * (argc + 1));
-	if (!argv)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < args_count)
-	{
-		if (args[i].file == 0)
-		{
-			argv[j] = ft_strdup(args[i].str);
-			// handle bla bla bla
-			j++;
-		}
-		i++;
-	}
-	argv[j] = NULL;
-	return (argv);
-}
-
-void	expand_cmd_args(t_command *cmd, t_shell *shell)
+void	expand_args(t_command *cmd, t_shell *shell)
 {
 	t_arg	*new_args;
 	int		new_args_count;
 	char	*expanded_str;
 	int		i;
 	t_arg	*old_arg;
+	t_arg	new;
 
 	new_args = NULL;
 	new_args_count = 0;
@@ -95,7 +64,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 			expanded_str = clear_quotes(expanded_str);
 			if (!old_arg->quoted && str_contains(expanded_str, '*'))
 			{
-				t_arg new = {
+				new = (t_arg){
 					.str = expanded_str,
 					.interpret_env_var = 0,
 					.quoted = 0,
@@ -107,7 +76,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 			}
 			else if (old_arg->quoted)
 			{
-				t_arg new = {
+				new = (t_arg){
 					.str = expanded_str,
 					.interpret_env_var = 0,
 					.quoted = 0,
@@ -126,7 +95,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 		{
 			expanded_str = ft_strdup(old_arg->str);
 			expanded_str = clear_quotes(expanded_str);
-			t_arg new = {
+			new = (t_arg){
 				.str = expanded_str,
 				.interpret_env_var = 0,
 				.quoted = 0,

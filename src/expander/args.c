@@ -6,11 +6,47 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:28:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 14:44:05 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:40:46 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**args_to_argv(t_arg *args, int args_count)
+{
+	char	**argv;
+	int		i;
+	int		argc;
+	int		j;
+
+	if (!args || args_count == 0)
+		return (NULL);
+	argc = 0;
+	i = 0;
+	while (i < args_count)
+	{
+		if (args[i].file == 0)
+			argc += 1;
+		i++;
+	}
+	argv = malloc(sizeof(char *) * (argc + 1));
+	if (!argv)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < args_count)
+	{
+		if (args[i].file == 0)
+		{
+			argv[j] = ft_strdup(args[i].str);
+			// handle bla bla bla
+			j++;
+		}
+		i++;
+	}
+	argv[j] = NULL;
+	return (argv);
+}
 
 void	free_args(t_arg *arr, int len)
 {
