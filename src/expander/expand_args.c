@@ -2,73 +2,147 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   expand_args.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                    +:+ +:+         +:+     */ /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 16:36:59 by azolotar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+/*   Created: 2025/06/04 16:51:52 by azolotar          #+#    #+#             */ /*   Updated: 2025/06/14 16:36:59 by azolotar         ###   ########.fr       */
+/*                                                                            */ /* ************************************************************************** */
 #include "minishell.h"
 
-static char	**append_split(char **argv, char *str)
+void	free_args(t_arg *arr, int len);
+
+static t_arg	*append_split_args(t_arg *new_args, char *str, int *count)
 {
 	int		i;
 	char	**split;
+	t_arg	new;
 
 	split = ft_split(str, ' ');
 	i = 0;
 	while (split && split[i])
 	{
 		if (split[i][0] != '\0')
-			argv = str_arr_append(argv, ft_strdup(split[i]));
+		{
+			new.str = ft_strdup(split[i]);
+			new.interpret_env_var = 0; 
+			new.quoted = 0; 
+			new.file = 0;
+			new.mode = 0;
+			new_args = append_arg(new, new_args, count);
+		}
 		i++;
 	}
 	free_split(split);
+	return (new_args);
+}
+
+char	**args_to_argv(t_arg *args, int args_count)
+{
+	char	**argv;
+	int		i;
+	int		argc;
+	int		j;
+
+	if (!args || args_count == 0)
+		return (NULL);
+	argc = 0;
+	i = 0;
+	while (i < args_count)
+	{
+		if (args[i].file == 0)
+			argc += 1;
+		i++;
+	}
+	argv = malloc(sizeof(char *) * (argc + 1));
+	if (!argv)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < args_count)
+	{
+		if (args[i].file == 0)
+		{
+			argv[j] = ft_strdup(args[i].str);
+			// handle bla bla bla
+			j++;
+		}
+		i++;
+	}
+	argv[j] = NULL;
 	return (argv);
 }
 
-char	**expand_cmd_args(t_command *cmd, t_shell *shell)
+void	expand_cmd_args(t_command *cmd, t_shell *shell)
 {
-	char	**argv;
-	char	*str;
+	t_arg	*new_args;
+	int		new_args_count;
+	char	*expanded_str;
 	int		i;
-	t_arg	*arg;
+	t_arg	*old_arg;
 
-	argv = NULL;
+	new_args = NULL;
+	new_args_count = 0;
 	i = -1;
 	while (++i < cmd->args_count)
 	{
-		arg = &cmd->args[i];
-		if (!arg->quoted && str_contains(arg->str, '*'))
-			argv = replace_wildcards(arg->str, argv);
-		else if (arg->interpret_env_var)
+		old_arg = &cmd->args[i];
+		if (!old_arg->quoted && str_contains(old_arg->str, '*'))
 		{
-			str = replace_env_vars(shell, arg->str, arg->quoted);
-			str = clear_quotes(str);
-			if (!arg->quoted && str_contains(str, '*'))
-				argv = replace_wildcards(str, argv);
-			else if (cmd->args[i].quoted)
-				argv = str_arr_append(argv, str);
+			new_args = replace_wildcards(old_arg, new_args, &new_args_count);
+		}
+		else if (old_arg->interpret_env_var)
+		{
+			expanded_str = replace_env_vars(shell, old_arg->str, old_arg->quoted);
+			expanded_str = clear_quotes(expanded_str);
+			if (!old_arg->quoted && str_contains(expanded_str, '*'))
+			{
+				t_arg new = {
+					.str = expanded_str,
+					.interpret_env_var = 0,
+					.quoted = 0,
+					.file = old_arg->file,
+					.mode = old_arg->mode
+				};
+				new_args = replace_wildcards(&new, new_args, &new_args_count);
+				free(expanded_str);
+			}
+			else if (old_arg->quoted)
+			{
+				t_arg new = {
+					.str = expanded_str,
+					.interpret_env_var = 0,
+					.quoted = 0,
+					.file = old_arg->file,
+					.mode = old_arg->mode
+				};
+				new_args = append_arg(new, new_args, &new_args_count);
+			}
 			else
-				argv = append_split(argv, str);
-			free(str);
+			{
+				new_args = append_split_args(new_args, expanded_str, &new_args_count);
+				free(expanded_str);
+			}
 		}
 		else
 		{
-			str = ft_strdup(cmd->args[i].str);
-			str = clear_quotes(str);
-			argv = str_arr_append(argv, str);
-			free(str);
+			expanded_str = ft_strdup(old_arg->str);
+			expanded_str = clear_quotes(expanded_str);
+			t_arg new = {
+				.str = expanded_str,
+				.interpret_env_var = 0,
+				.quoted = 0,
+				.file = old_arg->file,
+				.mode = old_arg->mode
+			};
+			new_args = append_arg(new, new_args, &new_args_count);
+
 		}
 	}
-	cmd->argv = argv;
-	cmd->argc = get_args_count(argv);
-	if (ft_strcmp(cmd->cmd->str, cmd->argv[0]) != 0)
-	{
-		free(cmd->cmd->str);
-		cmd->cmd->str = ft_strdup(cmd->argv[0]);
-	}
-	return (argv);
+	free_args(cmd->args, cmd->args_count);
+	cmd->args = new_args;
+	cmd->args_count = new_args_count;
+
+	cmd->argv = args_to_argv(new_args, new_args_count);
+	cmd->argc = get_args_count(cmd->argv);
+	cmd->cmd = &cmd->args[0];
+	return ;
 }

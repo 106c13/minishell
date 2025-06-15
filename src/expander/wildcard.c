@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 15:47:36 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:55:26 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,43 @@ int	match_pattern(char *pattern, char *filename)
 }
 
 // when passing arg here it should 100 % be not quoted and contains * sign
-char	**replace_wildcards(char *arg, char **argv)
+t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len)
 {
 	DIR				*dir;
 	struct dirent	*entry;
 	char			match_found;
+	t_arg			new;
 
 	match_found = 0;
 	dir = opendir(".");
-	if (!dir)
-		return (str_arr_append(argv, arg));
-	while (1)
+	while (dir && 1)
 	{
 		entry = readdir(dir);
 		if (entry == NULL)
 			break ;
-		if (entry->d_name[0] == '.' && arg[0] != '.')
+		if (entry->d_name[0] == '.' && pattern_arg->str[0] != '.')
 			continue ;
-		if (match_pattern(arg, entry->d_name))
+		if (match_pattern(pattern_arg->str, entry->d_name))
 		{
-			argv = str_arr_append(argv, entry->d_name);
+			new.str = ft_strdup(entry->d_name);
+			new.interpret_env_var = 0;
+			new.quoted = 0;
+			new.file = pattern_arg->file;
+			new.mode = pattern_arg->mode;
+			arr = append_arg(new, arr, len);
 			match_found = 1;
 		}
 	}
-	closedir(dir);
+	if (dir)
+		closedir(dir);
 	if (!match_found)
-		argv = str_arr_append(argv, arg);
-	return (argv);
+	{
+		new.str = ft_strdup(pattern_arg->str);
+		new.interpret_env_var = pattern_arg->interpret_env_var;
+		new.quoted = pattern_arg->quoted;
+		new.file = pattern_arg->file;
+		new.mode = pattern_arg->mode;
+		return (append_arg(new, arr, len));
+	}
+	return (arr);
 }

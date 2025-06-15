@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 14:18:34 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:49:07 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,14 +153,18 @@ char	*str_append_char_safe(char *str, char c);
 int		has_quotes(char *str);
 
 /* interpret args*/
-char	**expand_cmd_args(t_command *cmd, t_shell *shell);
+void	expand_cmd_args(t_command *cmd, t_shell *shell);
 
 char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted);
 
 /* wildcards */
-char	**replace_wildcards(char *arg, char **argv);
+t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len);
 
 int		match_pattern(char *pattern, char *filename);
 
 int		process_heredoc(char *delimiter, t_shell *shell);
+
+// args helpers
+t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);
+
 #endif
