@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 21:30:08 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 14:43:27 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,20 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 	pid_t	pid;
 	int		out_fd;
 	int		in_fd;
+	int		h_fd;
 
 	out_fd = -1;
 	in_fd = -1;
+	h_fd = -1;
+	if (cmd->delimiter)
+	{
+		h_fd = process_heredoc(cmd->delimiter, shell);
+		if (h_fd == -1)
+		{
+			shell->exec_result = 130;
+			return ; 
+		}
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -99,7 +110,13 @@ void exec_in_pipe(t_command *cmd, t_shell *shell, int *pipefd, int pfd)
 	if (pid == 0)
 	{
 		set_default_signals();
-		if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
+		if (h_fd != -1)
+		{
+			in_fd = dup(STDIN_FILENO);
+			dup2(h_fd, STDIN_FILENO);
+			close(h_fd);
+		}
+		else if (setup_redirection(cmd, &in_fd, &out_fd) == FAILURE)
 		{
 			shell->exec_result = 1;
 			return ;
@@ -169,8 +186,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 			dup2(h_fd, STDIN_FILENO);
 			close(h_fd);
 		}
-
-		if (pfd != -1)
+		else if (pfd != -1)
 		{
 			in_fd = dup(STDIN_FILENO);
 			dup2(pfd, STDIN_FILENO);
@@ -195,8 +211,10 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 				in_fd = dup(STDIN_FILENO);
 				dup2(h_fd, STDIN_FILENO);
 				close(h_fd);
+				if (pfd != -1)
+					close(pfd);
 			}
-			if (pfd != -1)
+			else if (pfd != -1)
 			{
 				in_fd = dup(STDIN_FILENO);
 				dup2(pfd, STDIN_FILENO);
@@ -210,6 +228,10 @@ int	exec_ordinary(t_command *cmd, t_shell *shell, int pfd)
 		{
 			if (in_fd != -1)
 				close(in_fd);
+			if (pfd != -1)
+				close(pfd);
+			if (h_fd != -1)
+				close(h_fd);
 			waitpid(pid, &shell->exec_result, 0);
 		}
 	}
@@ -239,7 +261,8 @@ int exec_cmd(t_command *cmd, t_shell *shell)
 				close(prev_fd);
 			prev_fd = -1;
 		}
-
+		if (shell->exec_result == 130)
+			break ;
 		if (cmd->operator_type == AND && shell->exec_result != 0)
 			cmd = cmd->next;
 		else if (cmd->operator_type == OR && shell->exec_result == 0)

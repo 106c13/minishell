@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:11:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/13 19:18:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 14:56:02 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,6 @@ int	setup_command(char *str, t_command *cmd)
 	cmd->args = malloc(sizeof(t_arg) * (cmd->args_count));
 	if (!cmd->args)
 		return (1);
-	cmd->output_files = malloc(sizeof(t_arg) * (cmd->out_file_count));
-	if (!cmd->output_files)
-	{
-		free(cmd->args);
-		return (1);
-	}
-	cmd->input_files = malloc(sizeof(t_arg) * (cmd->in_file_count));
-	if (!cmd->input_files)
-	{
-		free(cmd->args);
-		free(cmd->output_files);
-		return (1);
-	}
 	cmd->cmd = cmd->args;
 	return (0);
 }
