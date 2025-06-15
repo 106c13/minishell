@@ -26,7 +26,7 @@ static t_arg	*append_split_args(t_arg *new_args, char *str, int *count)
 			new.interpret_env_var = 0; 
 			new.quoted = 0; 
 			new.file = 0;
-			new.mode = 0;
+			new.append = 0;
 			new_args = append_arg(new, new_args, count);
 		}
 		i++;
@@ -100,7 +100,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 					.interpret_env_var = 0,
 					.quoted = 0,
 					.file = old_arg->file,
-					.mode = old_arg->mode
+					.append = old_arg->append
 				};
 				new_args = replace_wildcards(&new, new_args, &new_args_count);
 				free(expanded_str);
@@ -112,7 +112,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 					.interpret_env_var = 0,
 					.quoted = 0,
 					.file = old_arg->file,
-					.mode = old_arg->mode
+					.append = old_arg->append
 				};
 				new_args = append_arg(new, new_args, &new_args_count);
 			}
@@ -131,7 +131,7 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 				.interpret_env_var = 0,
 				.quoted = 0,
 				.file = old_arg->file,
-				.mode = old_arg->mode
+				.append = old_arg->append
 			};
 			new_args = append_arg(new, new_args, &new_args_count);
 

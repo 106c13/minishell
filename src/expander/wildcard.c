@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 15:55:26 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:05:45 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len)
 			new.interpret_env_var = 0;
 			new.quoted = 0;
 			new.file = pattern_arg->file;
-			new.mode = pattern_arg->mode;
+			new.append = pattern_arg->append;
 			arr = append_arg(new, arr, len);
 			match_found = 1;
 		}
@@ -75,7 +75,7 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len)
 		new.interpret_env_var = pattern_arg->interpret_env_var;
 		new.quoted = pattern_arg->quoted;
 		new.file = pattern_arg->file;
-		new.mode = pattern_arg->mode;
+		new.append = pattern_arg->append;
 		return (append_arg(new, arr, len));
 	}
 	return (arr);
