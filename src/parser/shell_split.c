@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 15:44:42 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:11:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	add_word(char **str, t_arg *arg, int size)
 	char	quote;
 	int		i;
 	
-
 	arg->str = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
@@ -87,6 +86,7 @@ char	*ft_get_word(char **str)
 		word[i++] = **str;
 		(*str)++;
 	}
+	word[size] = '\0';
 	return (word);
 }
 
@@ -125,6 +125,9 @@ void	add_arg(char **str, t_command *cmd, int *arg_i)
 	(*arg_i)++;
 }
 
+
+
+
 int	shell_split(char **str, t_command *cmd)
 {
 	int		arg_i;
@@ -141,9 +144,7 @@ int	shell_split(char **str, t_command *cmd)
 			set_operator(str, cmd);
 			break ;
 		}
-		else if (**str == '>')
-			add_arg(str, cmd, &arg_i);	
-		else if (**str == '<')
+		else if (**str == '>' || **str == '<')
 			add_arg(str, cmd, &arg_i);	
 		else
 			add_arg(str, cmd, &arg_i);	

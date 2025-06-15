@@ -6,64 +6,70 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 15:48:39 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:40:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	duplicate_fd(int fd, int dest)
+{
+	int	backup_fd;
+
+	backup_fd = dup(dest);
+	dup2(fd, dest);
+	close(fd);
+	return (backup_fd);
+}
+
 int	redirect_from_file(t_command *cmd)
 {
 	int		i;
 	int		fd;
-	int		backup_fd;
 	t_arg	file;
 
 	i = 0;
-	backup_fd = dup(STDIN_FILENO);
+	fd = -1;
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
 		if (file.file != 1)
 			continue ;
+		if (fd != -1)
+			close(fd);
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
 		{
 			printf("minishell: %s: No such file or directory\n", file.str);
 			return (-1);
 		}
-		if (i == cmd->args_count)
-			dup2(fd, STDIN_FILENO);
-		close(fd);
 	}
-	return (backup_fd);
+	return (duplicate_fd(fd, STDIN_FILENO));
 }
 
 int	redirect_to_file(t_command *cmd)
 {
 	int		i;
 	int		fd;
-	int		backup_fd;
 	t_arg	file;
 
 	i = 0;
-	backup_fd = dup(STDOUT_FILENO);
+	fd = -1;
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
 		if (file.file != 2)
 			continue ;
+		if (fd != -1)
+			close(fd);
 		if (file.append)
 			fd = open(file.str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else
 			fd = open(file.str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
 			return (-1);
-		if (i == cmd->args_count)
-			dup2(fd, STDOUT_FILENO);
-		close(fd);
 	}
-	return (backup_fd);
+	return (duplicate_fd(fd, STDOUT_FILENO));
 }
 
 int	setup_redirection(t_command *cmd, int *in_fd, int *out_fd)

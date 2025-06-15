@@ -144,5 +144,6 @@ void	expand_cmd_args(t_command *cmd, t_shell *shell)
 	cmd->argv = args_to_argv(new_args, new_args_count);
 	cmd->argc = get_args_count(cmd->argv);
 	cmd->cmd = &cmd->args[0];
+	print_cmd(cmd);
 	return ;
 }
