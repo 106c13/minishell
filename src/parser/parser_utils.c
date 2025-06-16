@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/16 18:23:22 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:33:27 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_command	*create_command(void)
 	cmd->next = NULL;
 	cmd->operator_type = 0;
 	cmd->delimiter = NULL;
+	cmd->depth = 0;
 	return (cmd);
 }
 

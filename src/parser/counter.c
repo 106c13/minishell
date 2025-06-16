@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 15:44:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 18:05:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	counter(char *str, t_command *cmd)
 			if (is_eow(*(str)))
 				cmd->args_count++;
 		}
+		else if (*str == '(' || *str == ')')
+			str++;
 		else if (*str == '>')
 			skip_file(&str, &cmd->out_file_count);
 		else if (*str == '<')

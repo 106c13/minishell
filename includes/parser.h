@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 15:16:20 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 21:03:27 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_command
 
 	int					operator_type;
 	char				*delimiter;
+	int					depth;
 	struct s_command	*next;
 }	t_command;
 
