@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 15:06:37 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:45:23 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ int		digits_only(char *str);
 
 char	*ft_itoa(int n);
 
+void	ft_putstr_fd(char *s, int fd);
+
 char	**str_arr_append(char **arr, char *str);
 
 int		strlen_till(char *str, char c);
@@ -155,6 +157,12 @@ int		setup_redirection(t_command *cmd, int *in_fd, int *out_fd);
 char	*str_append_char_safe(char *str, char c);
 
 int		has_quotes(char *str);
+
+void	printerr_one(char *msg);
+
+void	printerr_two(char *cmd, char *msg);
+
+void	printerr_three(char *cmd, char *msg1, char *msg2);
 
 /* interpret args*/
 void	expand_args(t_command *cmd, t_shell *shell);

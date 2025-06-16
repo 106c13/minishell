@@ -23,7 +23,8 @@ UTILS = \
 	ft_strdup.c ft_strjoin.c utils.c \
 	ft_strcpy.c ft_isalnum.c ft_atoi.c \
 	ft_itoa.c fd_utils.c str_utils.c \
-	ft_strchr.c ft_substr.c ft_strlen.c
+	ft_strchr.c ft_substr.c ft_strlen.c \
+	ft_putstr_fd.c printerr.c
 
 SRCS_DIR = src/
 OBJS_DIR = objs/

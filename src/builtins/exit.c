@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:41:25 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 18:44:56 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:49:24 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 	printf("exit\n");
 	if (cmd != NULL && cmd->argc > 2)
 	{
-		printf("minishell: exit: too many arguments\n");
+		printerr_two("exit", "too many arguments");
 		return (FAILURE);
 	}
 	exit_code = SUCCESS;
@@ -30,8 +30,7 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 			exit_code = ft_atoi(cmd->argv[1]) % 256;
 		else
 		{
-			printf("minishell: exit: %s: numeric argument required\n",
-				cmd->argv[1]);
+			printerr_three("exit", cmd->argv[1], "numeric argument required");
 		}
 	}
 	rl_clear_history();
