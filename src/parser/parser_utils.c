@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 15:31:47 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:23:22 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	get_unquoted_len(char	*str)
 	char	quote;
 	int		size;
 
+	if (!str)
+		return (0);
 	size = 0;
 	quote = 0;
 	while (*str)

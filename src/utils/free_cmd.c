@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:09:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 17:30:51 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:42:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ void	free_cmd_list(t_command *cmd)
 		if (cmd->delimiter)
 			free(cmd->delimiter);
 		free(cmd);
-		cmd = cmd->next;
+		cmd = next;
 	}
 }

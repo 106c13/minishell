@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 15:50:07 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:56:33 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_arg	*expand_arg(
 		expanded = replace_env_vars(shell, old->str, old->quoted);
 		expanded = clear_quotes(expanded);
 		new_args = handle_expanded_str(expanded, old, new_args, new_count);
-		free(expanded);
+//		free(expanded);
 	}
 	else
 	{

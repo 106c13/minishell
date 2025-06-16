@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:11:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 14:56:02 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:23:43 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*clear_quotes(char *str)
 	int		size;
 	int		i;
 
+	if (!str)
+		return (str);
 	quote = 0;
 	i = 0;
 	nstr = malloc(sizeof(char) * (get_unquoted_len(str) + 1));
