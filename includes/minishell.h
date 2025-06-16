@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 19:42:41 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:06:37 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,9 @@ int		process_heredoc(char *delimiter, t_shell *shell);
 t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);
 
 char	**args_to_argv(t_arg *args, int args_count);
+
+void	free_args(t_arg *arr, int len);
+
+t_arg	new_arg_copy(char *str, t_arg *ref);
 
 #endif

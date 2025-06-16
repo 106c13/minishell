@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 16:55:16 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:28:47 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@ static void	listen(t_shell *shell)
 			shell->exec_result = g_last_status;
 			g_last_status = 0;
 		}
-		if (!input)
-		{
-			free(input);
+		if (input == NULL)
 			safe_shell_exit(NULL, shell);
-		}
 		if (input[0] != '\0')
 		{
 			add_history(input);
