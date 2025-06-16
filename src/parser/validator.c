@@ -1,10 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validator.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/16 17:02:03 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/16 17:02:08 by azolotar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	ft_error(char *msg)
-{
-	printf("%s\n", msg);
-	return (1);
-}
+#include "minishell.h"
 
 int	validate(char *input)
 {
@@ -14,7 +20,7 @@ int	validate(char *input)
 	op_type = 0;
 	quote = 0;
 	if (get_operator_type(input) != 0)
-		return (ft_error("Invalid input"));
+		return (printerr_one("Invalid input"), 1);
 	while (*input)
 	{
 		if (!quote)
@@ -31,6 +37,6 @@ int	validate(char *input)
 		input++;
 	}
 	if (quote || op_type)
-		return (ft_error("Invalid input"));
+		return (printerr_one("Invalid input"), 1);
 	return (0);
 }

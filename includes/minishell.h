@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:48:12 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:38:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ int		digits_only(char *str);
 
 char	*ft_itoa(int n);
 
+void	ft_putstr_fd(char *s, int fd);
+
 char	**str_arr_append(char **arr, char *str);
 
 int		strlen_till(char *str, char c);
@@ -165,8 +167,14 @@ char	*str_append_char_safe(char *str, char c);
 
 int		has_quotes(char *str);
 
+void	printerr_one(char *msg);
+
+void	printerr_two(char *cmd, char *msg);
+
+void	printerr_three(char *cmd, char *msg1, char *msg2);
+
 /* interpret args*/
-void	expand_cmd_args(t_command *cmd, t_shell *shell);
+void	expand_args(t_command *cmd, t_shell *shell);
 
 char	*replace_env_vars(t_shell *shell, char *input_cmd, int quoted);
 
@@ -182,11 +190,15 @@ void	collect_finished_jobs(t_shell *shell);
 void	add_job(t_shell *shell, pid_t pid);
 
 
-
 // args helpers
 t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);
 
-
-
 void	print_cmd(t_command *cmd);
+
+char	**args_to_argv(t_arg *args, int args_count);
+
+void	free_args(t_arg *arr, int len);
+
+t_arg	new_arg_copy(char *str, t_arg *ref);
+
 #endif

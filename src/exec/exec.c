@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 17:28:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:38:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	close_pipes(t_mfd *mfd)
 
 int	exec_cmd(t_command *cmd, t_shell *shell)
 {
-	expand_cmd_args(cmd, shell);
+	expand_args(cmd, shell);
 	setup_redirection(cmd, shell); 
 	if (is_builtin(cmd))
 		shell->exec_result = exec_builtin(cmd, shell);

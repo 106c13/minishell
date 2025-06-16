@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:39:41 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:50:19 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int	export_env(t_command *cmd, t_shell *shell)
 		{
 			ret = FAILURE;
 			cmd->argv[i][strlen_till(cmd->argv[i], '=')] = '\0';
-			printf("minishell: export: %s; not a valid identifier\n",
-				cmd->argv[i]);
+			printerr_three("export", cmd->argv[i], "not a valid identifier");
 		}
 	}
 	return (ret);

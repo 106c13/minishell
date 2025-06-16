@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/16 16:49:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:37:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	redirect_from_file(t_command *cmd)
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
 		{
-			printf("minishell: %s: No such file or directory\n", file.str);
+			printerr_two(file.str, "No such file or directory");
 			return (-1);
 		}
 	}

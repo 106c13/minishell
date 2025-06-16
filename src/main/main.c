@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:43:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:36:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_mfd(t_mfd *mfd)
 		mfd->pipefd[0] = -1;
 		mfd->pipefd[1] = -1;
 }
-
 
 static void	listen(t_shell *shell)
 {
@@ -36,11 +35,8 @@ static void	listen(t_shell *shell)
 			shell->exec_result = g_last_status;
 			g_last_status = 0;
 		}
-		if (!input)
-		{
-			free(input);
+		if (input == NULL)
 			safe_shell_exit(NULL, shell);
-		}
 		if (input[0] != '\0')
 		{
 			add_history(input);

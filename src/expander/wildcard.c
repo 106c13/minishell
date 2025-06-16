@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:37:47 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 16:05:45 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:28:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,43 +39,60 @@ int	match_pattern(char *pattern, char *filename)
 		return (0);
 }
 
-// when passing arg here it should 100 % be not quoted and contains * sign
-t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len)
+static t_arg	i_hate_norminette1(char a, char b, char c, char d)
+{
+	t_arg	why_25_lines;
+
+	why_25_lines.str = NULL;
+	why_25_lines.interpret_env_var = a;
+	why_25_lines.quoted = b;
+	why_25_lines.file = c;
+	why_25_lines.append = d;
+	return (why_25_lines);
+}
+
+/* mf = match_found */
+static t_arg	*i_hate_norminette2(t_arg *parg, t_arg *arr, int *len, int *mf)
 {
 	DIR				*dir;
-	struct dirent	*entry;
-	char			match_found;
 	t_arg			new;
+	struct dirent	*entry;
 
-	match_found = 0;
+	*mf = 0;
 	dir = opendir(".");
-	while (dir && 1)
+	if (dir == NULL)
+		return (arr);
+	while (1)
 	{
 		entry = readdir(dir);
 		if (entry == NULL)
 			break ;
-		if (entry->d_name[0] == '.' && pattern_arg->str[0] != '.')
+		if (entry->d_name[0] == '.' && parg->str[0] != '.')
 			continue ;
-		if (match_pattern(pattern_arg->str, entry->d_name))
+		if (match_pattern(parg->str, entry->d_name))
 		{
+			new = i_hate_norminette1(0, 0, parg->file, parg->append);
 			new.str = ft_strdup(entry->d_name);
-			new.interpret_env_var = 0;
-			new.quoted = 0;
-			new.file = pattern_arg->file;
-			new.append = pattern_arg->append;
 			arr = append_arg(new, arr, len);
-			match_found = 1;
+			*mf = 1;
 		}
 	}
-	if (dir)
-		closedir(dir);
+	closedir(dir);
+	return (arr);
+}
+
+/* parg = pattern_arg */
+t_arg	*replace_wildcards(t_arg *parg, t_arg *arr, int *len)
+{
+	int		match_found;
+	t_arg	new;
+
+	arr = i_hate_norminette2(parg, arr, len, &match_found);
 	if (!match_found)
 	{
-		new.str = ft_strdup(pattern_arg->str);
-		new.interpret_env_var = pattern_arg->interpret_env_var;
-		new.quoted = pattern_arg->quoted;
-		new.file = pattern_arg->file;
-		new.append = pattern_arg->append;
+		new = i_hate_norminette1(parg->interpret_env_var,
+				parg->quoted, parg->file, parg->append);
+		new.str = ft_strdup(parg->str);
 		return (append_arg(new, arr, len));
 	}
 	return (arr);
