@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 19:07:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:08:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,54 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 	return 0;
 }
 
+
+t_command	*skip_command(t_command *cmd)
+{
+	int	curr;
+
+	curr = cmd->depth;
+	while (cmd->next && cmd->next->depth == curr)
+		cmd = cmd->next;
+	return (cmd);
+}
+
+int	run_subshell(t_command **cmd, t_shell *shell)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		shell->depth++;
+		start_exec(*cmd, shell);
+		exit(shell->exec_result);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &shell->exec_result, 0);
+		*cmd = skip_command(*cmd);
+		set_exec_result(shell, shell->exec_result);
+	}
+	return (0);
+}
+
 int start_exec(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
 	{
 		expand_args(cmd, shell);
-		if (cmd->operator_type == PIPE)
-			start_pipe(cmd, shell);
+		if (cmd->depth > shell->depth)
+			run_subshell(&cmd, shell);
+		else if (cmd->depth == shell->depth)
+		{
+			if (cmd->operator_type == PIPE)
+				start_pipe(cmd, shell);
+			else
+				exec_ordinary(cmd, shell);
+		}
 		else
-			exec_ordinary(cmd, shell);
-		if (shell->exec_result == 130)
+			break ;
+		if (!cmd || shell->exec_result == 130)
 			break ;
 		if (cmd->operator_type == AND && shell->exec_result != 0)
 			cmd = cmd->next;

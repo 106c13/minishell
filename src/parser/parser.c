@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 18:50:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:25:27 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_oper(int	oper)
 void	print_cmd(t_command *cmd)
 {
 	int	i;
-
+	return ;
 	printf("---------------cmd---------------\n");
 	while (cmd)
 	{

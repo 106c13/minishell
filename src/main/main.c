@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 19:06:51 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:09:08 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	listen(t_shell *shell)
 			if (cmd == NULL)
 				continue ;
 			init_mfd(&shell->mfd);
+			shell->depth = 0;
 			start_exec(cmd, shell);
 			free_cmd_list(cmd);
 		}

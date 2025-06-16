@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 18:31:45 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:08:21 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_mfd
 typedef struct s_shell
 {
 	int		exec_result;
+	int		depth;
 	t_env	*env_list;
 	t_job	*job_list;
 	t_mfd	mfd;
