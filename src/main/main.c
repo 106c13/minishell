@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 14:28:47 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:24:37 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	listen(t_shell *shell)
 			if (cmd == NULL)
 				continue ;
 			exec_cmd(cmd, shell);
+			free_cmd_list(cmd);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:45:23 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:20:52 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ void	printerr_one(char *msg);
 void	printerr_two(char *cmd, char *msg);
 
 void	printerr_three(char *cmd, char *msg1, char *msg2);
+
+void	free_cmd_list(t_command *cmd);
 
 /* interpret args*/
 void	expand_args(t_command *cmd, t_shell *shell);

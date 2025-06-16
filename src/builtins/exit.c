@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:41:25 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:49:24 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:22:15 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 	}
 	rl_clear_history();
 	free_env_list(shell);
+	free_cmd_list(cmd);
+	// free smth in shell
 	exit(exit_code);
 }
