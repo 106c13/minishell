@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/13 21:10:23 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:08:02 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	{
 		close(pipefd[1]);
 		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		set_exec_result(shell, status);
+		if (shell->exec_result == 130)
 			return (close(pipefd[0]), -1);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == SUCCESS)
+		if (shell->exec_result == SUCCESS)
 			return (pipefd[0]);
 		close(pipefd[0]);
 	}

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 16:40:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:49:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	redirect_from_file(t_command *cmd)
 		if (file.file != 1)
 			continue ;
 		if (fd != -1)
-			close(fd);
+			close(fd);		
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
 		{
@@ -44,6 +44,8 @@ int	redirect_from_file(t_command *cmd)
 			return (-1);
 		}
 	}
+	if (fd == -1)
+		return (-1);
 	return (duplicate_fd(fd, STDIN_FILENO));
 }
 
@@ -67,40 +69,54 @@ int	redirect_to_file(t_command *cmd)
 		else
 			fd = open(file.str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
+		{
+			printf("minishell: %s: Permission denied or file error\n", file.str);
 			return (-1);
+		}
 	}
+	if (fd == -1)
+		return (-1);	
 	return (duplicate_fd(fd, STDOUT_FILENO));
 }
 
-int	setup_redirection(t_command *cmd, int *in_fd, int *out_fd)
+int	setup_redirection(t_command *cmd, t_shell *shell)
 {
-	if (cmd->in_file_count != 0)
+	if (cmd->delimiter)
 	{
-		*in_fd = redirect_from_file(cmd);
-		if (*in_fd == -1)
-			return (1);
+		shell->mfd.hd_fd = process_heredoc(cmd->delimiter, shell);
+		shell->mfd.in_fd = duplicate_fd(shell->mfd.hd_fd, STDIN_FILENO);
+	}	
+	else if (cmd->in_file_count != 0)
+	{
+		shell->mfd.in_fd = redirect_from_file(cmd);
+		if (shell->mfd.in_fd == -1)
+			return (FAILURE);
 	}
+	else if (shell->mfd.pipefd[0] != -1)
+		shell->mfd.in_fd = duplicate_fd(shell->mfd.pipefd[0], STDIN_FILENO);
 	if (cmd->out_file_count != 0)
 	{
-		*out_fd = redirect_to_file(cmd);
-		if (*out_fd == -1)
-			return (1);
+		shell->mfd.out_fd = redirect_to_file(cmd);
+		if (shell->mfd.out_fd == -1)
+			return (FAILURE);
 	}
-	return (0);
+	else if (shell->mfd.pipefd[1] != -1)
+		shell->mfd.out_fd = duplicate_fd(shell->mfd.pipefd[1], STDOUT_FILENO);
+	return (SUCCESS);
 }
 
-void	restore_fd(int	*in_fd, int *out_fd)
+void	restore_fd(t_mfd *mfd)
 {
-	if (*in_fd >= 0)
+	if (mfd->in_fd >= 0)
 	{
-		dup2(*in_fd, STDIN_FILENO);
-		close(*in_fd);
-		*in_fd = -1;
+		dup2(mfd->in_fd, STDIN_FILENO);
+		close(mfd->in_fd);
+		mfd->in_fd = -1;
 	}
-	if (*out_fd >= 0)
+	if (mfd->out_fd >= 0)
 	{
-		dup2(*out_fd, STDOUT_FILENO);
-		close(*out_fd);
-		*out_fd = -1;
+		dup2(mfd->out_fd, STDOUT_FILENO);
+		close(mfd->out_fd);
+		mfd->out_fd = -1;
 	}
 }

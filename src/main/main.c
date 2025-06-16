@@ -6,11 +6,20 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:45:00 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:43:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init_mfd(t_mfd *mfd)
+{
+		mfd->in_fd = -1;
+		mfd->out_fd = -1;
+		mfd->pipefd[0] = -1;
+		mfd->pipefd[1] = -1;
+}
+
 
 static void	listen(t_shell *shell)
 {
@@ -22,6 +31,11 @@ static void	listen(t_shell *shell)
 		set_interactive_signals();
 		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
 		set_execution_signals();
+		if (g_last_status == 130)
+		{
+			shell->exec_result = g_last_status;
+			g_last_status = 0;
+		}
 		if (!input)
 		{
 			free(input);
@@ -34,7 +48,8 @@ static void	listen(t_shell *shell)
 			free(input);
 			if (cmd == NULL)
 				continue ;
-			exec_cmd(cmd, shell);
+			init_mfd(&shell->mfd);
+			start_exec(cmd, shell);
 		}
 	}
 }

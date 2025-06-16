@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 16:20:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:48:12 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include "parser.h"
 # include "defines.h"
 
+extern int	g_last_status;
+
 typedef struct s_env
 {
 	char			*key;
@@ -42,21 +44,32 @@ typedef struct s_job
 	struct s_job	*next;
 }	t_job;
 
+typedef struct s_mfd
+{
+	int	in_fd;
+	int	out_fd;
+	int	pipefd[2];
+	int	hd_fd;
+}	t_mfd;
+
 typedef struct s_shell
 {
 	int		exec_result;
 	t_env	*env_list;
 	t_job	*job_list;
+	t_mfd	mfd;
 }	t_shell;
 
 /* exec */
-int		exec_cmd(t_command *cmd, t_shell *shell);
+int		start_exec(t_command *cmd, t_shell *shell);
 
 int		exec_bin(t_command *cmd, t_shell *shell);
 
 int		exec_builtin(t_command *cmd, t_shell *shell);
 
 int		is_builtin(t_command *cmd);
+
+void 	set_exec_result(t_shell *shell, int status);
 
 /* builtins */
 int		safe_shell_exit(t_command *cmd, t_shell *shell);
@@ -144,9 +157,9 @@ char	**str_arr_append(char **arr, char *str);
 
 int		strlen_till(char *str, char c);
 
-void	restore_fd(int	*in_fd, int *out_fd);
+void	restore_fd(t_mfd *mfd);
 
-int		setup_redirection(t_command *cmd, int *in_fd, int *out_fd);
+int		setup_redirection(t_command *cmd, t_shell *shell);
 
 char	*str_append_char_safe(char *str, char c);
 
@@ -163,6 +176,12 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len);
 int		match_pattern(char *pattern, char *filename);
 
 int		process_heredoc(char *delimiter, t_shell *shell);
+
+/* job_manager.c */
+void	collect_finished_jobs(t_shell *shell);
+void	add_job(t_shell *shell, pid_t pid);
+
+
 
 // args helpers
 t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);

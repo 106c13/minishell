@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 16:24:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/15 18:50:55 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void	print_cmd(t_command *cmd)
 				if (cmd->args[i].interpret_env_var)
 					printf("\033[1;32m INTERPRET\033[0m");
 				if (cmd->args[i].quoted)
-					printf(" quoted");
+					printf(" quoted\n");
 				printf("\n");
+				printf("DEPTH: %d\n", cmd->depth);
 				i++; 
 			}
 		}
@@ -61,26 +62,40 @@ void	print_cmd(t_command *cmd)
 }
 // ============================
 
-t_command	*get_command(char	*input)
+int	calculate_depth(char *src, char *dest)
 {
-	t_command	*cmd;
-	t_command	*tmp;
-	t_command	*head;
+	int	depth;
 
-	cmd = create_command();
-	head = cmd;
+	depth = 0;
+	while (src != dest)
+	{
+		if (*src == '(')
+			depth++;
+		else if (*src == ')')
+			depth--;
+		src++;
+	}
+	return (depth);
+}
+
+void	get_command(t_command *cmd, char	*input)
+{
+	t_command	*tmp;
+	char		*t_input;
+
+	t_input = input;
 	while (*input)
 	{
 		if (shell_split(&input, cmd) != 0)
-			return (NULL);
+			return ;
 		if (*input)
 		{
 			tmp = cmd;
 			cmd = create_command();
 			tmp->next = cmd;
+			cmd->depth = calculate_depth(t_input, input);
 		}
 	}
-	return (head);
 }
 
 t_command	*parse_command(char *input)
@@ -90,7 +105,8 @@ t_command	*parse_command(char *input)
 	input = trim_spaces(input);
 	if (!*input || validate(input) != 0)
 		return (NULL);
-	cmd = get_command(input);
+	cmd = create_command();
+	get_command(cmd, input);
 	if (!cmd)
 		return (NULL);
 	
