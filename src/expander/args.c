@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:28:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 15:28:07 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:17 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_arg	new_arg_copy(char *str, t_arg *ref)
 	return (new);
 }
 
-t_arg	*split_and_append(char *str, t_arg *new_args, int *count)
+t_arg	*split_and_append(char *str, t_arg *ref, t_arg *new_args, int *count)
 {
 	int		i;
 	char	**split;
@@ -85,12 +85,8 @@ t_arg	*split_and_append(char *str, t_arg *new_args, int *count)
 	while (split && split[i])
 	{
 		if (split[i][0] != '\0')
-		{
-			new.str = ft_strdup(split[i]);
-			new.interpret_env_var = 0;
-			new.quoted = 0;
-			new.file = 0;
-			new.append = 0;
+		{	
+			new = new_arg_copy(ft_strdup(split[i]), ref);
 			new_args = append_arg(new, new_args, count);
 		}
 		i++;

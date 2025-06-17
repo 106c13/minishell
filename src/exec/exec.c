@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 19:20:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:40:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	close_pipes(t_mfd *mfd)
 
 int	exec_cmd(t_command *cmd, t_shell *shell)
 {
-	setup_redirection(cmd, shell); 
+	if (setup_redirection(cmd, shell) == FAILURE)
+		return (FAILURE);
+	if (!cmd->cmd)
+		return (0);
 	if (is_builtin(cmd))
 		shell->exec_result = exec_builtin(cmd, shell);
 	else
@@ -157,12 +160,6 @@ int start_exec(t_command *cmd, t_shell *shell)
 	{
 		expand_args(cmd, shell);
 		print_cmd(cmd);
-		//printf("|%p|\n", cmd->args);
-		if (!cmd->cmd)
-		{
-			cmd = cmd->next;
-			continue ;
-		}
 		if (cmd->depth > shell->depth)
 			run_subshell(&cmd, shell);
 		else if (cmd->depth == shell->depth)

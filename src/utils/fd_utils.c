@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/16 17:37:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:16:53 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 	if (cmd->delimiter)
 	{
 		shell->mfd.hd_fd = process_heredoc(cmd->delimiter, shell);
+		if (shell->mfd.hd_fd == -1)
+			return (FAILURE);
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.hd_fd, STDIN_FILENO);
 	}	
 	else if (cmd->in_file_count != 0)
