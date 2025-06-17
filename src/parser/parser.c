@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/16 18:25:27 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:16:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,79 @@
 void	print_oper(int	oper)
 {
 	if (oper == 11)
-		printf("OPERATOR: |\n");
-	if (oper == 12)
-		printf("OPERATOR: &\n");
-	if (oper == 13)
-		printf("OPERATOR: ||\n");
-	if (oper == 14)
-		printf("OPERATOR: &&\n");
+		printf("%-15s", "|");
+	else if (oper == 12)
+		printf("%-15s", "&");
+	else if (oper == 13)
+		printf("%-15s", "||");
+	else if (oper == 14)
+		printf("%-15s", "&&");
+	else
+		printf("%-15s", "");
 }
-
-void	print_cmd(t_command *cmd)
+void print_cmd(t_command *cmd)
 {
-	int	i;
-	return ;
-	printf("---------------cmd---------------\n");
+	int i;
+	int first_arg;
+
+	printf("\n\033[1;34m%-20s %-8s %-15s %-15s %s\033[0m\n", "COMMAND", "DEPTH", "DELIMITER", "OPERATOR", "ARGS");
+	printf("--------------------------------------------------------------------------\n");
+
 	while (cmd)
 	{
-		printf("COMMAND: %s\n", cmd->cmd->str);
-		i = 0;
-		if (cmd->args)
-		{
-			while (i < cmd->args_count)
-			{
-				if (cmd->args[i].file == 2 && cmd->args[i].append)
-					printf("OUTPUT %d: %s\033[0m APPEND", i, cmd->args[i].str);
-				else if (cmd->args[i].file == 2)
-					printf("OUTPUT %d: %s\033[0m", i, cmd->args[i].str);
-				else if (cmd->args[i].file == 1)
-					printf("INPUT %d: %s\033[0m", i, cmd->args[i].str);
-				else
-					printf("ARG %d: %s\033[0m", i, cmd->args[i].str);
-				if (cmd->args[i].interpret_env_var)
-					printf("\033[1;32m INTERPRET\033[0m");
-				if (cmd->args[i].quoted)
-					printf(" quoted\n");
-				printf("\n");
-				printf("DEPTH: %d\n", cmd->depth);
-				i++; 
-			}
-		}
+		// COMMAND
+		printf("%-20s ", cmd->cmd ? cmd->cmd->str : "(null)");
+
+		// DEPTH
+		if (cmd->last_in_group)
+			printf("\033[1;31m");
+		printf("%-8d ", cmd->depth);
+		printf("\033[0m");
+
+		// DELIMITER
+		if (cmd->delimiter)
+			printf("%-15s ", cmd->delimiter);
+		else
+			printf("%-15s ",  "");
+
+		
 		print_oper(cmd->operator_type);
+		// ARGS
+		first_arg = 1;
+		for (i = 0; i < cmd->args_count; i++) // Skip cmd->cmd
+		{
+			if (!first_arg)
+				printf("%-20s %-8s %-30s ", "", "", "");
+
+			if (cmd->args[i].quoted)
+				printf("\033[1;31m"); // Red
+			else if (cmd->args[i].interpret_env_var)
+				printf("\033[1;32m"); // Green
+
+			if (cmd->args[i].file == 2 && cmd->args[i].append)
+				printf("OUTPUT %d: %s\033[0m %p APPEND", i, cmd->args[i].str, cmd->args[i].str);
+			else if (cmd->args[i].file == 2)
+				printf("OUTPUT %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+			else if (cmd->args[i].file == 1)
+				printf("INPUT %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+			else
+				printf("ARG %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+
+			if (cmd->args[i].quoted)
+				printf(" \033[1;34mquoted\033[0m");
+
+			printf("\n");
+			first_arg = 0;
+		}
+
+		if (cmd->args_count <= 1)
+			printf("\n");
+
 		cmd = cmd->next;
 	}
-	printf("---------------end---------------\n");
+	printf("--------------------------------------------------------------------------\n\n");
 }
+
 // ============================
 
 int	calculate_depth(char *src, char *dest)
