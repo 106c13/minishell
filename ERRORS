@@ -1,0 +1,9 @@
+echo 1 && (echo 2 && echo 3 && (echo 4) && echo 5 && (echo 6 && (echo 7))) && echo 8
+
+==404651== 31 (24 direct, 7 indirect) bytes in 1 blocks are definitely lost in loss record 20 of 83
+==404651==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==404651==    by 0x405A4F: args_to_argv (in /home/haaghaja/Desktop/minishell/minishell)
+==404651==    by 0x4053ED: expand_args (in /home/haaghaja/Desktop/minishell/minishell)
+==404651==    by 0x402597: start_exec (in /home/haaghaja/Desktop/minishell/minishell)
+==404651==    by 0x40146D: listen (in /home/haaghaja/Desktop/minishell/minishell)
+==404651==    by 0x401394: main (in /home/haaghaja/Desktop/minishell/minishell)

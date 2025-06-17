@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 20:40:01 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:44:19 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 	while (cmd)
 	{
 		expand_args(cmd, shell);
-		print_cmd(cmd);
+		//print_cmd(cmd);
 		if (cmd->depth > shell->depth)
 			run_subshell(&cmd, shell);
 		else if (cmd->depth == shell->depth)
