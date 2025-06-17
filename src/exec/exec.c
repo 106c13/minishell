@@ -1,18 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 17:18:17 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 19:08:59 by azolotar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
-
 void	close_pipes(t_mfd *mfd)
 {
 	if (mfd->pipefd[0] != -1)
@@ -113,13 +98,19 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 }
 
 
-t_command	*skip_command(t_command *cmd)
+t_command	*skip_command(t_command *cmd, int depth)
 {
-	int	curr;
-
-	curr = cmd->depth;
-	while (cmd->next && cmd->next->depth == curr)
+	while (cmd)
+	{
+		//printf("Checking %s %d %d\n", cmd->cmd->str, cmd->depth, depth);
+		if (cmd->depth == depth && cmd->last_in_group)
+			break ;
+		if (cmd->next && cmd->next->depth ==  depth - 1)
+			break ;
 		cmd = cmd->next;
+	}
+	if (cmd)
+		cmd->last_in_group = 0;
 	return (cmd);
 }
 
@@ -136,8 +127,11 @@ int	run_subshell(t_command **cmd, t_shell *shell)
 	}
 	else if (pid > 0)
 	{
+		//printf("STARTED PID %d\n", pid);
 		waitpid(pid, &shell->exec_result, 0);
-		*cmd = skip_command(*cmd);
+		*cmd = skip_command(*cmd, shell->depth + 1);
+		//if (*cmd)
+		//	printf("%d STOPPED ON %s %s\n", pid, (*cmd)->cmd->str, (*cmd)->args[1].str);
 		set_exec_result(shell, shell->exec_result);
 	}
 	return (0);
@@ -159,7 +153,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 		}
 		else
 			break ;
-		if (!cmd || shell->exec_result == 130)
+		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
 			break ;
 		if (cmd->operator_type == AND && shell->exec_result != 0)
 			cmd = cmd->next;
