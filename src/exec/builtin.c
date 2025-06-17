@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:46:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 16:32:56 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:35:39 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(t_command *cmd)
 {
+	if (!cmd || !cmd->cmd || !cmd->cmd->str)
+		return (0);
 	return (
 		ft_strcmp(cmd->cmd->str, "exit") == 0
 		|| ft_strcmp(cmd->cmd->str, "env") == 0
