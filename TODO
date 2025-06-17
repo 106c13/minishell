@@ -35,3 +35,5 @@ done - check bin permissions -> done???
 done - check correctness of buitlin cd implementation
 done - handle -nnnnn echo flag
 done - heredoc
+
+export CMD=3&&(export CMD=2&&     (export CMD=1&&echo $CMD) && echo $CMD) && echo 3"$CM" && cat /dev/random|head -n 4 |     wc -l && touch 1.dd&&touch 2.dd && touch 3.dd&&touch 4.dd && touch 5.dd && echo *.dd |wc -w && rm *.dd && (cat /dev/random) | head -n 6 | wc -l && export CMD="echo 7"&&$CMD&&export CMD="echo       8"&&$CMD&& echo $AA""9"$AF"&&export CMD="ff"&&echo 10 >$CMD&&cat $CMD&& rm $CMD
