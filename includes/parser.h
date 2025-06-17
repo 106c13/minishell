@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 21:03:27 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:08:18 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_command
 	int					operator_type;
 	char				*delimiter;
 	int					depth;
+	int					last_in_group;
 	struct s_command	*next;
 }	t_command;
 
@@ -79,6 +80,8 @@ void		set_operator(char **str, t_command *cmd);
 void		counter(char *str, t_command *cmd);
 
 int			count_in_quotes(char *str);
+
+int			count_in_file(char *str);
 
 int			is_eow(char c);
 

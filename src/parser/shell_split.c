@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 18:48:14 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:25:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,17 @@ int	shell_split(char **str, t_command *cmd)
 	arg_i = 0;
 	while (**str)
 	{
-		if (is_whitespace(**str) || **str == ')')
+		if (is_whitespace(**str))
 			(*str)++;
 		else if (get_operator_type(*str) != 0)
 		{
 			set_operator(str, cmd);
 			break ;
+		}
+		else if (**str == ')')
+		{
+			cmd->last_in_group = 1;
+			(*str)++;
 		}
 		else if (**str == '(')
 		{
