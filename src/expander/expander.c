@@ -6,13 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 18:34:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_arg	*split_and_append(char *str, t_arg *new_args, int *count);
+t_arg	*split_and_append(char *str, t_arg *ref, t_arg *new_args, int *count);
 
 static t_arg	*handle_expanded_str(
 		char *expanded, t_arg *old, t_arg *new_args, int *new_count)
@@ -31,7 +31,7 @@ static t_arg	*handle_expanded_str(
 	}
 	else
 	{
-		new_args = split_and_append(expanded, new_args, new_count);
+		new_args = split_and_append(expanded, old, new_args, new_count);
 	}
 	return (new_args);
 }
