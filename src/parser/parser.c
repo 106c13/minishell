@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 16:16:22 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:29:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void print_cmd(t_command *cmd)
 		for (i = 0; i < cmd->args_count; i++) // Skip cmd->cmd
 		{
 			if (!first_arg)
-				printf("%-20s %-8s %-30s ", "", "", "");
+				printf("%-20s %-8s %-31s ", "", "", "");
+			else
+				printf(" ");
+				
 
 			if (cmd->args[i].quoted)
 				printf("\033[1;31m"); // Red
@@ -139,6 +142,6 @@ t_command	*parse_command(char *input)
 	if (!cmd)
 		return (NULL);
 	
-	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }

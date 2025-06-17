@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:02:03 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 17:30:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:15:00 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ int	validate(char *input)
 	int		is_file;
 	int		file_len;
 	char	quote;
-
+	return 0;
 	op_type = 0;
 	quote = 0;
 	is_file = 0;
 	is_cmd_start = 0;
-	return (0);
 	while (*input)
 	{
 		if (is_whitespace(*input))
@@ -52,7 +51,7 @@ int	validate(char *input)
 			input = trim_spaces(input);
 			file_len = count_in_file(input);
 			if (file_len == 0)
-				return (printerr_one("Invalid input"), 1);
+				return (printerr_one("syntax error near unexpected token `newline'"), 1);
 		}
 		if (is_quote(*input))
 		{
