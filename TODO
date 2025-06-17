@@ -18,6 +18,7 @@ h: () brackets
 h: cat << end | grep some_word
 h: echo hello > file1 file2
 h: delimiter has trash symbols
+h: if cmd == NULL do not execute
 
 DONE:
 done - echo hello' '$USER'$USER'
@@ -35,3 +36,6 @@ done - check bin permissions -> done???
 done - check correctness of buitlin cd implementation
 done - handle -nnnnn echo flag
 done - heredoc
+minishell > $PWD
+minishell: /home/azolotar/Desktop/main_core/minishell: Execution failded
+

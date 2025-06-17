@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 18:06:59 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:34:27 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ void	expand_args(t_command *cmd, t_shell *shell)
 	free_args(cmd->args, cmd->args_count);
 	cmd->args = new_args;
 	cmd->args_count = new_count;
-	cmd->cmd = &cmd->args[0];
+//	printf("args_count: %d\n", new_count);
+	if (cmd->args[0].file == 0)
+		cmd->cmd = &cmd->args[0];
 	cmd->argv = args_to_argv(new_args, new_count);
 	cmd->argc = get_args_count(cmd->argv);
 }
