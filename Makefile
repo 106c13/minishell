@@ -24,7 +24,7 @@ UTILS = \
 	ft_strcpy.c ft_isalnum.c ft_atoi.c \
 	ft_itoa.c fd_utils.c str_utils.c \
 	ft_strchr.c ft_substr.c ft_strlen.c \
-	ft_putstr_fd.c printerr.c free_cmd.c
+	ft_putstr_fd.c printerr.c free_cmd.c \
 
 SRCS_DIR = src/
 OBJS_DIR = objs/
