@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 20:22:14 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:30:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,5 +203,15 @@ char	**args_to_argv(t_arg *args, int args_count);
 void	free_args(t_arg *arr, int len);
 
 t_arg	new_arg_copy(char *str, t_arg *ref);
+
+/* subshell */
+t_command	*skip_command(t_command *cmd, int depth);
+int	get_ss_next_operator(t_command *cmd, t_shell *shell);
+int	run_ss_in_pipe(t_command **cmd, t_shell *shell);
+int	run_ss_ordinary(t_command **cmd, t_shell *shell);
+int	run_subshell(t_command **cmd, t_shell *shell);
+int	ss_redirect(t_shell *shell);
+
+
 
 #endif

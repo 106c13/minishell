@@ -24,8 +24,9 @@ UTILS = \
 	ft_strcpy.c ft_isalnum.c ft_atoi.c \
 	ft_itoa.c fd_utils.c str_utils.c \
 	ft_strchr.c ft_substr.c ft_strlen.c \
-	ft_putstr_fd.c printerr.c free_cmd.c \
-
+	ft_putstr_fd.c printerr.c free_cmd.c 
+SUBSHELL = \
+	subshell.c ss_utils.c
 SRCS_DIR = src/
 OBJS_DIR = objs/
 INCLUDES_DIR = includes/
@@ -37,7 +38,8 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)env/, $(ENV)) \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
 	$(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
-	$(addprefix $(SRCS_DIR)parser/, $(PARSER))
+	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
+	$(addprefix $(SRCS_DIR)subshell/, $(SUBSHELL))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

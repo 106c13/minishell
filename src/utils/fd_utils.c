@@ -6,13 +6,13 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 20:16:53 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:43:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	duplicate_fd(int fd, int dest)
+static int	duplicate_fd(int fd, int dest)
 {
 	int	backup_fd;
 
