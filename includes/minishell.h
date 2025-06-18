@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 14:53:18 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:32:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ typedef struct s_mfd
 
 typedef struct s_shell
 {
-	int		exec_result;
-	int		depth;
-	t_env	*env_list;
-	t_job	*job_list;
-	t_mfd	mfd;
+	int			exec_result;
+	int			depth;
+	t_command	*cmd_ptr;
+	t_env		*env_list;
+	t_job		*job_list;
+	t_mfd		mfd;
 }	t_shell;
 
 /* exec */
@@ -176,7 +177,7 @@ void	printerr_three(char *cmd, char *msg1, char *msg2);
 
 void	free_cmd_list(t_command *cmd);
 
-void	cleanup(t_command *cmd, t_shell *shell);
+void	cleanup(t_shell *shell);
 /* interpret args*/
 void	expand_args(t_command *cmd, t_shell *shell);
 

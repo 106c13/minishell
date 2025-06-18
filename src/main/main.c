@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 15:08:20 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:39:09 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ static void	listen(t_shell *shell)
 			free(input);
 			if (cmd == NULL)
 				continue ;
+			shell->cmd_ptr = cmd;
 			init_mfd(&shell->mfd);
 			shell->depth = 0;
 			start_exec(cmd, shell);
 			free_cmd_list(cmd);
+			shell->cmd_ptr = NULL;
 		}
 	}
 }
@@ -62,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
 
-	inputs[0] = ft_strdup("echo $USER | wc -l");
+	inputs[0] = ft_strdup("cat /dev/random | wc -l");
 	inputs[1] = NULL;
 	init_env_list(&shell, env);
 	setup_signals();

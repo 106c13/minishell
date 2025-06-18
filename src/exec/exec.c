@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 15:18:58 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:31:30 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_pipe(t_command *cmd, t_shell *shell, int prev_read_fd)
 	else
 		shell->mfd.pipefd[0] = -1;
 	exec_cmd(cmd, shell);
-	cleanup(cmd, shell);
+	cleanup(shell);
 	exit(shell->exec_result);
 }
 
@@ -103,7 +103,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 		if (pid == 0)
 		{
 			exec_cmd(cmd, shell);
-			cleanup(cmd, shell);
+			cleanup(shell);
 			exit(shell->exec_result);
 		}
 		else if (pid > 0)
@@ -142,7 +142,7 @@ int	run_subshell(t_command **cmd, t_shell *shell)
 	{
 		shell->depth++;
 		start_exec(*cmd, shell);
-		cleanup(*cmd, shell);
+		cleanup(shell);
 		exit(shell->exec_result);
 	}
 	else if (pid > 0)
