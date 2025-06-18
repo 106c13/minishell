@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 16:25:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:24:03 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ int	get_arg_len(char *str)
 			size++;
 	}
 	return (size);
+}
+
+int	is_env(char *str)
+{
+	if (*str == '$')
+	{
+		if (str[1] == '?')
+			return (1);
+		else if (ft_isalnum(str[1]) || str[1] == '_')
+			return (1);
+	}
+	return (0);
 }
 
 void	add_word(char **str, t_arg *arg, int size)
@@ -49,7 +61,7 @@ void	add_word(char **str, t_arg *arg, int size)
 			if (i != size - 1)
 				arg->quoted = 0;
 		}
-		if ((!quote || quote == '"') && **str == '$')
+		if ((!quote || quote == '"') && is_env(*str))
 			arg->interpret_env_var = 1;
 		arg->str[i++] = **str;
 		(*str)++;

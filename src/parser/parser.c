@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 19:29:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:18:03 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void print_cmd(t_command *cmd)
 
 			if (cmd->args[i].quoted)
 				printf("\033[1;31m"); // Red
-			else if (cmd->args[i].interpret_env_var)
+			if (cmd->args[i].interpret_env_var)
 				printf("\033[1;32m"); // Green
 
 			if (cmd->args[i].file == 2 && cmd->args[i].append)

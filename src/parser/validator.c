@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:02:03 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 19:15:00 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:15:54 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	validate(char *input)
 	int		is_file;
 	int		file_len;
 	char	quote;
-	return 0;
 	op_type = 0;
 	quote = 0;
 	is_file = 0;
