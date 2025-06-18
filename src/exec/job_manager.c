@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:56:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/15 19:00:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:30:19 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	collect_finished_jobs(t_shell *shell)
 {
 	t_job	*curr;
 	t_job	*prev;
+	t_job	*next;
 	int		status;
 	pid_t	result;
 
@@ -23,6 +24,7 @@ void	collect_finished_jobs(t_shell *shell)
 	prev = NULL;
 	while (curr)
 	{
+		next = curr->next;
 		result = waitpid(curr->pid, &status, 0);
 		set_exec_result(shell, status);
 		if (result > 0)
@@ -31,12 +33,11 @@ void	collect_finished_jobs(t_shell *shell)
 				prev->next = curr->next;
 			else
 				shell->job_list = curr->next;
-			prev = curr;
-			free(prev);
+			free(curr);
 		}
 		else
 			prev = curr;
-		curr = curr->next;
+		curr = next;
 	}
 }
 

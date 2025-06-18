@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 18:34:48 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:48:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	exec_pipe(t_command *cmd, t_shell *shell, int prev_read_fd)
 	else
 		shell->mfd.pipefd[0] = -1;
 	exec_cmd(cmd, shell);
+	cleanup(shell);
 	exit(shell->exec_result);
 }
 
@@ -102,6 +103,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 		if (pid == 0)
 		{
 			exec_cmd(cmd, shell);
+			cleanup(shell);
 			exit(shell->exec_result);
 		}
 		else if (pid > 0)
@@ -119,7 +121,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 	while (cmd)
 	{
 		expand_args(cmd, shell);
-		//print_cmd(cmd);
+		print_cmd(cmd);
 		if (cmd->depth > shell->depth)
 		{
 			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell));

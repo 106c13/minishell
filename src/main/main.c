@@ -6,11 +6,14 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 19:09:08 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:52:27 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		i = 0;
+char	*inputs[2];
 
 void	init_mfd(t_mfd *mfd)
 {
@@ -39,15 +42,17 @@ static void	listen(t_shell *shell)
 			safe_shell_exit(NULL, shell);
 		if (input[0] != '\0')
 		{
-			add_history(input);
+//			add_history(input);
 			cmd = parse_command(input);
 			free(input);
 			if (cmd == NULL)
 				continue ;
+			shell->cmd_ptr = cmd;
 			init_mfd(&shell->mfd);
 			shell->depth = 0;
 			start_exec(cmd, shell);
 			free_cmd_list(cmd);
+			shell->cmd_ptr = NULL;
 		}
 	}
 }
@@ -56,8 +61,11 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
 
+	//inputs[0] = ft_strdup("cat /dev/random | wc -l");
+	//inputs[1] = NULL;
 	init_env_list(&shell, env);
 	setup_signals();
 	listen(&shell);
+	safe_shell_exit(NULL, &shell);
 	return ((void)argc, (void)argv, 0);
 }
