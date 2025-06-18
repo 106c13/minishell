@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 20:20:06 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:22:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_command	*create_command(void)
 	cmd->out_file_count = 0;
 	cmd->in_file_count = 0;
 	cmd->next = NULL;
-	cmd->operator_type = 0;
+	cmd->op.depth = 0;
+	cmd->op.type = 0;
 	cmd->delimiters = NULL;
 	cmd->delimiter_count = 0;
 	cmd->depth = 0;

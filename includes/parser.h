@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 19:49:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:16:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,34 @@ typedef struct s_arg
 	char	append; /* 0 or 1 */
 }	t_arg;
 
+
+typedef struct s_oper
+{
+	int	type;
+	int	depth;
+}	t_oper;
+
 typedef struct s_command
 {
 	t_arg				*cmd;
 
 	t_arg				*args;
 	int					args_count;
+
 	int					out_file_count;
 	int					in_file_count;
+
+	char				**delimiters;
 	int					delimiter_count;
+	int					heredoc_fd;
 
 	char				**argv;
 	int					argc;
 
-	int					operator_type;
-	char				**delimiters;
-	int					depth;
+	t_oper				op;
+
 	int					last_in_group;
+	int					depth;
 	struct s_command	*next;
 }	t_command;
 
@@ -75,7 +86,7 @@ int			is_whitespace(char c);
 
 int			is_quote(char c);
 
-void		set_operator(char **str, t_command *cmd);
+void		set_operator(char **str, t_command *cmd, int depth);
 
 /* counter.c */
 void		counter(char *str, t_command *cmd);

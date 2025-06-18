@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/15 17:35:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:26:01 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,24 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 		close(pipefd[0]);
 	}
 	return (-1);
+}
+
+int	exec_heredocs(t_command *cmd, t_shell *shell)
+{
+	int	i;
+	int	curr_pipe;
+
+	i = 0;
+	while (i < cmd->delimiter_count)
+	{
+		curr_pipe = process_heredoc(cmd->delimiters[i], shell);
+		i++;
+		if (curr_pipe == -1)
+			return (-1);
+		if (i == cmd->delimiter_count)
+			return (curr_pipe);
+		else
+			close(curr_pipe);
+	}
+	return (curr_pipe);
 }

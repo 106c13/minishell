@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:50:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:35:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ static int	is_valid_arg(char *arg)
 {
 	int	i;
 
+	if (!arg || !*arg)
+		return (0);
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+		return (0);
 	i = 0;
 	while (arg[i] && arg[i] != '=')
 	{
@@ -49,6 +53,8 @@ static int	is_valid_arg(char *arg)
 			return (0);
 		i++;
 	}
+	if (arg[i] == '=' && i == 0)
+		return (0);
 	if (arg == NULL || arg[0] == '\0')
 		return (0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 20:44:08 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 23:23:49 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,23 +116,34 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 	return 0;
 }
 
+void	sueta(t_command *cmd, t_shell *shell)
+{
+	while (cmd)
+	{
+		cmd->heredoc_fd = exec_heredocs(cmd, shell);
+		cmd = cmd->next;
+	}
+}
+
 int start_exec(t_command *cmd, t_shell *shell)
 {
+	
+	sueta(cmd, shell);
 	while (cmd)
 	{
 		expand_args(cmd, shell);
 		//print_cmd(cmd);
 		if (cmd->depth > shell->depth)
 		{
-			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell));
-			if (get_ss_next_operator(cmd, shell) == PIPE)
+			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell, 0));
+			if (get_ss_next_operator(cmd, shell, 0) == PIPE)
 				run_ss_in_pipe(&cmd, shell);
 			else
 				run_ss_ordinary(&cmd, shell);
 		}
 		else if (cmd->depth == shell->depth)
 		{
-			if (cmd->operator_type == PIPE)
+			if (cmd->op.type == PIPE)
 				start_pipe(cmd, shell);
 			else
 				exec_ordinary(cmd, shell);
@@ -141,9 +152,9 @@ int start_exec(t_command *cmd, t_shell *shell)
 			break ;
 		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
 			break ;
-		if (cmd->operator_type == AND && shell->exec_result != 0)
+		if (cmd->op.type == AND && shell->exec_result != 0)
 			cmd = cmd->next;
-		else if (cmd->operator_type == OR && shell->exec_result == 0)
+		else if (cmd->op.type == OR && shell->exec_result == 0)
 			cmd = cmd->next;
 		if (cmd)
 			cmd = cmd->next;

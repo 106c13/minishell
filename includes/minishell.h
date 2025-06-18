@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 18:48:44 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 23:12:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len);
 int		match_pattern(char *pattern, char *filename);
 
 int		process_heredoc(char *delimiter, t_shell *shell);
+int		exec_heredocs(t_command *cmd, t_shell *shell);
 
 /* job_manager.c */
 void	collect_finished_jobs(t_shell *shell);
@@ -208,7 +209,7 @@ t_arg	new_arg_copy(char *str, t_arg *ref);
 
 /* subshell */
 t_command	*skip_command(t_command *cmd, int depth);
-int	get_ss_next_operator(t_command *cmd, t_shell *shell);
+int	get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
 int	run_ss_in_pipe(t_command **cmd, t_shell *shell);
 int	run_ss_ordinary(t_command **cmd, t_shell *shell);
 int	run_subshell(t_command **cmd, t_shell *shell);

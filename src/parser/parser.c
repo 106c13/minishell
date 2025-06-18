@@ -6,32 +6,33 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 20:16:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 23:04:20 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // ONLY for tests
-void	print_oper(int	oper)
+void	print_oper(t_oper	*op)
 {
-	if (oper == 11)
-		printf("%-15s", "|");
-	else if (oper == 12)
-		printf("%-15s", "&");
-	else if (oper == 13)
-		printf("%-15s", "||");
-	else if (oper == 14)
-		printf("%-15s", "&&");
+	if (op->type == PIPE)
+		printf("%-2s", "|");
+	else if (op->type == 12)
+		printf("%-2s", "&");
+	else if (op->type == 13)
+		printf("%-2s", "||");
+	else if (op->type == 14)
+		printf("%-2s", "&&");
 	else
-		printf("%-15s", "");
+		printf("%-2s", "");
+	printf(" %-9d", op->depth);
 }
 void print_cmd(t_command *cmd)
 {
 	int i;
 	int first_arg;
 	printf("\n\033[1;34m%-20s %-8s %-15s %-15s %s\033[0m\n", "COMMAND", "DEPTH", "DELIMITER", "OPERATOR", "ARGS");
-	printf("--------------------------------------------------------------------------\n");
+	printf("-----------------------------------------------------------------------------------------\n");
 
 	while (cmd)
 	{
@@ -46,25 +47,25 @@ void print_cmd(t_command *cmd)
 
 		// DELIMITER
 		if (cmd->delimiters)
-			printf("%d %-13s ", cmd->delimiter_count, cmd->delimiters[0]);
+			printf("%d %-15s ", cmd->delimiter_count, cmd->delimiters[0]);
 		else
-			printf("%-15s ",  "");
+			printf("%-17s ",  "");
 
 		
-		print_oper(cmd->operator_type);
+		print_oper(&cmd->op);
 		// ARGS
 		first_arg = 1;
 		for (i = 0; i < cmd->args_count; i++) // Skip cmd->cmd
 		{
 			if (!first_arg)
-				printf("%-20s %-8s %-31s ", "", "", "");
+				printf("%-20s %-7s %-31s ", "", "", "");
 			else
 				printf(" ");
 				
 
 			if (cmd->args[i].quoted)
 				printf("\033[1;31m"); // Red
-			else if (cmd->args[i].interpret_env_var)
+			if (cmd->args[i].interpret_env_var)
 				printf("\033[1;32m"); // Green
 
 			if (cmd->args[i].file == 2 && cmd->args[i].append)
@@ -88,7 +89,7 @@ void print_cmd(t_command *cmd)
 
 		cmd = cmd->next;
 	}
-	printf("--------------------------------------------------------------------------\n\n");
+	printf("-----------------------------------------------------------------------------------------\n\n");
 }
 
 // ============================
@@ -139,8 +140,7 @@ t_command	*parse_command(char *input)
 	cmd = create_command();
 	get_command(cmd, input);
 	if (!cmd)
-		return (NULL);
-	
-	//print_cmd(cmd);
+		return (NULL);	
+	print_cmd(cmd);
 	return (cmd);
 }
