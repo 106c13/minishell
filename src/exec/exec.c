@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 18:48:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:44:08 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 	while (cmd)
 	{
 		expand_args(cmd, shell);
-		print_cmd(cmd);
+		//print_cmd(cmd);
 		if (cmd->depth > shell->depth)
 		{
 			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell));
