@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 19:24:12 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:00:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,18 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 	return 0;
 }
 
+void	sueta(t_command *cmd, t_shell *shell)
+{
+	while (cmd)
+	{
+		cmd->heredoc_fd = exec_heredocs(cmd, shell);
+		cmd = cmd->next;
+	}
+}
+
 int start_exec(t_command *cmd, t_shell *shell)
 {
+	sueta(cmd, shell);
 	while (cmd)
 	{
 		expand_args(cmd, shell);
