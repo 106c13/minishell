@@ -7,3 +7,43 @@ echo 1 && (echo 2 && echo 3 && (echo 4) && echo 5 && (echo 6 && (echo 7))) && ec
 ==404651==    by 0x402597: start_exec (in /home/haaghaja/Desktop/minishell/minishell)
 ==404651==    by 0x40146D: listen (in /home/haaghaja/Desktop/minishell/minishell)
 ==404651==    by 0x401394: main (in /home/haaghaja/Desktop/minishell/minishell)
+
+
+
+===================================================================================================================================
+
+
+minishell > echo 1 && (echo 2 && echo 3 && (echo 4) && echo 5 && (echo 6 && (echo 7))) && echo 8
+1
+2
+3
+4
+5
+6
+7
+8
+minishell > export CMD=3&&(export CMD=2&&     (export CMD=1&&echo $CMD) && echo $CMD) && echo 3"$CM" && cat /dev/random|head -n 4 |     wc -l && touch 1.dd&&touch 2.dd && touch 3.dd&&touch 4.dd && touch 5.dd && echo *.dd |wc -w && rm *.dd && (cat /dev/random) | head -n 6 | wc -l && export CMD="echo 7"&&$CMD&&export CMD="echo       8"&&$CMD&& echo $AA""9"$AF"&&export CMD="ff"&&echo 10 >$CMD&&cat $CMD&& rm $CMD
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+minishell > export CMD=3&&(export CMD=2&&     (export CMD=1&&echo $CMD) && echo $CMD) && echo 3"$CM" && cat /dev/random|head -n 4 |     wc -l && touch 1.dd&&touch 2.dd && touch 3.dd&&touch 4.dd && touch 5.dd && echo *.dd |wc -w && rm *.dd && (cat /dev/random) | head -n 6 | wc -l && export CMD="echo 7"&&$CMD&&export CMD="echo       8"&&$CMD&& echo $AA""9"$AF"&&export CMD="ff"&&echo 10 >$CMD&&cat $CMD&& rm $CMD
+1
+2
+3
+4
+free(): invalid pointer
+5
+6
+7
+8
+9
+10
+Segmentation fault (core dumped)
+

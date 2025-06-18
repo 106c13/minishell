@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 17:57:32 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:24:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 	return (0);
 }
 
-int	setup_pipe_fds(t_shell *shell, int *prev_read_fd)
+static int	setup_pipe_fds(t_shell *shell, int *prev_read_fd)
 {
 	*prev_read_fd = -1;
 	if (shell->mfd.pipefd[0] != -1)
@@ -51,7 +51,7 @@ int	setup_pipe_fds(t_shell *shell, int *prev_read_fd)
 	return (0);
 }
 
-int	exec_pipe(t_command *cmd, t_shell *shell, int prev_read_fd)
+static int	exec_pipe(t_command *cmd, t_shell *shell, int prev_read_fd)
 {
 	close(shell->mfd.pipefd[0]);
 	if (prev_read_fd != -1)
@@ -116,47 +116,6 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 	return 0;
 }
 
-
-t_command	*skip_command(t_command *cmd, int depth)
-{
-	while (cmd)
-	{
-		//printf("Checking %s %d %d\n", cmd->cmd->str, cmd->depth, depth);
-		if (cmd->depth == depth && cmd->last_in_group)
-			break ;
-		if (cmd->next && cmd->next->depth ==  depth - 1)
-			break ;
-		cmd = cmd->next;
-	}
-	if (cmd)
-		cmd->last_in_group = 0;
-	return (cmd);
-}
-
-int	run_subshell(t_command **cmd, t_shell *shell)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		shell->depth++;
-		start_exec(*cmd, shell);
-		cleanup(shell);
-		exit(shell->exec_result);
-	}
-	else if (pid > 0)
-	{
-		//printf("STARTED PID %d\n", pid);
-		waitpid(pid, &shell->exec_result, 0);
-		*cmd = skip_command(*cmd, shell->depth + 1);
-		//if (*cmd)
-		//	printf("%d STOPPED ON %s %s\n", pid, (*cmd)->cmd->str, (*cmd)->args[1].str);
-		set_exec_result(shell, shell->exec_result);
-	}
-	return (0);
-}
-
 int start_exec(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
@@ -164,7 +123,13 @@ int start_exec(t_command *cmd, t_shell *shell)
 		expand_args(cmd, shell);
 //		print_cmd(cmd);
 		if (cmd->depth > shell->depth)
-			run_subshell(&cmd, shell);
+		{
+			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell));
+			if (get_ss_next_operator(cmd, shell) == PIPE)
+				run_ss_in_pipe(&cmd, shell);
+			else
+				run_ss_ordinary(&cmd, shell);
+		}
 		else if (cmd->depth == shell->depth)
 		{
 			if (cmd->operator_type == PIPE)

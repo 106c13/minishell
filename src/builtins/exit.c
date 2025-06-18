@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:41:25 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 17:52:46 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:33:28 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,10 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 	if (cmd != NULL && cmd->argc == 2)
 	{
 		arg = cmd->argv[1];
-		if (is_valid_number(arg) && !ft_strtoll_overflow(arg, &exit_code))
-			exit_code %= 256;
-		else
+		if (!(is_valid_number(arg) && !ft_strtoll_overflow(arg, &exit_code)))
 		{
 			printerr_three("exit", arg, "numeric argument required");
-			exit_code = 255;
+			exit_code = 2;
 		}
 	}
 	rl_clear_history();
