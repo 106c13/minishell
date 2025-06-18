@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 17:08:18 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:49:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ typedef struct s_command
 	int					args_count;
 	int					out_file_count;
 	int					in_file_count;
+	int					delimiter_count;
 
 	char				**argv;
 	int					argc;
 
 	int					operator_type;
-	char				*delimiter;
+	char				**delimiters;
 	int					depth;
 	int					last_in_group;
 	struct s_command	*next;

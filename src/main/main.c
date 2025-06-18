@@ -6,14 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 18:52:27 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:11:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		i = 0;
-char	*inputs[2];
 
 void	init_mfd(t_mfd *mfd)
 {
@@ -42,7 +40,7 @@ static void	listen(t_shell *shell)
 			safe_shell_exit(NULL, shell);
 		if (input[0] != '\0')
 		{
-//			add_history(input);
+			add_history(input);
 			cmd = parse_command(input);
 			free(input);
 			if (cmd == NULL)

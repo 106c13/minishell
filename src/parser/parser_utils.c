@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 16:17:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:20:06 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,6 @@ int	get_operator_type(char *word)
 	return (0);
 }
 
-void	free_command(t_command *cmd)
-{
-	t_command	*tmp;
-
-	while (cmd)
-	{
-		tmp = cmd;
-		free(cmd->cmd);
-		free(cmd->args);
-		cmd = tmp->next;
-		free(tmp);
-	}
-}
-
 t_command	*create_command(void)
 {
 	t_command	*cmd;
@@ -66,7 +52,8 @@ t_command	*create_command(void)
 	cmd->in_file_count = 0;
 	cmd->next = NULL;
 	cmd->operator_type = 0;
-	cmd->delimiter = NULL;
+	cmd->delimiters = NULL;
+	cmd->delimiter_count = 0;
 	cmd->depth = 0;
 	cmd->last_in_group = 0;
 	return (cmd);
