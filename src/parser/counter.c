@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/17 20:46:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:18:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	count_in_file(char *str)
 	return (size);
 }
 
-void	skip_file(char **str, int *count)
+void	skip_file(t_command *cmd, char **str, int *count)
 {
 	int	mode;
 
@@ -53,6 +53,8 @@ void	skip_file(char **str, int *count)
 	*str += count_in_file(*str);
 	if (is_eow(**str) && mode != HEREDOC)
 		(*count)++;
+	if (mode == HEREDOC)
+		cmd->delimiter_count++;
 }
 
 void	counter(char *str, t_command *cmd)
@@ -68,9 +70,9 @@ void	counter(char *str, t_command *cmd)
 		else if (*str == '(' || *str == ')')
 			str++;
 		else if (*str == '>')
-			skip_file(&str, &cmd->out_file_count);
+			skip_file(cmd, &str, &cmd->out_file_count);
 		else if (*str == '<')
-			skip_file(&str, &cmd->in_file_count);
+			skip_file(cmd, &str, &cmd->in_file_count);
 		else if (!is_whitespace(*str) && is_eow(*(str + 1)))
 		{
 			cmd->args_count++;

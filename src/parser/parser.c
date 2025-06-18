@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 19:24:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:54:32 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void print_cmd(t_command *cmd)
 {
 	int i;
 	int first_arg;
-	return ;
 	printf("\n\033[1;34m%-20s %-8s %-15s %-15s %s\033[0m\n", "COMMAND", "DEPTH", "DELIMITER", "OPERATOR", "ARGS");
 	printf("--------------------------------------------------------------------------\n");
 
@@ -46,8 +45,8 @@ void print_cmd(t_command *cmd)
 		printf("\033[0m");
 
 		// DELIMITER
-		if (cmd->delimiter)
-			printf("%-15s ", cmd->delimiter);
+		if (cmd->delimiters)
+			printf("%d %-13s ", cmd->delimiter_count, cmd->delimiters[0]);
 		else
 			printf("%-15s ",  "");
 

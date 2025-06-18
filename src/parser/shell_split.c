@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 18:24:03 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:54:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,15 @@ char	*ft_get_word(char **str)
 	return (word);
 }
 
+void	add_delimiter(char **str, t_command *cmd)
+{
+	int	i;
+
+	i = get_args_count(cmd->delimiters);
+	cmd->delimiters[i] = ft_get_word(str);
+	cmd->delimiters[i + 1] = NULL;
+}
+
 void	add_arg(char **str, t_command *cmd, int *arg_i)
 {
 	int	size;
@@ -115,7 +124,7 @@ void	add_arg(char **str, t_command *cmd, int *arg_i)
 		(*str)++;
 	if (mode == HEREDOC)
 	{
-		cmd->delimiter = ft_get_word(str);
+		add_delimiter(str, cmd);
 		return ;
 	}
 	cmd->args[*arg_i].append = 0;

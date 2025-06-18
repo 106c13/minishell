@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:11:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/16 18:23:43 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:12:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,21 @@ char	*clear_quotes(char *str)
 	return (nstr);
 }
 
+
+
 int	setup_command(char *str, t_command *cmd)
 {
 	counter(str, cmd);
 	cmd->args = malloc(sizeof(t_arg) * (cmd->args_count));
 	if (!cmd->args)
 		return (1);
+	cmd->delimiters = malloc(sizeof(char *) * (cmd->delimiter_count + 1));
+	if (!cmd->delimiters)
+	{
+		free(cmd->args);
+		return (1);
+	}
+	cmd->delimiters[0] = NULL;
 	cmd->cmd = cmd->args;
 	return (0);
 }
