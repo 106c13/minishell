@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 20:01:18 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:44:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@
 
 extern int	g_last_status;
 
-typedef struct s_env
+typedef struct 	s_env
 {
 	char			*key;
 	char			*val;
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_job
+typedef struct 	s_job
 {
 	int				id;
 	pid_t			pid;
@@ -44,7 +44,7 @@ typedef struct s_job
 	struct s_job	*next;
 }	t_job;
 
-typedef struct s_mfd
+typedef struct 	s_mfd
 {
 	int	in_fd;
 	int	out_fd;
@@ -53,7 +53,7 @@ typedef struct s_mfd
 	int	is_redirected;
 }	t_mfd;
 
-typedef struct s_shell
+typedef struct	s_shell
 {
 	int			exec_result;
 	int			depth;
@@ -62,6 +62,8 @@ typedef struct s_shell
 	t_job		*job_list;
 	t_mfd		mfd;
 }	t_shell;
+
+typedef t_command	t_cmd;
 
 /* exec */
 int		start_exec(t_command *cmd, t_shell *shell);
@@ -72,7 +74,7 @@ int		exec_builtin(t_command *cmd, t_shell *shell);
 
 int		is_builtin(t_command *cmd);
 
-void 	set_exec_result(t_shell *shell, int status);
+void	set_exec_result(t_shell *shell, int status);
 
 /* builtins */
 int		safe_shell_exit(t_command *cmd, t_shell *shell);
@@ -167,9 +169,7 @@ int		strlen_till(char *str, char c);
 
 void	restore_fd(t_mfd *mfd);
 
-
 /* fd_utils.c */
-
 int		redirect_to_file(t_command *cmd);
 
 int		redirect_from_file(t_command *cmd);
@@ -189,6 +189,7 @@ void	printerr_three(char *cmd, char *msg1, char *msg2);
 void	free_cmd_list(t_command *cmd);
 
 void	cleanup(t_shell *shell);
+
 /* interpret args*/
 void	expand_args(t_command *cmd, t_shell *shell);
 
@@ -200,14 +201,15 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len);
 int		match_pattern(char *pattern, char *filename);
 
 int		process_heredoc(char *delimiter, t_shell *shell);
+
 int		exec_heredocs(t_command *cmd, t_shell *shell);
 
 /* job_manager.c */
 void	collect_finished_jobs(t_shell *shell);
+
 void	add_job(t_shell *shell, pid_t pid);
 
-
-// args helpers
+/* args helpers */
 t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);
 
 void	print_cmd(t_command *cmd);
@@ -219,14 +221,18 @@ void	free_args(t_arg *arr, int len);
 t_arg	new_arg_copy(char *str, t_arg *ref);
 
 /* subshell */
-t_command	*skip_command(t_command *cmd, int depth);
-int	get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
-int	run_ss_in_pipe(t_command **cmd, t_shell *shell);
-int	run_ss_ordinary(t_command **cmd, t_shell *shell);
-int	run_subshell(t_command **cmd, t_shell *shell);
-int	ss_redirect(t_command *cmd, t_shell *shell);
-t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
+t_cmd	*skip_command(t_command *cmd, int depth);
 
+int		get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
 
+int		run_ss_in_pipe(t_command **cmd, t_shell *shell);
+
+int		run_ss_ordinary(t_command **cmd, t_shell *shell);
+
+int		run_subshell(t_command **cmd, t_shell *shell);
+
+int		ss_redirect(t_command *cmd, t_shell *shell);
+
+t_cmd	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
 
 #endif

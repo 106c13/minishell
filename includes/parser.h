@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 22:16:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:33:22 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ typedef struct s_arg
 	int		interpret_env_var;
 	char	quoted;
 
-	char	file; /* 0 - not file, 1 - infile 2 - outfile */
-	char	append; /* 0 or 1 */
+	char	file;
+	char	append;
 }	t_arg;
-
 
 typedef struct s_oper
 {

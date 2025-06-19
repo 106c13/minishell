@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:38:39 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:36:42 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	print_export_env(t_env *env)
 					if (tmp->val == NULL)
 						printf("declare -x %s=''\n", tmp->key);
 					else
-						printf("declare -x %s=%s\n", tmp->key, tmp->val);
+						printf("declare -x %s=\"%s\"\n", tmp->key, tmp->val);
 				}
 				printed_count += 1;
 			}
