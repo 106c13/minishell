@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 23:04:20 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:49:59 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void print_cmd(t_command *cmd)
 				printf("\033[1;32m"); // Green
 
 			if (cmd->args[i].file == 2 && cmd->args[i].append)
-				printf("OUTPUT %d: %s\033[0m %p APPEND", i, cmd->args[i].str, cmd->args[i].str);
+				printf("OUTPUT %d: %s\033[0m %d APPEND", i, cmd->args[i].str, cmd->args[i].depth);
 			else if (cmd->args[i].file == 2)
-				printf("OUTPUT %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+				printf("OUTPUT %d: %s\033[0m %d", i, cmd->args[i].str, cmd->args[i].depth);
 			else if (cmd->args[i].file == 1)
-				printf("INPUT %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+				printf("INPUT %d: %s\033[0m %d", i, cmd->args[i].str, cmd->args[i].depth);
 			else
-				printf("ARG %d: %s\033[0m %p", i, cmd->args[i].str, cmd->args[i].str);
+				printf("ARG %d: %s\033[0m %d", i, cmd->args[i].str, cmd->args[i].depth);
 
 			if (cmd->args[i].quoted)
 				printf(" \033[1;34mquoted\033[0m");
@@ -110,7 +110,7 @@ int	calculate_depth(char *src, char *dest)
 	return (depth);
 }
 
-void	get_command(t_command *cmd, char	*input)
+void	get_command(t_command *cmd, char *input)
 {
 	t_command	*tmp;
 	char		*t_input;
@@ -118,7 +118,7 @@ void	get_command(t_command *cmd, char	*input)
 	t_input = input;
 	while (*input)
 	{
-		if (shell_split(&input, cmd) != 0)
+		if (shell_split(&input, t_input, cmd) != 0)
 			return ;
 		if (*input)
 		{

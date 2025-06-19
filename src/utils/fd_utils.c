@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 17:40:19 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:16:53 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,28 @@ static int	duplicate_fd(int fd, int dest)
 	return (backup_fd);
 }
 
-int	redirect_from_file(t_command *cmd)
+int	redirect_from_file(t_command *cmd, int depth)
 {
 	int		i;
 	int		fd;
+	int		reded;
 	t_arg	file;
 
 	i = 0;
-	fd = -1;
+	fd = -2;
+	reded = 0;
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
+		printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
 		if (file.file != 1)
 			continue ;
-		if (fd != -1)
+		if (depth == file.depth)
+			reded = 1;
+		if (depth != file.depth && reded)
+			continue ;
+		printf("PASS: %s %d %d\n", file.str, file.depth, reded);
+		if (fd != -2)
 			close(fd);		
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
@@ -44,25 +52,27 @@ int	redirect_from_file(t_command *cmd)
 			return (-1);
 		}
 	}
-	if (fd == -1)
-		return (-1);
+	if (fd == -2)
+		return (-2);
 	return (duplicate_fd(fd, STDIN_FILENO));
 }
 
-int	redirect_to_file(t_command *cmd)
+int	redirect_to_file(t_command *cmd, int depth)
 {
 	int		i;
 	int		fd;
 	t_arg	file;
 
 	i = 0;
-	fd = -1;
+	fd = -2;
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
-		if (file.file != 2)
+		//printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
+		if (file.file != 2 || file.depth != depth)
 			continue ;
-		if (fd != -1)
+		//printf("PASS: %s %d\n", file.str, file.depth);
+		if (fd != -2)
 			close(fd);
 		if (file.append)
 			fd = open(file.str, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -74,8 +84,8 @@ int	redirect_to_file(t_command *cmd)
 			return (-1);
 		}
 	}
-	if (fd == -1)
-		return (-1);	
+	if (fd == -2)
+		return (-2);	
 	return (duplicate_fd(fd, STDOUT_FILENO));
 }
 
@@ -93,7 +103,7 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 	}	
 	else if (cmd->in_file_count != 0)
 	{
-		shell->mfd.in_fd = redirect_from_file(cmd);
+		shell->mfd.in_fd = redirect_from_file(cmd, cmd->depth);
 		if (shell->mfd.in_fd == -1)
 			return (FAILURE);
 		shell->mfd.is_redirected = 1;
@@ -105,7 +115,7 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 	}
 	if (cmd->out_file_count != 0)
 	{
-		shell->mfd.out_fd = redirect_to_file(cmd);
+		shell->mfd.out_fd = redirect_to_file(cmd, cmd->depth);
 		if (shell->mfd.out_fd == -1)
 			return (FAILURE);
 		shell->mfd.is_redirected = 1;

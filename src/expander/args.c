@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:28:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 17:53:33 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:32:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_arg	new_arg_copy(char *str, t_arg *ref)
 	new.interpret_env_var = ref->interpret_env_var;
 	new.file = ref->file;
 	new.append = ref->append;
+	new.depth = ref->depth;
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 16:47:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:58:43 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,9 @@ void	restore_fd(t_mfd *mfd);
 
 /* fd_utils.c */
 
-int		redirect_to_file(t_command *cmd);
+int		redirect_to_file(t_command *cmd, int depth);
 
-int		redirect_from_file(t_command *cmd);
+int		redirect_from_file(t_command *cmd, int depth);
 
 int		setup_redirection(t_command *cmd, t_shell *shell);
 

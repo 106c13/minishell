@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 22:43:50 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:49:53 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	add_delimiter(char **str, t_command *cmd)
 	cmd->delimiters[i + 1] = NULL;
 }
 
-void	add_arg(char **str, t_command *cmd, int *arg_i)
+void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
 {
 	int	size;
 	int	mode;
@@ -127,6 +127,7 @@ void	add_arg(char **str, t_command *cmd, int *arg_i)
 		add_delimiter(str, cmd);
 		return ;
 	}
+	cmd->args[*arg_i].depth = calculate_depth(tmp, *str);
 	cmd->args[*arg_i].append = 0;
 	cmd->args[*arg_i].file = 0;
 	if (is_quote(**str))
@@ -149,7 +150,7 @@ void	add_arg(char **str, t_command *cmd, int *arg_i)
 
 
 
-int	shell_split(char **str, t_command *cmd)
+int	shell_split(char **str, char *start, t_command *cmd)
 {
 	int		arg_i;
 	int		global_depth;
@@ -180,9 +181,9 @@ int	shell_split(char **str, t_command *cmd)
 			(*str)++;
 		}
 		else if (**str == '>' || **str == '<')
-			add_arg(str, cmd, &arg_i);	
+			add_arg(str, start, cmd, &arg_i);	
 		else
-			add_arg(str, cmd, &arg_i);	
+			add_arg(str, start, cmd, &arg_i);	
 	}
 	return (0);
 }

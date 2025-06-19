@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 22:16:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:43:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_arg
 
 	char	file; /* 0 - not file, 1 - infile 2 - outfile */
 	char	append; /* 0 or 1 */
+	int		depth;
 }	t_arg;
 
 
@@ -57,6 +58,7 @@ typedef struct s_command
 /* parser.c */
 t_command	*parse_command(char *cmd);
 
+int	calculate_depth(char *src, char *dest);
 /* utils.c */
 t_command	*create_command(void);
 
@@ -69,7 +71,7 @@ int			get_operator_type(char *word);
 int			get_unquoted_len(char	*stri);
 
 /* shell_split.c */
-int			shell_split(char **str, t_command *cmd);
+int			shell_split(char **str, char *tmp, t_command *cmd);
 
 int			get_mode_type(char	*mode);
 
