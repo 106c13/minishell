@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:02:03 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 21:59:52 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:09:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	validate(char *input)
 	char	quote;
 	int		expect_command;
 	int		paren_count;
-	
+	return 0;
 	op_type = 0;
 	quote = 0;
 	is_file = 0;

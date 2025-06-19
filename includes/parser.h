@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 21:22:18 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:16:21 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int			is_whitespace(char c);
 
 int			is_quote(char c);
 
-void		set_operator(char **str, t_command *cmd, int depth);
+void		set_operator(char **str, t_command *cmd, char *start);
 
 /* counter.c */
 void		counter(char *str, t_command *cmd);

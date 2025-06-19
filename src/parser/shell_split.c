@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 19:49:53 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:25:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_arg_len(char *str)
 
 	size = 0;
 	str = trim_spaces(str);
-	while(!is_eow(str[size]))
+	while (!is_eow(str[size]))
 	{
 		if (is_quote(str[size]))
 			size += count_in_quotes(&str[size]) + 2;
@@ -44,7 +44,7 @@ void	add_word(char **str, t_arg *arg, int size)
 {
 	char	quote;
 	int		i;
-	
+
 	arg->str = (char *)malloc(sizeof(char) * (size + 1));
 	quote = 0;
 	i = 0;
@@ -84,8 +84,8 @@ int	get_mode_type(char	*mode)
 
 char	*ft_get_word(char **str)
 {
-	int	size;
-	int	i;
+	int		size;
+	int		i;
 	char	*word;
 
 	size = get_arg_len(*str);
@@ -115,6 +115,7 @@ void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
 {
 	int	size;
 	int	mode;
+
 	mode = get_mode_type(*str);
 	if (mode == APPEND || mode == HEREDOC)
 		*str += 2;
@@ -147,43 +148,34 @@ void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
 	(*arg_i)++;
 }
 
-
-
-
 int	shell_split(char **str, char *start, t_command *cmd)
 {
 	int		arg_i;
-	int		global_depth;
 
 	if (setup_command(*str, cmd) != 0)
 		return (1);
 	arg_i = 0;
-	global_depth = cmd->depth;
 	while (**str)
 	{
 		if (is_whitespace(**str))
 			(*str)++;
 		else if (get_operator_type(*str) != 0)
 		{
-			set_operator(str, cmd, global_depth);
+			set_operator(str, cmd, start);
 			break ;
 		}
 		else if (**str == ')')
 		{
-			global_depth--;
 			cmd->last_in_group = 1;
 			(*str)++;
 		}
 		else if (**str == '(')
 		{
-			global_depth++;
 			cmd->depth++;
 			(*str)++;
 		}
-		else if (**str == '>' || **str == '<')
-			add_arg(str, start, cmd, &arg_i);	
 		else
-			add_arg(str, start, cmd, &arg_i);	
+			add_arg(str, start, cmd, &arg_i);
 	}
 	return (0);
 }

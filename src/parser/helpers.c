@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:24:36 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 22:22:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:17:11 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	is_whitespace(char c)
 	return (!c || c == ' ' || c == '\t');
 }
 
-void	set_operator(char **str, t_command *cmd, int depth)
+void	set_operator(char **str, t_command *cmd, char *start)
 {
-	cmd->op.type= get_operator_type(*str);
-	cmd->op.depth = depth;
+	cmd->op.type = get_operator_type(*str);
+	cmd->op.depth = calculate_depth(start, *str);
 	if (cmd->op.type == OR || cmd->op.type == AND)
 		*str += 2;
 	else
