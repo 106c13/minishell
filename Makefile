@@ -6,7 +6,8 @@ EXEC = \
 	exec.c builtin.c bin.c \
 	heredoc.c utils.c job_manager.c 
 ENV = \
-	env_init.c env_utils.c env_helpers.c
+	env_init.c env_utils.c env_helpers.c \
+	shlvl.c
 EXPANDER = \
 	expander.c expand_utils.c \
 	wildcard.c args.c

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 17:45:22 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:26:25 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ static void	listen(t_shell *shell)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
+
 	printf("MAIN PROC PID: %d\n", getpid());
 	shell.exec_result = 0;
 	init_env_list(&shell, env);
+	update_shlvl(shell.env_list);
 	setup_signals();
 	listen(&shell);
 	safe_shell_exit(NULL, &shell);

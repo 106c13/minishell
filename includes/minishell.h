@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 16:47:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:01:18 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int		envlen(t_env *env);
 
 char	**env_list_to_str_arr(t_env *env);
 
+void	update_shlvl(t_env *env);
 /* signal.c */
 void	setup_signals(void);
 
