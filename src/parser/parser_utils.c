@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 22:22:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:55:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,7 @@ t_command	*create_command(void)
 	cmd = malloc(sizeof(t_command) * 1);
 	if (!cmd)
 		return (NULL);
-	cmd->cmd = NULL;
-	cmd->args = NULL;
-	cmd->args_count = 0;
-	cmd->out_file_count = 0;
-	cmd->in_file_count = 0;
-	cmd->next = NULL;
-	cmd->op.depth = 0;
-	cmd->op.type = 0;
-	cmd->delimiters = NULL;
-	cmd->delimiter_count = 0;
-	cmd->depth = 0;
-	cmd->last_in_group = 0;
+	ft_memset(cmd, 0, sizeof(t_command));
 	return (cmd);
 }
 

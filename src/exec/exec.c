@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 23:23:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:56:44 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 {
 	if (setup_redirection(cmd, shell) == FAILURE)
 		return (FAILURE);
+	//printf("OR ORD!!!! IN CAT %s [%d] %d %d\n", cmd->cmd->str, shell->depth, shell->mfd.pipefd[0], shell->mfd.pipefd[1]);
 	if (!cmd->cmd)
 		return (0);
 	if (is_builtin(cmd))
@@ -68,8 +69,11 @@ int	start_pipe(t_command *cmd, t_shell *shell)
 	pid_t	pid;
 	int		prev_read_fd;
 
+	//printf("OR PIPE!!!! %s %d %d\n", cmd->cmd->str, shell->mfd.pipefd[0], shell->mfd.pipefd[1]);
 	if (setup_pipe_fds(shell, &prev_read_fd) == -1)
-		return (-1);	
+		return (-1);
+	//printf("OR PIPE!!!! AFTER %s %d %d\n", cmd->cmd->str, shell->mfd.pipefd[0], shell->mfd.pipefd[1]);
+	//printf("OR PREVPIPE: %s %d\n", cmd->cmd->str, prev_read_fd);
 	pid = fork();
 	if (pid == 0)
 		exec_pipe(cmd, shell, prev_read_fd);
@@ -95,14 +99,17 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 {
 	pid_t pid;
 
+	//printf("OR ORD!!!! AFTER %s [%d] %d %d\n", cmd->cmd->str, shell->depth, shell->mfd.pipefd[0], shell->mfd.pipefd[1]);
 	if (is_builtin(cmd))
 		exec_cmd(cmd, shell);
 	else
 	{
 		pid = fork();
 		if (pid == 0)
-		{
+		{	
+			//printf("RUNNING %s in %d\n", cmd->argv[0], getpid());
 			exec_cmd(cmd, shell);
+			//printf("FINISHED %s in %d\n", cmd->argv[0], getpid());
 			cleanup(shell);
 			exit(shell->exec_result);
 		}
@@ -131,8 +138,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 	sueta(cmd, shell);
 	while (cmd)
 	{
-		expand_args(cmd, shell);
-		//print_cmd(cmd);
+//		print_cmd(cmd);
 		if (cmd->depth > shell->depth)
 		{
 			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell, 0));
@@ -143,6 +149,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 		}
 		else if (cmd->depth == shell->depth)
 		{
+			expand_args(cmd, shell);
 			if (cmd->op.type == PIPE)
 				start_pipe(cmd, shell);
 			else
@@ -150,6 +157,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 		}
 		else
 			break ;
+		//printf("CMD %s FINISHED JOB\n", cmd->cmd->str);
 		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
 			break ;
 		if (cmd->op.type == AND && shell->exec_result != 0)

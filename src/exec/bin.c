@@ -6,36 +6,31 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/17 19:03:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:00:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_error_exit(t_command *cmd, char *msg, int code, t_shell *shell)
+static int	exec_local_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 {
-	printerr_two(cmd->cmd->str, msg);
-	rl_clear_history();
-	free_env_list(shell);
-	free_cmd_list(cmd);
-	exit(code);
-}
-
-static void	exec_local_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
-{
+	(void)shell;
 	if (access(cmd->cmd->str, F_OK) != 0)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd, "No such file or directory", 127, shell);
+		printerr_two(cmd->cmd->str, "No such file or directory");
+		return (127);
 	}
 	if (access(cmd->cmd->str, X_OK) != 0)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd, "Permission denied", 126, shell);
+		printerr_two(cmd->cmd->str, "Permission denied");
+		return (126);
 	}
 	execve(cmd->cmd->str, cmd->argv, env_str_arr);
 	free_split(env_str_arr);
-	print_error_exit(cmd, "Execution failded", 126, shell);
+	printerr_two(cmd->cmd->str, "Execution failded");
+	return (126);
 }
 
 static char	*get_bin_path(char *path, char *bin)
@@ -60,7 +55,7 @@ char	*find_executable_path(t_command *cmd, t_shell *shell)
 
 	path = get_env_val(shell->env_list, "PATH");
 	if (path == NULL)
-		print_error_exit(cmd, "PATH not set", 127, shell);
+		return (printerr_two(cmd->cmd->str, "PATH not set"), NULL);
 	split_path = ft_split(path, ':');
 	if (split_path == NULL)
 		return (NULL);
@@ -80,16 +75,18 @@ char	*find_executable_path(t_command *cmd, t_shell *shell)
 	return (NULL);
 }
 
-static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
+static int	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 {
 	char	*bin;
 	int		exit_code;
 
+	execve(cmd->cmd->str, cmd->argv, env_str_arr);
 	bin = find_executable_path(cmd, shell);
 	if (!bin)
 	{
 		free_split(env_str_arr);
-		print_error_exit(cmd, "command not found", 127, shell);
+		printerr_two(cmd->cmd->str, "command not found");
+		return (127);
 	}
 	execve(bin, cmd->argv, env_str_arr);
 	free(bin);
@@ -98,7 +95,8 @@ static void	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 		exit_code = 126;
 	else
 		exit_code = 127;
-	print_error_exit(cmd, strerror(errno), exit_code, shell);
+	printerr_two(cmd->cmd->str, strerror(errno));
+	return (exit_code);
 }
 
 /* pid = 0 kid, pid > 0 parent */
@@ -108,10 +106,9 @@ int	exec_bin(t_command *cmd, t_shell *shell)
 
 	env_str_arr = env_list_to_str_arr(shell->env_list);
 	if (!env_str_arr)
-		print_error_exit(cmd, "Failed to convert environment", 1, shell);
+		return (printerr_two(cmd->cmd->str, "Failed to convert environment"), 1);
 	if (str_contains(cmd->cmd->str, '.') && str_contains(cmd->cmd->str, '/'))
-		exec_local_bin(cmd, env_str_arr, shell);
+		return (exec_local_bin(cmd, env_str_arr, shell));
 	else
-		exec_path_bin(cmd, env_str_arr, shell);
-	return (SUCCESS);
+		return (exec_path_bin(cmd, env_str_arr, shell));
 }

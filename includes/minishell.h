@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 23:12:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:47:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_mfd
 	int	out_fd;
 	int	pipefd[2];
 	int	hd_fd;
+	int	is_redirected;
 }	t_mfd;
 
 typedef struct s_shell
@@ -137,6 +138,8 @@ void	free_split(char **split);
 
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 
+void	*ft_memset(void *ptr, int value, size_t num);
+
 int		str_contains(char *str, char c);
 
 char	*ft_strchr(const char *s, int c);
@@ -162,6 +165,13 @@ char	**str_arr_append(char **arr, char *str);
 int		strlen_till(char *str, char c);
 
 void	restore_fd(t_mfd *mfd);
+
+
+/* fd_utils.c */
+
+int		redirect_to_file(t_command *cmd);
+
+int		redirect_from_file(t_command *cmd);
 
 int		setup_redirection(t_command *cmd, t_shell *shell);
 
@@ -213,7 +223,8 @@ int	get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
 int	run_ss_in_pipe(t_command **cmd, t_shell *shell);
 int	run_ss_ordinary(t_command **cmd, t_shell *shell);
 int	run_subshell(t_command **cmd, t_shell *shell);
-int	ss_redirect(t_shell *shell);
+int	ss_redirect(t_command *cmd, t_shell *shell);
+t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
 
 
 

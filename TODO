@@ -10,6 +10,7 @@ check: a: exit rewrite
 a: $_ unset case
 a: minishell: /home/azolotar/Desktop/main_core/minishell: Execution failded
 a: Argument doesn't have \0 after expand
+a: SHLVL++
 
 h: make func that will free cmd
 h: remove & support

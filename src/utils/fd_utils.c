@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 21:08:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:54:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,28 +87,39 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 		if (shell->mfd.hd_fd == -1)
 			return (FAILURE);
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.hd_fd, STDIN_FILENO);
+		shell->mfd.is_redirected = 1;
 	}	
 	else if (cmd->in_file_count != 0)
 	{
 		shell->mfd.in_fd = redirect_from_file(cmd);
 		if (shell->mfd.in_fd == -1)
 			return (FAILURE);
+		shell->mfd.is_redirected = 1;
 	}
 	else if (shell->mfd.pipefd[0] != -1)
+	{
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.pipefd[0], STDIN_FILENO);
+		shell->mfd.is_redirected = 1;
+	}
 	if (cmd->out_file_count != 0)
 	{
 		shell->mfd.out_fd = redirect_to_file(cmd);
 		if (shell->mfd.out_fd == -1)
 			return (FAILURE);
+		shell->mfd.is_redirected = 1;
 	}
 	else if (shell->mfd.pipefd[1] != -1)
+	{
 		shell->mfd.out_fd = duplicate_fd(shell->mfd.pipefd[1], STDOUT_FILENO);
+		shell->mfd.is_redirected = 1;
+	}
 	return (SUCCESS);
 }
 
 void	restore_fd(t_mfd *mfd)
 {
+	if (!mfd->is_redirected)
+		return ;
 	if (mfd->in_fd >= 0)
 	{
 		dup2(mfd->in_fd, STDIN_FILENO);
