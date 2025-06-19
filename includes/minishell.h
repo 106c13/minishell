@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 20:44:12 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:00:34 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,16 @@
 
 extern int	g_last_status;
 
-typedef struct 	s_env
+typedef t_command t_cmd;
+
+typedef struct s_env
 {
 	char			*key;
 	char			*val;
 	struct s_env	*next;
 }	t_env;
 
-typedef struct 	s_job
+typedef struct s_job
 {
 	int				id;
 	pid_t			pid;
@@ -44,7 +46,7 @@ typedef struct 	s_job
 	struct s_job	*next;
 }	t_job;
 
-typedef struct 	s_mfd
+typedef struct s_mfd
 {
 	int	in_fd;
 	int	out_fd;
@@ -53,7 +55,7 @@ typedef struct 	s_mfd
 	int	is_redirected;
 }	t_mfd;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	int			exec_result;
 	int			depth;
@@ -62,8 +64,6 @@ typedef struct	s_shell
 	t_job		*job_list;
 	t_mfd		mfd;
 }	t_shell;
-
-typedef t_command	t_cmd;
 
 /* exec */
 int		start_exec(t_command *cmd, t_shell *shell);

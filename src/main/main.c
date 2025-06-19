@@ -6,22 +6,22 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 19:26:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:06:27 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_mfd(t_mfd *mfd)
+static void	init_mfd(t_mfd *mfd)
 {
-		mfd->in_fd = -1;
-		mfd->out_fd = -1;
-		mfd->pipefd[0] = -1;
-		mfd->pipefd[1] = -1;
-		mfd->hd_fd = -1;
+	mfd->in_fd = -1;
+	mfd->out_fd = -1;
+	mfd->pipefd[0] = -1;
+	mfd->pipefd[1] = -1;
+	mfd->hd_fd = -1;
 }
 
-void	sueta(t_command *cmd, t_shell *shell)
+static void	sueta(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
 	{
@@ -30,10 +30,27 @@ void	sueta(t_command *cmd, t_shell *shell)
 	}
 }
 
+static void	process_cmd(char *input, t_shell *shell)
+{
+	t_command	*cmd;
+
+	add_history(input);
+	cmd = parse_command(input);
+	free(input);
+	if (cmd == NULL)
+		return ;
+	shell->cmd_ptr = cmd;
+	init_mfd(&shell->mfd);
+	sueta(cmd, shell);
+	shell->depth = 0;
+	start_exec(cmd, shell);
+	free_cmd_list(cmd);
+	shell->cmd_ptr = NULL;
+}
+
 static void	listen(t_shell *shell)
 {
 	char		*input;
-	t_command	*cmd;
 
 	while (1)
 	{
@@ -49,19 +66,7 @@ static void	listen(t_shell *shell)
 			safe_shell_exit(NULL, shell);
 		if (input[0] != '\0')
 		{
-			add_history(input);
-			cmd = parse_command(input);
-			free(input);
-			if (cmd == NULL)
-				continue ;
-			shell->cmd_ptr = cmd;
-			init_mfd(&shell->mfd);
-			sueta(cmd, shell);
-			shell->depth = 0;
-//			print_cmd(cmd);
-			start_exec(cmd, shell);
-			free_cmd_list(cmd);
-			shell->cmd_ptr = NULL;
+			process_cmd(input, shell);
 		}
 	}
 }
@@ -70,7 +75,6 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
 
-	printf("MAIN PROC PID: %d\n", getpid());
 	shell.exec_result = 0;
 	init_env_list(&shell, env);
 	update_shlvl(shell.env_list);
