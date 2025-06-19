@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 20:58:43 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:21:57 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@
 # include "parser.h"
 # include "defines.h"
 
-extern int	g_last_status;
+extern int			g_last_status;
+
+typedef t_command	t_cmd;
 
 typedef struct s_env
 {
@@ -72,7 +74,7 @@ int		exec_builtin(t_command *cmd, t_shell *shell);
 
 int		is_builtin(t_command *cmd);
 
-void 	set_exec_result(t_shell *shell, int status);
+void	set_exec_result(t_shell *shell, int status);
 
 /* builtins */
 int		safe_shell_exit(t_command *cmd, t_shell *shell);
@@ -106,6 +108,7 @@ int		envlen(t_env *env);
 
 char	**env_list_to_str_arr(t_env *env);
 
+void	update_shlvl(t_env *env);
 /* signal.c */
 void	setup_signals(void);
 
@@ -166,9 +169,7 @@ int		strlen_till(char *str, char c);
 
 void	restore_fd(t_mfd *mfd);
 
-
 /* fd_utils.c */
-
 int		redirect_to_file(t_command *cmd, int depth);
 
 int		redirect_from_file(t_command *cmd, int depth);
@@ -188,6 +189,7 @@ void	printerr_three(char *cmd, char *msg1, char *msg2);
 void	free_cmd_list(t_command *cmd);
 
 void	cleanup(t_shell *shell);
+
 /* interpret args*/
 void	expand_args(t_command *cmd, t_shell *shell);
 
@@ -199,14 +201,15 @@ t_arg	*replace_wildcards(t_arg *pattern_arg, t_arg *arr, int *len);
 int		match_pattern(char *pattern, char *filename);
 
 int		process_heredoc(char *delimiter, t_shell *shell);
+
 int		exec_heredocs(t_command *cmd, t_shell *shell);
 
 /* job_manager.c */
 void	collect_finished_jobs(t_shell *shell);
+
 void	add_job(t_shell *shell, pid_t pid);
 
-
-// args helpers
+/* args helpers */
 t_arg	*append_arg(t_arg new, t_arg *old_arr, int *len);
 
 void	print_cmd(t_command *cmd);
@@ -218,14 +221,18 @@ void	free_args(t_arg *arr, int len);
 t_arg	new_arg_copy(char *str, t_arg *ref);
 
 /* subshell */
-t_command	*skip_command(t_command *cmd, int depth);
-int	get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
-int	run_ss_in_pipe(t_command **cmd, t_shell *shell);
-int	run_ss_ordinary(t_command **cmd, t_shell *shell);
-int	run_subshell(t_command **cmd, t_shell *shell);
-int	ss_redirect(t_command *cmd, t_shell *shell);
-t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
+t_cmd	*skip_command(t_command *cmd, int depth);
 
+int		get_ss_next_operator(t_command *cmd, t_shell *shell, int change);
 
+int		run_ss_in_pipe(t_command **cmd, t_shell *shell);
+
+int		run_ss_ordinary(t_command **cmd, t_shell *shell);
+
+int		run_subshell(t_command **cmd, t_shell *shell);
+
+int		ss_redirect(t_command *cmd, t_shell *shell);
+
+t_cmd	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
 
 #endif

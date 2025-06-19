@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 20:59:03 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:26:10 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	ss_redirect(t_command *cmd_list, t_shell *shell)
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.pipefd[0], STDIN_FILENO);
 	if (cmd->out_file_count != 0)
 	{
-		printf("HHHH\n");
 		shell->mfd.out_fd = redirect_to_file(cmd, shell->depth);
 		if (shell->mfd.out_fd == -1)
 			return (FAILURE);

@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_cmd.c                                         :+:      :+:    :+:   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/16 17:09:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 21:02:35 by azolotar         ###   ########.fr       */
+/*   Created: 2025/06/19 18:46:42 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/19 20:22:17 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cleanup(t_shell *shell)
+void	update_shlvl(t_env *env)
 {
-	free_env_list(shell);
-	free_cmd_list(shell->cmd_ptr);
-}
+	char	*old_str_val;
+	int		int_val;
+	char	*new_str_val;
 
-void	free_cmd_list(t_command *cmd)
-{
-	t_command	*next;
-
-	while (cmd)
+	old_str_val = get_env_val(env, "SHLVL");
+	if (!old_str_val)
 	{
-		next = cmd->next;
-		if (cmd->args)
-			free_args(cmd->args, cmd->args_count);
-		if (cmd->argv)
-			free_split(cmd->argv);
-		if (cmd->delimiters)
-			free_split(cmd->delimiters);
-		free(cmd);
-		cmd = next;
+		set_env_val(env, "SHLVL", "0");
+		return ;
 	}
+	int_val = ft_atoi(old_str_val);
+	if (int_val < 0)
+		int_val = 0;
+	int_val += 1;
+	new_str_val = ft_itoa(int_val);
+	if (!new_str_val)
+		return ;
+	set_env_val(env, "SHLVL", new_str_val);
+	free(new_str_val);
 }

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 19:43:07 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:22:18 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ typedef struct s_arg
 	int		interpret_env_var;
 	char	quoted;
 
-	char	file; /* 0 - not file, 1 - infile 2 - outfile */
-	char	append; /* 0 or 1 */
 	int		depth;
+	char	file;
+	char	append;
 }	t_arg;
-
 
 typedef struct s_oper
 {
@@ -58,7 +57,7 @@ typedef struct s_command
 /* parser.c */
 t_command	*parse_command(char *cmd);
 
-int	calculate_depth(char *src, char *dest);
+int			calculate_depth(char *src, char *dest);
 /* utils.c */
 t_command	*create_command(void);
 

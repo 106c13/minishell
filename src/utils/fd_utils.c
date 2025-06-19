@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 21:16:53 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:28:02 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	redirect_from_file(t_command *cmd, int depth)
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
-		printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
+		//printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
 		if (file.file != 1)
 			continue ;
 		if (depth == file.depth)
 			reded = 1;
 		if (depth != file.depth && reded)
 			continue ;
-		printf("PASS: %s %d %d\n", file.str, file.depth, reded);
+		//printf("PASS: %s %d %d\n", file.str, file.depth, reded);
 		if (fd != -2)
 			close(fd);		
 		fd = open(file.str, O_RDONLY);
