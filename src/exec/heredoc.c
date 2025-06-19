@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 21:26:01 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:11:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s`)\n", delimiter);
+			//TODO: make a function for this particular error
+			printerr_three("minishell: warning: here-document delimited by end-of-file (wanted `", delimiter, "`)");
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)
@@ -44,6 +45,8 @@ static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 		free(line);
 	}
 	close(write_fd);
+	free(delimiter);
+	cleanup(shell);
 	exit(0);
 }
 
@@ -70,7 +73,7 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	{
 		set_default_signals();
 		close(pipefd[0]);
-		write_heredoc(pipefd[1], delimiter, shell);
+		write_heredoc(pipefd[1],ft_strdup(delimiter), shell);
 	}
 	else
 	{

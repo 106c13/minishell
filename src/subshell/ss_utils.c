@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 15:02:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:42:56 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	ss_redirect(t_command *cmd_list, t_shell *shell)
 	cmd = get_ss_cmd(cmd_list, shell, 1);
 	if (cmd->delimiters[0])
 	{
+		printf("HEREDOC FD: %d\n", shell->mfd.hd_fd);
 		shell->mfd.hd_fd = cmd->heredoc_fd;
 		if (shell->mfd.hd_fd == -1)
 			return (FAILURE);

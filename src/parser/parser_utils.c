@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 16:55:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:00:52 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_command	*create_command(void)
 	if (!cmd)
 		return (NULL);
 	ft_memset(cmd, 0, sizeof(t_command));
+	cmd->argv = NULL;
 	return (cmd);
 }
 

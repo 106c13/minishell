@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:09:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 17:18:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:14:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	cleanup(t_shell *shell)
 {
 	// future: close fd in all cmds
 	//printf("CLEANUP %d %s\n", getpid(), shell->cmd_ptr->argv[0]);
-	rl_clear_history();
+	//rl_clear_history();
 	free_env_list(shell);
 	free_cmd_list(shell->cmd_ptr);
 }

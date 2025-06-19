@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:34:52 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 17:15:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:30:48 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	run_ss_in_pipe(t_command **cmd, t_shell *shell)
 		close(shell->mfd.pipefd[0]);
 		shell->mfd.pipefd[0] = -1;
 		exec_pipe(cmd, shell, prev_read_fd);
+		cleanup(shell);
+		exit(shell->exec_result);
 	}
 	else if (pid > 0)
 	{

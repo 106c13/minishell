@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 14:54:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:40:19 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 {
 	if (cmd->delimiters[0])
 	{
-		shell->mfd.hd_fd = cmd->heredoc_fd;
+		printf("HEREDOC FD: %d\n", shell->mfd.hd_fd);
+		if (shell->mfd.hd_fd == -1)
+			shell->mfd.hd_fd = cmd->heredoc_fd;
 		if (shell->mfd.hd_fd == -1)
 			return (FAILURE);
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.hd_fd, STDIN_FILENO);

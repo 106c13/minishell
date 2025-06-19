@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 16:57:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:45:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@ void	init_mfd(t_mfd *mfd)
 		mfd->out_fd = -1;
 		mfd->pipefd[0] = -1;
 		mfd->pipefd[1] = -1;
+		mfd->hd_fd = -1;
+}
+
+void	sueta(t_command *cmd, t_shell *shell)
+{
+	while (cmd)
+	{
+		cmd->heredoc_fd = exec_heredocs(cmd, shell);
+		cmd = cmd->next;
+	}
 }
 
 static void	listen(t_shell *shell)
@@ -46,6 +56,7 @@ static void	listen(t_shell *shell)
 				continue ;
 			shell->cmd_ptr = cmd;
 			init_mfd(&shell->mfd);
+			sueta(cmd, shell);
 			shell->depth = 0;
 //			print_cmd(cmd);
 			start_exec(cmd, shell);
