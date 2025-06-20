@@ -6,11 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 18:54:06 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:07:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*read_and_check(char *delimiter);
 
 static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 {
@@ -22,18 +24,9 @@ static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 	delimiter = clear_quotes(delimiter);
 	while (1)
 	{
-		line = readline("> ");
+		line = read_and_check(delimiter);
 		if (!line)
-		{
-			printerr_three("minishell: warning: here-document \
-			delimited by end-of-file (wanted `", delimiter, "`)");
 			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
 		if (expand && str_contains(line, '$'))
 		{
 			tmp = line;

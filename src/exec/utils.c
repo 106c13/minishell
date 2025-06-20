@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:01:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:29:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:05:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 	return (0);
 }
 
-int start_exec(t_command *cmd, t_shell *shell)
+int	start_exec(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
 	{
