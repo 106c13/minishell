@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 13:47:31 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:40:32 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ char	**str_arr_append(char **arr, char *str);
 int		strlen_till(char *str, char c);
 
 void	restore_fd(t_mfd *mfd);
+
+int		ft_isspace(char c);
 
 /* fd_utils.c */
 int		redirect_to_file(t_command *cmd, int depth);
