@@ -6,33 +6,37 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/18 18:35:58 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:13:25 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	update_or_add_env(char *arg, t_env *list)
+static void	update_or_add_env(char *arg, t_shell *shell)
 {
 	char	**split;
+	char	*equal_pos;
 
-	if (str_contains(arg, '='))
+	equal_pos = ft_strchr(arg, '=');
+	if (equal_pos)
 	{
 		split = ft_split(arg, '=');
-		if (get_args_count(split) != 2)
+		if (!split || !split[0])
 		{
 			free_split(split);
 			return ;
 		}
-		set_env_val(list, split[0], split[1]);
+		if (!split[1])
+			set_env_val(shell->env_list, split[0], "");
+		else
+			set_env_val(shell->env_list, split[0], split[1]);
 		free_split(split);
 	}
 	else
 	{
-		if (get_env_val(list, arg) != NULL)
+		if (get_env_val(shell->env_list, arg) != NULL)
 			return ;
-		else
-			set_env_val(list, arg, NULL);
+		set_env_val(shell->env_list, arg, NULL);
 	}
 }
 
@@ -72,7 +76,7 @@ int	export_env(t_command *cmd, t_shell *shell)
 	while (++i < cmd->argc)
 	{
 		if (is_valid_arg(cmd->argv[i]))
-			update_or_add_env(cmd->argv[i], shell->env_list);
+			update_or_add_env(cmd->argv[i], shell);
 		else
 		{
 			ret = FAILURE;

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 13:41:54 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:44:09 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:47:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,12 @@ void	set_env_val(t_env *env_list, char *key, char *new_val)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			free(tmp->val);
-			tmp->val = ft_strdup(new_val);
+			if (tmp->val)
+				free(tmp->val);
+			if (new_val)
+				tmp->val = ft_strdup(new_val);
+			else
+				tmp->val = NULL;
 			return ;
 		}
 		if (tmp->next == NULL)
