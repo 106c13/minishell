@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:41:25 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 13:41:02 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:17:35 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,30 @@ static long long	ft_strtoll(const char *str)
 	return (result * sign);
 }
 
+static void	numeric_arg_req(char *arg, int *code)
+{
+	printerr_three("exit", arg, "numeric argument required");
+	*code = 2;
+}
+
 int	safe_shell_exit(t_command *cmd, t_shell *shell)
 {
-	long long	exit_code_ll;
 	int			exit_code;
 	char		*arg;
 
 	exit_code = SUCCESS;
 	printf("exit\n");
 	if (cmd != NULL && cmd->argc >= 2 && !is_valid_number(cmd->argv[1]))
-	{
-		printerr_three("exit", cmd->argv[1], "numeric argument required");
-		exit_code = 2;
-	}
+		numeric_arg_req(cmd->argv[1], &exit_code);
 	else if (cmd != NULL && cmd->argc > 2)
 		return (printerr_two("exit", "too many arguments"), FAILURE);
 	else if (cmd != NULL && cmd->argc == 2)
 	{
 		arg = cmd->argv[1];
 		if (!is_valid_number(arg))
-		{
-			printerr_three("exit", arg, "numeric argument required");
-			exit_code = 2;
-		}
+			numeric_arg_req(cmd->argv[1], &exit_code);
 		else
-		{
-			exit_code_ll = ft_strtoll(arg);
-			exit_code = (int)(exit_code_ll % 256);
-		}
+			exit_code = (int)(ft_strtoll(arg) % 256);
 	}
 	cleanup(shell);
 	exit(exit_code);

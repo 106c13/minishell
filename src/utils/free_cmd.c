@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 17:09:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 15:30:50 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:58:58 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	cleanup(t_shell *shell)
 {
-	printf("before\n");
 	free_env_list(shell);
-	printf("after\n");
 	free_cmd_list(shell->cmd_ptr);
 }
 

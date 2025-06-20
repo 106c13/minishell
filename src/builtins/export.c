@@ -6,26 +6,51 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:01:29 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 15:13:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:13:09 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	update_or_add_env(char *arg, t_shell *shell)
+static void	handle_plus_equal_env(char *arg, t_shell *shell)
+{
+	char	*key;
+	char	*val;
+	char	*existing;
+	char	*joined;
+	char	*plus;
+
+	plus = ft_strchr(arg, '+');
+	if (!plus || plus[1] != '=')
+		return ;
+	key = ft_substr(arg, 0, plus - arg);
+	val = ft_strdup(plus + 2);
+	if (!key || !val)
+		return ;
+	existing = get_env_val(shell->env_list, key);
+	if (existing)
+		joined = ft_strjoin(existing, val);
+	else
+		joined = ft_strdup(val);
+	set_env_val(shell->env_list, key, joined);
+	free(key);
+	free(val);
+	free(joined);
+}
+
+static int	update_or_add_env(char *arg, t_shell *shell)
 {
 	char	**split;
 	char	*equal_pos;
 
+	if (ft_strchr(arg, '+') && ft_strchr(arg, '+')[1] == '=')
+		return (handle_plus_equal_env(arg, shell), 0);
 	equal_pos = ft_strchr(arg, '=');
 	if (equal_pos)
 	{
 		split = ft_split(arg, '=');
 		if (!split || !split[0])
-		{
-			free_split(split);
-			return ;
-		}
+			return (free_split(split), 0);
 		if (!split[1])
 			set_env_val(shell->env_list, split[0], "");
 		else
@@ -35,32 +60,27 @@ static void	update_or_add_env(char *arg, t_shell *shell)
 	else
 	{
 		if (get_env_val(shell->env_list, arg) != NULL)
-			return ;
+			return (0);
 		set_env_val(shell->env_list, arg, NULL);
 	}
+	return (0);
 }
 
 static int	is_valid_arg(char *arg)
 {
-	int	i;
+	int		i;
 
 	if (!arg || !*arg)
 		return (0);
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (0);
-	i = 0;
-	while (arg[i] && arg[i] != '=')
+	i = 1;
+	while (arg[i] && arg[i] != '=' && !(arg[i] == '+' && arg[i + 1] == '='))
 	{
-		if (i == 0 && !(ft_isalpha(arg[i]) || arg[i] == '_'))
-			return (0);
 		if (!(ft_isalnum(arg[i]) || arg[i] == '_'))
 			return (0);
 		i++;
 	}
-	if (arg[i] == '=' && i == 0)
-		return (0);
-	if (arg == NULL || arg[0] == '\0')
-		return (0);
 	return (1);
 }
 
@@ -80,7 +100,6 @@ int	export_env(t_command *cmd, t_shell *shell)
 		else
 		{
 			ret = FAILURE;
-			cmd->argv[i][strlen_till(cmd->argv[i], '=')] = '\0';
 			printerr_three("export", cmd->argv[i], "not a valid identifier");
 		}
 	}
