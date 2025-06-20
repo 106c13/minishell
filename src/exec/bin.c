@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 16:00:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:12:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int	exec_bin(t_command *cmd, t_shell *shell)
 
 	env_str_arr = env_list_to_str_arr(shell->env_list);
 	if (!env_str_arr)
-		return (printerr_two(cmd->cmd->str, "Failed to convert environment"), 1);
+		return (printerr_two(cmd->cmd->str, "Failed to convert environment"),
+				1);
 	if (str_contains(cmd->cmd->str, '.') && str_contains(cmd->cmd->str, '/'))
 		return (exec_local_bin(cmd, env_str_arr, shell));
 	else

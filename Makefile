@@ -27,9 +27,9 @@ UTILS = \
 	ft_itoa.c fd_utils.c str_utils.c \
 	ft_strchr.c ft_substr.c ft_strlen.c \
 	ft_putstr_fd.c printerr.c free_cmd.c \
-	ft_memset.c 
+	ft_memset.c fd_utils_helper.c
 SUBSHELL = \
-	subshell.c ss_utils.c
+	subshell.c ss_utils.c utils.c
 SRCS_DIR = src/
 OBJS_DIR = objs/
 INCLUDES_DIR = includes/
@@ -47,7 +47,7 @@ SRCS = \
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 LGFLAGS = -lreadline
 
 # ✨ Colors

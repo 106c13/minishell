@@ -6,12 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 15:14:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:07:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static int	duplicate_fd(int fd, int dest)
 {
@@ -22,7 +21,6 @@ static int	duplicate_fd(int fd, int dest)
 	close(fd);
 	return (backup_fd);
 }
-
 
 int	ss_redirect(t_command *cmd_list, t_shell *shell)
 {
@@ -35,7 +33,7 @@ int	ss_redirect(t_command *cmd_list, t_shell *shell)
 		if (shell->mfd.hd_fd == -1)
 			return (FAILURE);
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.hd_fd, STDIN_FILENO);
-	}	
+	}
 	else if (cmd->in_file_count != 0)
 	{
 		shell->mfd.s_in_fd = redirect_from_file(cmd, shell->depth);
@@ -81,4 +79,16 @@ t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change)
 	if (change)
 		cmd->op.type = 0;
 	return (cmd);
+}
+
+int	run_subshell(t_command **cmd, t_shell *shell)
+{
+	get_ss_next_operator(*cmd, shell, 1);
+	ss_redirect(*cmd, shell);
+	shell->depth++;
+	start_exec(*cmd, shell);
+	shell->mfd.is_redirected = 1;
+	ss_restore_fd(&shell->mfd);
+	restore_fd(&shell->mfd);
+	return (0);
 }

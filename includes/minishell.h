@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 13:47:31 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:45:21 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int		exec_builtin(t_command *cmd, t_shell *shell);
 int		is_builtin(t_command *cmd);
 
 void	set_exec_result(t_shell *shell, int status);
+
+void	close_pipes(t_mfd *mfd);
 
 /* builtins */
 int		safe_shell_exit(t_command *cmd, t_shell *shell);
@@ -237,4 +239,26 @@ int		ss_redirect(t_command *cmd, t_shell *shell);
 
 t_cmd	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
 
+/* subshell/utils.c */
+
+t_command	*skip_command(t_command *cmd, int depth);
+
+int	run_subshell(t_command **cmd, t_shell *shell);
+
+void	ss_restore_fd(t_mfd *mfd);
+
+void	do_in_ss(t_command **cmd, t_shell *shell);
+
+int		exec_cmd(t_command *cmd, t_shell *shell);
+
+int	start_pipe(t_command *cmd, t_shell *shell);
+
+int	exec_ordinary(t_command *cmd, t_shell *shell);
+
+/* ft_utils_helpers.c */
+int	check_heredoc(t_command *cmd, t_shell *shell);
+
+int	check_in(t_command *cmd, t_shell *shell);
+
+int	check_out(t_command *cmd, t_shell *shell);
 #endif

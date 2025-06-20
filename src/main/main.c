@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 14:40:56 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:23:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	process_cmd(char *input, t_shell *shell)
 	shell->depth = 0;
 	start_exec(cmd, shell);
 	free_cmd_list(cmd);
+	close_pipes(&shell->mfd);
 	shell->cmd_ptr = NULL;
 }
 
