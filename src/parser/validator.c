@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 17:23:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:39:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:04:55 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,30 @@ static int	check_syntax(char *str)
 	return (1);
 }
 
-static int	check_invalid_chars(const char *str)
+int	check_invalid_chars(char *str)
 {
 	int		i;
 	char	quote;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			quote = str[i++];
 			while (str[i] && str[i] != quote)
 				i++;
+			if (!str[i])
+				return (0);
 		}
-		else if (str[i] == ';' || (str[i] == '&' && str[i + 1] != '&'))
+		else if (str[i] == ';')
 			return (0);
-		i++;
+		else if (str[i] == '&')
+		{
+			if (str[i + 1] != '&')
+				return (0);
+			i++;
+		}
 	}
 	return (1);
 }
