@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 15:16:13 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:46:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**env_list_to_str_arr(t_env *env)
 			tmp = result[i];
 			result[i] = ft_strjoin(result[i], env->val);
 			free(tmp);
-			i++;		
+			i++;
 		}
 		env = env->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:49:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:40:12 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,10 +242,9 @@ int		ss_redirect(t_command *cmd, t_shell *shell);
 t_cmd	*get_ss_cmd(t_command *cmd, t_shell *shell, int change);
 
 /* subshell/utils.c */
+t_cmd	*skip_command(t_command *cmd, int depth);
 
-t_command	*skip_command(t_command *cmd, int depth);
-
-int	run_subshell(t_command **cmd, t_shell *shell);
+int		run_subshell(t_command **cmd, t_shell *shell);
 
 void	ss_restore_fd(t_mfd *mfd);
 
@@ -253,14 +252,15 @@ void	do_in_ss(t_command **cmd, t_shell *shell);
 
 int		exec_cmd(t_command *cmd, t_shell *shell);
 
-int	start_pipe(t_command *cmd, t_shell *shell);
+int		start_pipe(t_command *cmd, t_shell *shell);
 
-int	exec_ordinary(t_command *cmd, t_shell *shell);
+int		exec_ordinary(t_command *cmd, t_shell *shell);
 
 /* ft_utils_helpers.c */
-int	check_heredoc(t_command *cmd, t_shell *shell);
+int		check_heredoc(t_command *cmd, t_shell *shell);
 
-int	check_in(t_command *cmd, t_shell *shell);
+int		check_in(t_command *cmd, t_shell *shell);
 
-int	check_out(t_command *cmd, t_shell *shell);
+int		check_out(t_command *cmd, t_shell *shell);
+
 #endif
