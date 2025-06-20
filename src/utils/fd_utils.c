@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 18:01:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:25:38 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,11 @@ int	redirect_from_file(t_command *cmd, int depth)
 		if (depth != file.depth && reded)
 			continue ;
 		if (fd != -2)
-			close(fd);		
+			close(fd);
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
-		{
-			printerr_two(file.str, "No such file or directory");
-			return (-1);
-		}
+			return (printerr_two(file.str,
+					"No such file or directory"), -1);
 	}
 	return (duplicate_fd(fd, STDIN_FILENO));
 }
@@ -75,10 +73,8 @@ int	redirect_to_file(t_command *cmd, int depth)
 		else
 			fd = open(file.str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
-		{
-			printf("minishell: %s: Permission denied or file error\n", file.str);
-			return (-1);
-		}
+			return (printf("minishell: %s: Permission "
+					"denied or file error\n", file.str), -1);
 	}
 	return (duplicate_fd(fd, STDOUT_FILENO));
 }
@@ -92,7 +88,7 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 		if (check_in(cmd, shell) != SUCCESS)
 			return (FAILURE);
 	}
-	else if (shell->mfd.pipefd[0] != -1)
+	else if (shell->mfd.pipefd[0] != -1 && shell->mfd.hd_fd == -1)
 	{
 		shell->mfd.in_fd = duplicate_fd(shell->mfd.pipefd[0], STDIN_FILENO);
 		shell->mfd.is_redirected = 1;

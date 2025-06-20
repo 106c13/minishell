@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 15:48:57 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:36:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ static char	setup_quote(char *cmd_str, char quote, int i)
 		return (quote);
 }
 
+void	init(char **res, int *i, char *quote);
+
 char	*replace_env_vars(t_shell *shell, char *cmd_str, int quoted)
 {
 	char	*res;
 	int		i;
 	char	quote;
 
-	res = ft_strdup("");
-	i = 0;
-	quote = 0;
+	init(&res, &i, &quote);
 	while (cmd_str[i])
 	{
 		quote = setup_quote(cmd_str, quote, i);
@@ -76,6 +76,8 @@ char	*replace_env_vars(t_shell *shell, char *cmd_str, int quoted)
 				res = append_exec_result(res, shell, &i);
 			else if (cmd_str[i + 1] == '_' || ft_isalnum(cmd_str[i + 1]))
 				res = append_env_val(res, cmd_str, &i, shell->env_list);
+			else
+				res = str_append_char_safe(res, cmd_str[i++]);
 		}
 		else
 			res = str_append_char_safe(res, cmd_str[i++]);
@@ -86,7 +88,7 @@ char	*replace_env_vars(t_shell *shell, char *cmd_str, int quoted)
 	return (res);
 }
 
-int	count_not_files_args(t_arg *args, int args_count);
+int		count_not_files_args(t_arg *args, int args_count);
 
 char	**args_to_argv(t_arg *args, int args_count)
 {

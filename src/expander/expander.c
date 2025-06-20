@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 19:02:58 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:22:26 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_arg	*expand_arg(
 	return (new_args);
 }
 
-int 	is_there_arg(t_command *cmd)
+int	is_there_arg(t_command *cmd)
 {
 	int	i;
 
