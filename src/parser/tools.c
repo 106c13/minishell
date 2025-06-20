@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:11:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 23:05:33 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:18:13 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,24 @@ int	setup_command(char *str, t_command *cmd)
 	cmd->delimiters[0] = NULL;
 	cmd->cmd = cmd->args;
 	return (0);
+}
+
+char	*ft_get_word(char **str)
+{
+	int		size;
+	int		i;
+	char	*word;
+
+	size = get_arg_len(*str);
+	i = 0;
+	word = malloc(sizeof(char) * (size + 1));
+	if (!word)
+		return (NULL);
+	while (i < size)
+	{
+		word[i++] = **str;
+		(*str)++;
+	}
+	word[size] = '\0';
+	return (word);
 }

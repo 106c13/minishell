@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:01:39 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 17:44:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:14:35 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,7 @@ int	exec_ordinary(t_command *cmd, t_shell *shell)
 		pid = fork();
 		if (pid == 0)
 		{	
-			//printf("RUNNING %s in %d\n", cmd->argv[0], getpid());
 			exec_cmd(cmd, shell);
-			//printf("FINISHED %s in %d\n", cmd->argv[0], getpid());
 			cleanup(shell);
 			exit(shell->exec_result);
 		}
@@ -128,10 +126,13 @@ int start_exec(t_command *cmd, t_shell *shell)
 	
 	while (cmd)
 	{
+
 //		print_cmd(cmd);
+	//	printf("RUNNING %s %s %d\n", cmd->args[0].str, cmd->args[1].str, getpid());
 		if (cmd->depth > shell->depth)
 		{
-			//printf("TEST OP %d\n", get_ss_next_operator(cmd, shell, 0));
+	//		printf("CREATING NEW SUBSHELL %d\n", getpid());
+	//		printf("TEST OP %d\n", get_ss_next_operator(cmd, shell, 0));
 			if (get_ss_next_operator(cmd, shell, 0) == PIPE)
 				run_ss_in_pipe(&cmd, shell);
 			else
@@ -139,6 +140,7 @@ int start_exec(t_command *cmd, t_shell *shell)
 		}
 		else if (cmd->depth == shell->depth)
 		{
+		//	printf("IN SUBSHELL %d\n", getpid());
 			expand_args(cmd, shell);
 			if (cmd->op.type == PIPE)
 				start_pipe(cmd, shell);

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 21:21:57 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:47:31 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_mfd
 	int	pipefd[2];
 	int	hd_fd;
 	int	is_redirected;
+	int	s_in_fd;
+	int	s_out_fd;
 }	t_mfd;
 
 typedef struct s_shell

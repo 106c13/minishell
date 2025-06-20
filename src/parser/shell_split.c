@@ -6,39 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 23:25:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:33:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	get_arg_len(char *str)
-{
-	int	size;
-
-	size = 0;
-	str = trim_spaces(str);
-	while (!is_eow(str[size]))
-	{
-		if (is_quote(str[size]))
-			size += count_in_quotes(&str[size]) + 2;
-		else
-			size++;
-	}
-	return (size);
-}
-
-int	is_env(char *str)
-{
-	if (*str == '$')
-	{
-		if (str[1] == '?')
-			return (1);
-		else if (ft_isalnum(str[1]) || str[1] == '_')
-			return (1);
-	}
-	return (0);
-}
 
 void	add_word(char **str, t_arg *arg, int size)
 {
@@ -69,68 +41,10 @@ void	add_word(char **str, t_arg *arg, int size)
 	arg->str[size] = '\0';
 }
 
-int	get_mode_type(char	*mode)
-{
-	if (ft_strncmp(mode, ">>", 2) == 0)
-		return (APPEND);
-	if (ft_strncmp(mode, "<<", 2) == 0)
-		return (HEREDOC);
-	if (ft_strncmp(mode, ">", 1) == 0)
-		return (TRUNCATE);
-	if (ft_strncmp(mode, "<", 1) == 0)
-		return (INPUT);
-	return (0);
-}
-
-char	*ft_get_word(char **str)
-{
-	int		size;
-	int		i;
-	char	*word;
-
-	size = get_arg_len(*str);
-	i = 0;
-	word = malloc(sizeof(char) * (size + 1));
-	if (!word)
-		return (NULL);
-	while (i < size)
-	{
-		word[i++] = **str;
-		(*str)++;
-	}
-	word[size] = '\0';
-	return (word);
-}
-
-void	add_delimiter(char **str, t_command *cmd)
-{
-	int	i;
-
-	i = get_args_count(cmd->delimiters);
-	cmd->delimiters[i] = ft_get_word(str);
-	cmd->delimiters[i + 1] = NULL;
-}
-
-void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
+void	add_arg2(char **str, t_command *cmd, int *arg_i, int mode)
 {
 	int	size;
-	int	mode;
 
-	mode = get_mode_type(*str);
-	if (mode == APPEND || mode == HEREDOC)
-		*str += 2;
-	else if (mode == TRUNCATE || mode == INPUT)
-		*str += 1;
-	while (**str == ' ')
-		(*str)++;
-	if (mode == HEREDOC)
-	{
-		add_delimiter(str, cmd);
-		return ;
-	}
-	cmd->args[*arg_i].depth = calculate_depth(tmp, *str);
-	cmd->args[*arg_i].append = 0;
-	cmd->args[*arg_i].file = 0;
 	if (is_quote(**str))
 		cmd->args[*arg_i].quoted = 2;
 	else
@@ -148,6 +62,28 @@ void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
 	(*arg_i)++;
 }
 
+void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
+{
+	int	mode;
+
+	mode = get_mode_type(*str);
+	if (mode == APPEND || mode == HEREDOC)
+		*str += 2;
+	else if (mode == TRUNCATE || mode == INPUT)
+		*str += 1;
+	while (**str == ' ')
+		(*str)++;
+	if (mode == HEREDOC)
+	{
+		add_delimiter(str, cmd);
+		return ;
+	}
+	cmd->args[*arg_i].depth = calculate_depth(tmp, *str);
+	cmd->args[*arg_i].append = 0;
+	cmd->args[*arg_i].file = 0;
+	add_arg2(str, cmd, arg_i, mode);
+}
+
 int	shell_split(char **str, char *start, t_command *cmd)
 {
 	int		arg_i;
@@ -160,10 +96,7 @@ int	shell_split(char **str, char *start, t_command *cmd)
 		if (is_whitespace(**str))
 			(*str)++;
 		else if (get_operator_type(*str) != 0)
-		{
-			set_operator(str, cmd, start);
-			break ;
-		}
+			return (set_operator(str, cmd, start));
 		else if (**str == ')')
 		{
 			cmd->last_in_group = 1;

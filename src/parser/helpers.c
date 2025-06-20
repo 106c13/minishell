@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:24:36 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 23:17:11 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:34:18 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_whitespace(char c)
 	return (!c || c == ' ' || c == '\t');
 }
 
-void	set_operator(char **str, t_command *cmd, char *start)
+int	set_operator(char **str, t_command *cmd, char *start)
 {
 	cmd->op.type = get_operator_type(*str);
 	cmd->op.depth = calculate_depth(start, *str);
@@ -30,6 +30,7 @@ void	set_operator(char **str, t_command *cmd, char *start)
 		*str += 2;
 	else
 		(*str)++;
+	return (0);
 }
 
 int	is_eow(char c)
@@ -40,5 +41,17 @@ int	is_eow(char c)
 		|| c == '&' || c == '|'
 		|| c == '(' || c == ')')
 		return (1);
+	return (0);
+}
+
+int	is_env(char *str)
+{
+	if (*str == '$')
+	{
+		if (str[1] == '?')
+			return (1);
+		else if (ft_isalnum(str[1]) || str[1] == '_')
+			return (1);
+	}
 	return (0);
 }
