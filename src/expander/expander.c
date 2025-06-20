@@ -64,18 +64,21 @@ static t_arg	*expand_arg(
 	return (new_args);
 }
 
-int	is_there_arg(t_command *cmd)
+void	find_cmd(t_command *cmd)
 {
 	int	i;
 
 	i = 0;
+    cmd->cmd = NULL;
 	while (i < cmd->args_count)
 	{
 		if (cmd->args[i].file == 0)
-			return (1);
+        {
+			cmd->cmd = &cmd->args[i];
+            break ;
+        }
 		i++;
 	}
-	return (0);
 }
 
 void	expand_args(t_command *cmd, t_shell *shell)
@@ -97,10 +100,7 @@ void	expand_args(t_command *cmd, t_shell *shell)
 	free_args(cmd->args, cmd->args_count);
 	cmd->args = new_args;
 	cmd->args_count = new_count;
-	if (cmd->args && cmd->args[0].file == 0)
-		cmd->cmd = &cmd->args[0];
-	if (!is_there_arg(cmd))
-		cmd->cmd = NULL;
+	find_cmd(cmd);
 	cmd->argv = args_to_argv(new_args, new_count);
 	cmd->argc = get_args_count(cmd->argv);
 }
