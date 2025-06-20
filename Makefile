@@ -5,13 +5,13 @@ MAIN = \
 EXEC = \
 	exec.c builtin.c bin.c \
 	heredoc.c utils.c job_manager.c \
-	helpers.c 
+	helpers.c heredoc_utils.c
 ENV = \
 	env_init.c env_utils.c env_helpers.c \
 	shlvl.c
 EXPANDER = \
 	expander.c expand_utils.c \
-	wildcard.c args.c
+	wildcard.c args.c norm.c
 BUILTINS = \
 	echo.c cd.c pwd.c \
 	export.c unset.c env.c \

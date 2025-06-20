@@ -6,11 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:27:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:07:16 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*read_and_check(char *delimiter);
 
 static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 {
@@ -22,18 +24,9 @@ static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 	delimiter = clear_quotes(delimiter);
 	while (1)
 	{
-		line = readline("> ");
+		line = read_and_check(delimiter);
 		if (!line)
-		{
-			//TODO: make a function for this particular error
-			printerr_three("minishell: warning: here-document delimited by end-of-file (wanted `", delimiter, "`)");
 			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
 		if (expand && str_contains(line, '$'))
 		{
 			tmp = line;
@@ -58,6 +51,7 @@ int	pipe_error(int *pipefd)
 	return (-1);
 }
 
+/* no if for pid > 0 cause of norminette */
 int	process_heredoc(char *delimiter, t_shell *shell)
 {
 	int		pipefd[2];
@@ -65,10 +59,7 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	int		status;
 
 	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		return (-1);
-	}
+		return (perror("pipe"), -1);
 	pid = fork();
 	if (pid == -1)
 		return (pipe_error(pipefd));
@@ -76,19 +67,17 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	{
 		set_default_signals();
 		close(pipefd[0]);
-		write_heredoc(pipefd[1],ft_strdup(delimiter), shell);
+		write_heredoc(pipefd[1], ft_strdup(delimiter), shell);
+		return (-1);
 	}
-	else
-	{
-		close(pipefd[1]);
-		waitpid(pid, &status, 0);
-		set_exec_result(shell, status);
-		if (shell->exec_result == 130)
-			return (close(pipefd[0]), -1);
-		if (shell->exec_result == SUCCESS)
-			return (pipefd[0]);
-		close(pipefd[0]);
-	}
+	close(pipefd[1]);
+	waitpid(pid, &status, 0);
+	set_exec_result(shell, status);
+	if (shell->exec_result == 130)
+		return (close(pipefd[0]), -1);
+	if (shell->exec_result == SUCCESS)
+		return (pipefd[0]);
+	close(pipefd[0]);
 	return (-1);
 }
 
