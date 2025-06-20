@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:19 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 14:33:35 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:45:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_arg
 	int		depth;
 	char	file;
 	char	append;
+	int		wed;
 }	t_arg;
 
 typedef struct s_oper

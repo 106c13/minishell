@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 18:56:46 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/18 15:30:19 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:06:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ void	collect_finished_jobs(t_shell *shell)
 		else
 			prev = curr;
 		curr = next;
+	}
+}
+
+void	clear_jobs(t_job *job)
+{
+	t_job *tmp;
+
+	while (job)
+	{
+		tmp = job;
+		job = job->next;
+		free(tmp);		
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:49:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:06:56 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,4 +263,11 @@ int	check_heredoc(t_command *cmd, t_shell *shell);
 int	check_in(t_command *cmd, t_shell *shell);
 
 int	check_out(t_command *cmd, t_shell *shell);
+
+/* exec/helpers.c */
+int	is_multiple_file(t_arg *args, int n);
+
+/* job_manager.c */
+void	clear_jobs(t_job *job);
+
 #endif

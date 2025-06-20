@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:31:14 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:02:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_arg	*handle_expanded_str(
 	else if (old->quoted)
 	{
 		new = new_arg_copy(ft_strdup(expanded), old);
+		new.wed = 0;
 		new_args = append_arg(new, new_args, new_count);
 	}
 	else

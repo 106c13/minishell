@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:01:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:29:32 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:56:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	do_in_ss(t_command **cmd, t_shell *shell)
 
 int	exec_cmd(t_command *cmd, t_shell *shell)
 {
+	if (is_multiple_file(cmd->args, cmd->args_count))
+	{
+		shell->exec_result = 1;
+		return (printerr_one("ambiguous redirect"), 1);
+	}
 	if (setup_redirection(cmd, shell) == FAILURE)
 		return (FAILURE);
 	if (!cmd->argv)
