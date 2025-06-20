@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:23:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/12 18:50:11 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 21:20:50 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ int	print_working_dir(t_command *cmd, t_shell *shell)
 	printf("%s\n", pwd);
 	(void)shell;
 	(void)cmd;
+	free(pwd);
 	return (SUCCESS);
 }
