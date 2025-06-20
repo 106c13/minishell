@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_cmd.c                                         :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/16 17:09:52 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 15:58:58 by azolotar         ###   ########.fr       */
+/*   Created: 2025/06/20 17:38:09 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/20 17:39:02 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	cleanup(t_shell *shell)
+int	ft_isspace(char c)
 {
-	free_env_list(shell);
-	free_cmd_list(shell->cmd_ptr);
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
 }
 
-void	free_cmd_list(t_command *cmd)
+int	is_empty(char *str)
 {
-	t_command	*next;
-
-	while (cmd)
+	if (!str)
+		return (1);
+	while (*str)
 	{
-		next = cmd->next;
-		if (cmd->args)
-			free_args(cmd->args, cmd->args_count);
-		if (cmd->argv)
-			free_split(cmd->argv);
-		if (cmd->delimiters)
-			free_split(cmd->delimiters);
-		free(cmd);
-		cmd = next;
+		if (!ft_isspace((unsigned char)*str))
+			return (0);
+		str++;
 	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:28:08 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/16 16:46:25 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 12:44:48 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ int	change_dir(t_command *cmd, t_shell *shell)
 	char	*path;
 	char	*old_pwd;
 
-	if (cmd->argc != 2)
+	if (cmd->argc == 1)
 		return (printerr_two("cd", "Wrong arguments count"),
+			FAILURE);
+	if (cmd->argc > 2)
+		return (printerr_two("cd", "too many arguments"),
 			FAILURE);
 	path = cmd->argv[1];
 	old_pwd = getcwd(NULL, 0);

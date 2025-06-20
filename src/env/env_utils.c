@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:45:06 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 20:36:42 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:16:13 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	print_export_env(t_env *env)
 				if (ft_strcmp(tmp->key, "_") != 0)
 				{
 					if (tmp->val == NULL)
-						printf("declare -x %s=''\n", tmp->key);
+						printf("declare -x %s\n", tmp->key);
 					else
 						printf("declare -x %s=\"%s\"\n", tmp->key, tmp->val);
 				}
@@ -80,11 +80,14 @@ char	**env_list_to_str_arr(t_env *env)
 	i = 0;
 	while (env)
 	{
-		result[i] = ft_strjoin(env->key, "=");
-		tmp = result[i];
-		result[i] = ft_strjoin(result[i], env->val);
-		free(tmp);
-		i++;
+		if (env->val)
+		{
+			result[i] = ft_strjoin(env->key, "=");
+			tmp = result[i];
+			result[i] = ft_strjoin(result[i], env->val);
+			free(tmp);
+			i++;		
+		}
 		env = env->next;
 	}
 	result[i] = NULL;

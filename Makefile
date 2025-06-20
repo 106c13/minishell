@@ -19,7 +19,7 @@ PARSER = \
 	parser.c parser_utils.c \
 	shell_split.c validator.c \
 	tools.c counter.c helpers.c \
-	parser_utils1.c
+	parser_utils1.c validator_utils.c
 UTILS = \
 	ft_memcpy.c ft_split.c ft_strcmp.c \
 	ft_strdup.c ft_strjoin.c utils.c \
@@ -27,7 +27,7 @@ UTILS = \
 	ft_itoa.c fd_utils.c str_utils.c \
 	ft_strchr.c ft_substr.c ft_strlen.c \
 	ft_putstr_fd.c printerr.c free_cmd.c \
-	ft_memset.c fd_utils_helper.c
+	ft_memset.c fd_utils_helper.c ft_isspace.c
 SUBSHELL = \
 	subshell.c ss_utils.c utils.c
 SRCS_DIR = src/

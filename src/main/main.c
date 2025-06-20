@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:23:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:50:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static void	process_cmd(char *input, t_shell *shell)
 
 static void	listen(t_shell *shell)
 {
-	char	*input;
+	int			last_code;
+	char		*input;
 
 	while (1)
 	{
@@ -67,7 +68,11 @@ static void	listen(t_shell *shell)
 			g_last_status = 0;
 		}
 		if (input == NULL)
-			safe_shell_exit(NULL, shell);
+		{
+			last_code = shell->exec_result;
+			cleanup(shell);
+			exit(last_code);
+		}
 		if (input[0] != '\0')
 			process_cmd(input, shell);
 	}
@@ -76,7 +81,9 @@ static void	listen(t_shell *shell)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
+
 	shell.exec_result = 0;
+	shell.cmd_ptr = NULL;
 	init_env_list(&shell, env);
 	update_shlvl(shell.env_list);
 	setup_signals();
