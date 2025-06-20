@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 21:02:03 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:31:14 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,20 @@ static t_arg	*expand_arg(
 	return (new_args);
 }
 
+int 	is_there_arg(t_command *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmd->args_count)
+	{
+		if (cmd->args[i].file == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	expand_args(t_command *cmd, t_shell *shell)
 {
 	t_arg	*new_args;
@@ -82,8 +96,10 @@ void	expand_args(t_command *cmd, t_shell *shell)
 	free_args(cmd->args, cmd->args_count);
 	cmd->args = new_args;
 	cmd->args_count = new_count;
-	if (cmd->args[0].file == 0)
+	if (cmd->args && cmd->args[0].file == 0)
 		cmd->cmd = &cmd->args[0];
+	if (!is_there_arg(cmd))
+		cmd->cmd = NULL;
 	cmd->argv = args_to_argv(new_args, new_count);
 	cmd->argc = get_args_count(cmd->argv);
 }

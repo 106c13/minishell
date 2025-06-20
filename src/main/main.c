@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:03:46 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:50:07 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	process_cmd(char *input, t_shell *shell)
 	shell->depth = 0;
 	start_exec(cmd, shell);
 	free_cmd_list(cmd);
+	close_pipes(&shell->mfd);
 	shell->cmd_ptr = NULL;
 }
 
@@ -80,6 +81,7 @@ static void	listen(t_shell *shell)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
+
 	shell.exec_result = 0;
 	shell.cmd_ptr = NULL;
 	init_env_list(&shell, env);

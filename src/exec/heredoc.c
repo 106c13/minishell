@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:20:38 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 18:11:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:27:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ static int	write_heredoc(int write_fd, char *delimiter, t_shell *shell)
 	exit(0);
 }
 
+int	pipe_error(int *pipefd)
+{
+	perror("fork");
+	close(pipefd[0]);
+	close(pipefd[1]);
+	return (-1);
+}
+
 int	process_heredoc(char *delimiter, t_shell *shell)
 {
 	int		pipefd[2];
@@ -63,12 +71,7 @@ int	process_heredoc(char *delimiter, t_shell *shell)
 	}
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return (-1);
-	}
+		return (pipe_error(pipefd));
 	if (pid == 0)
 	{
 		set_default_signals();
