@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 17:36:28 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 17:45:55 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:57:43 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ int	check_in(t_command *cmd, t_shell *shell)
 {
 	shell->mfd.in_fd = redirect_from_file(cmd, cmd->depth);
 	if (shell->mfd.in_fd == -1)
+	{
+		shell->exec_result = 1;
 		return (FAILURE);
+	}
 	shell->mfd.is_redirected = 1;
 	return (SUCCESS);
 }
@@ -48,7 +51,10 @@ int	check_out(t_command *cmd, t_shell *shell)
 
 	tmp = redirect_to_file(cmd, cmd->depth);
 	if (tmp == -1)
+	{
+		shell->exec_result = 1;
 		return (FAILURE);
+	}
 	if (tmp != -2)
 	{
 		shell->mfd.out_fd = tmp;

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 17:47:20 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:01:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int	duplicate_fd(int fd, int dest)
 {
 	int	backup_fd;
 
+	if (fd == -2)
+		return (-2);
 	backup_fd = dup(dest);
 	dup2(fd, dest);
 	close(fd);
@@ -50,8 +52,6 @@ int	redirect_from_file(t_command *cmd, int depth)
 			return (-1);
 		}
 	}
-	if (fd == -2)
-		return (-2);
 	return (duplicate_fd(fd, STDIN_FILENO));
 }
 
@@ -80,8 +80,6 @@ int	redirect_to_file(t_command *cmd, int depth)
 			return (-1);
 		}
 	}
-	if (fd == -2)
-		return (-2);	
 	return (duplicate_fd(fd, STDOUT_FILENO));
 }
 
