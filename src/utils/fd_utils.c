@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 21:28:02 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:46:50 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ int	redirect_to_file(t_command *cmd, int depth)
 	while (i < cmd->args_count)
 	{
 		file = cmd->args[i++];
-		//printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
+	//	printf("FILE: %d %s %d  D: %d\n", file.file, file.str, file.depth, depth);
 		if (file.file != 2 || file.depth != depth)
 			continue ;
-		//printf("PASS: %s %d\n", file.str, file.depth);
+	//	printf("PASS: %s %d\n", file.str, file.depth);
 		if (fd != -2)
 			close(fd);
 		if (file.append)
@@ -91,9 +91,11 @@ int	redirect_to_file(t_command *cmd, int depth)
 
 int	setup_redirection(t_command *cmd, t_shell *shell)
 {
+	int	tmp;
+
 	if (cmd->delimiters[0])
 	{
-		printf("HEREDOC FD: %d\n", shell->mfd.hd_fd);
+	//	printf("HEREDOC FD: %d\n", shell->mfd.hd_fd);
 		if (shell->mfd.hd_fd == -1)
 			shell->mfd.hd_fd = cmd->heredoc_fd;
 		if (shell->mfd.hd_fd == -1)
@@ -115,10 +117,15 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 	}
 	if (cmd->out_file_count != 0)
 	{
-		shell->mfd.out_fd = redirect_to_file(cmd, cmd->depth);
-		if (shell->mfd.out_fd == -1)
+		tmp = redirect_to_file(cmd, cmd->depth);
+		if (tmp == -1)
 			return (FAILURE);
-		shell->mfd.is_redirected = 1;
+	//	printf("GOT %d %d\n", tmp, shell->mfd.out_fd);
+		if (tmp != -2)
+		{
+			shell->mfd.out_fd = tmp;
+			shell->mfd.is_redirected = 1;
+		}
 	}
 	else if (shell->mfd.pipefd[1] != -1)
 	{
@@ -130,7 +137,7 @@ int	setup_redirection(t_command *cmd, t_shell *shell)
 
 void	restore_fd(t_mfd *mfd)
 {
-	if (!mfd->is_redirected)
+	if (mfd->is_redirected == -1)
 		return ;
 	if (mfd->in_fd >= 0)
 	{

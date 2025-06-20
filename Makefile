@@ -18,7 +18,8 @@ BUILTINS = \
 PARSER = \
 	parser.c parser_utils.c \
 	shell_split.c validator.c \
-	tools.c counter.c helpers.c
+	tools.c counter.c helpers.c \
+	parser_utils1.c
 UTILS = \
 	ft_memcpy.c ft_split.c ft_strcmp.c \
 	ft_strdup.c ft_strjoin.c utils.c \

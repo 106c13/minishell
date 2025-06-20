@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 15:33:52 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:03:46 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ static void	init_mfd(t_mfd *mfd)
 {
 	mfd->in_fd = -1;
 	mfd->out_fd = -1;
+	mfd->s_in_fd = -1;
+	mfd->s_out_fd = -1;
 	mfd->pipefd[0] = -1;
 	mfd->pipefd[1] = -1;
 	mfd->hd_fd = -1;
+	mfd->is_redirected = -1;
 }
 
 static void	sueta(t_command *cmd, t_shell *shell)
@@ -70,16 +73,13 @@ static void	listen(t_shell *shell)
 			exit(last_code);
 		}
 		if (input[0] != '\0')
-		{
 			process_cmd(input, shell);
-		}
 	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
-
 	shell.exec_result = 0;
 	shell.cmd_ptr = NULL;
 	init_env_list(&shell, env);

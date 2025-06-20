@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:49:14 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 23:03:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:39:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,4 @@ void	counter(char *str, t_command *cmd)
 			str++;
 	}
 	cmd->args_count += cmd->out_file_count + cmd->in_file_count;
-//	printf("TESTING: ARG COUNT: %d %d %d\n", cmd->args_count, cmd->out_file_count, cmd->in_file_count);
 }
