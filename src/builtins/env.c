@@ -18,7 +18,7 @@ int	print_env_list(t_command *cmd, t_shell *shell)
 
 	if (cmd->argc != 1)
 	{
-		printerr_two("env", "too many arguments");
+		printerr2("env", "too many arguments");
 		return (FAILURE);
 	}
 	list = shell->env_list;

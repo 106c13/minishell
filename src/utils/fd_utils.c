@@ -6,7 +6,8 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:22:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 20:25:38 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/21 15:40:27 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:21:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +48,7 @@ int	redirect_from_file(t_command *cmd, int depth)
 			close(fd);
 		fd = open(file.str, O_RDONLY);
 		if (fd == -1)
-			return (printerr_two(file.str,
+			return (printerr2(file.str,
 					"No such file or directory"), -1);
 	}
 	return (duplicate_fd(fd, STDIN_FILENO));

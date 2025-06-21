@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 19:12:45 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/21 18:30:59 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <errno.h>
 # include <string.h>
 # include <fcntl.h>
+# include <stdbool.h>
 
 # include "parser.h"
 # include "defines.h"
@@ -186,11 +187,11 @@ char	*str_append_char_safe(char *str, char c);
 
 int		has_quotes(char *str);
 
-void	printerr_one(char *msg);
+void	printerr1(char *msg);
 
-void	printerr_two(char *cmd, char *msg);
+void	printerr2(char *cmd, char *msg);
 
-void	printerr_three(char *cmd, char *msg1, char *msg2);
+void	printerr3(char *cmd, char *msg1, char *msg2);
 
 void	free_cmd_list(t_command *cmd);
 
@@ -268,5 +269,8 @@ int		is_multiple_file(t_arg *args, int n);
 
 /* job_manager.c */
 void	clear_jobs(t_job *job);
+
+/* validator */
+bool	ns_validate(char *input);
 
 #endif

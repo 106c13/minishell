@@ -28,16 +28,16 @@ int	change_dir(t_command *cmd, t_shell *shell)
 	char	*old_pwd;
 
 	if (cmd->argc == 1)
-		return (printerr_two("cd", "Wrong arguments count"),
+		return (printerr2("cd", "Wrong arguments count"),
 			FAILURE);
 	if (cmd->argc > 2)
-		return (printerr_two("cd", "too many arguments"),
+		return (printerr2("cd", "too many arguments"),
 			FAILURE);
 	path = cmd->argv[1];
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(path) != 0)
 	{
-		printerr_three("cd", path, "No such file or directory");
+		printerr3("cd", path, "No such file or directory");
 		return (free(old_pwd), FAILURE);
 	}
 	update_env_pwds(shell, old_pwd);

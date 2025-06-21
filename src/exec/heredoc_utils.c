@@ -19,7 +19,7 @@ char	*read_and_check(char *delimiter)
 	line = readline("> ");
 	if (!line)
 	{
-		printerr_three("minishell: warning: here-document "
+		printerr3("minishell: warning: here-document "
 			"delimited by end-of-file (wanted `", delimiter, "`)");
 		return (NULL);
 	}

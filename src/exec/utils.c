@@ -36,7 +36,7 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 	if (is_multiple_file(cmd->args, cmd->args_count))
 	{
 		shell->exec_result = 1;
-		return (printerr_one("ambiguous redirect"), 1);
+		return (printerr1("ambiguous redirect"), 1);
 	}
 	if (setup_redirection(cmd, shell) == FAILURE)
 		return (FAILURE);

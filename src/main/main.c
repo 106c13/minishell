@@ -6,11 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 17:50:07 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:19:36 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdbool.h>
 
 static void	init_mfd(t_mfd *mfd)
 {
@@ -38,6 +39,12 @@ static void	process_cmd(char *input, t_shell *shell)
 	t_command	*cmd;
 
 	add_history(input);
+	if (!ns_validate(input))
+	{
+		shell->exec_result = 2;
+		free(input);
+		return ;
+	}
 	cmd = parse_command(input);
 	free(input);
 	if (cmd == NULL)

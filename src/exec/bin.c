@@ -18,18 +18,18 @@ static int	exec_local_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 	if (access(cmd->cmd->str, F_OK) != 0)
 	{
 		free_split(env_str_arr);
-		printerr_two(cmd->cmd->str, "No such file or directory");
+		printerr2(cmd->cmd->str, "No such file or directory");
 		return (127);
 	}
 	if (access(cmd->cmd->str, X_OK) != 0)
 	{
 		free_split(env_str_arr);
-		printerr_two(cmd->cmd->str, "Permission denied");
+		printerr2(cmd->cmd->str, "Permission denied");
 		return (126);
 	}
 	execve(cmd->cmd->str, cmd->argv, env_str_arr);
 	free_split(env_str_arr);
-	printerr_two(cmd->cmd->str, "Execution failded");
+	printerr2(cmd->cmd->str, "Execution failded");
 	return (126);
 }
 
@@ -55,7 +55,7 @@ char	*find_executable_path(t_command *cmd, t_shell *shell)
 
 	path = get_env_val(shell->env_list, "PATH");
 	if (path == NULL)
-		return (printerr_two(cmd->cmd->str, "PATH not set"), NULL);
+		return (printerr2(cmd->cmd->str, "PATH not set"), NULL);
 	split_path = ft_split(path, ':');
 	if (split_path == NULL)
 		return (NULL);
@@ -84,7 +84,7 @@ static int	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 	if (!bin)
 	{
 		free_split(env_str_arr);
-		printerr_two(cmd->cmd->str, "command not found");
+		printerr2(cmd->cmd->str, "command not found");
 		return (127);
 	}
 	execve(bin, cmd->argv, env_str_arr);
@@ -94,7 +94,7 @@ static int	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 		exit_code = 126;
 	else
 		exit_code = 127;
-	printerr_two(cmd->cmd->str, strerror(errno));
+	printerr2(cmd->cmd->str, strerror(errno));
 	return (exit_code);
 }
 
@@ -105,7 +105,7 @@ int	exec_bin(t_command *cmd, t_shell *shell)
 
 	env_str_arr = env_list_to_str_arr(shell->env_list);
 	if (!env_str_arr)
-		return (printerr_two(cmd->cmd->str, "Failed to convert environment"),
+		return (printerr2(cmd->cmd->str, "Failed to convert environment"),
 			1);
 	if (str_contains(cmd->cmd->str, '.') && str_contains(cmd->cmd->str, '/'))
 		return (exec_local_bin(cmd, env_str_arr, shell));

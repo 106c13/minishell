@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	printerr_three(char *cmd, char *msg1, char *msg2)
+void	printerr3(char *cmd, char *msg1, char *msg2)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
@@ -23,7 +23,7 @@ void	printerr_three(char *cmd, char *msg1, char *msg2)
 	ft_putstr_fd("\n", 2);
 }
 
-void	printerr_two(char *cmd, char *msg)
+void	printerr2(char *cmd, char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
@@ -32,7 +32,7 @@ void	printerr_two(char *cmd, char *msg)
 	ft_putstr_fd("\n", 2);
 }
 
-void	printerr_one(char *msg)
+void	printerr1(char *msg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(msg, 2);

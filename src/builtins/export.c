@@ -100,7 +100,7 @@ int	export_env(t_command *cmd, t_shell *shell)
 		else
 		{
 			ret = FAILURE;
-			printerr_three("export", cmd->argv[i], "not a valid identifier");
+			printerr3("export", cmd->argv[i], "not a valid identifier");
 		}
 	}
 	return (ret);

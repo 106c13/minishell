@@ -12,15 +12,21 @@ ENV = \
 EXPANDER = \
 	expander.c expand_utils.c \
 	wildcard.c args.c norm.c
+#VALIDATOR = \
+#	validator.c validator_utils.c
+VALIDATOR = \
+	ns_validator.c ops.c \
+	pairs.c redirects.c \
+	not_req_chars.c
 BUILTINS = \
 	echo.c cd.c pwd.c \
 	export.c unset.c env.c \
 	exit.c
 PARSER = \
 	parser.c parser_utils.c \
-	shell_split.c validator.c \
+	shell_split.c \
 	tools.c counter.c helpers.c \
-	parser_utils1.c validator_utils.c
+	parser_utils1.c 
 UTILS = \
 	ft_memcpy.c ft_split.c ft_strcmp.c \
 	ft_strdup.c ft_strjoin.c utils.c \
@@ -43,12 +49,13 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
 	$(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
-	$(addprefix $(SRCS_DIR)subshell/, $(SUBSHELL))
+	$(addprefix $(SRCS_DIR)subshell/, $(SUBSHELL)) \
+	$(addprefix $(SRCS_DIR)validator/, $(VALIDATOR))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 LGFLAGS = -lreadline
 
 # ✨ Colors

@@ -68,7 +68,7 @@ static long long	ft_strtoll(const char *str)
 
 static void	numeric_arg_req(char *arg, int *code)
 {
-	printerr_three("exit", arg, "numeric argument required");
+	printerr3("exit", arg, "numeric argument required");
 	*code = 2;
 }
 
@@ -82,7 +82,7 @@ int	safe_shell_exit(t_command *cmd, t_shell *shell)
 	if (cmd != NULL && cmd->argc >= 2 && !is_valid_number(cmd->argv[1]))
 		numeric_arg_req(cmd->argv[1], &exit_code);
 	else if (cmd != NULL && cmd->argc > 2)
-		return (printerr_two("exit", "too many arguments"), FAILURE);
+		return (printerr2("exit", "too many arguments"), FAILURE);
 	else if (cmd != NULL && cmd->argc == 2)
 	{
 		arg = cmd->argv[1];
