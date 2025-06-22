@@ -1,0 +1,32 @@
+WEIRD BUGS: 
+test: does not print command not found msg - FIXED, /usr/bin contains test bin
+
+VALIDATION:
+echo <> - DONE 
+echo > < - DONE
+> - DONE
+> > > >  - DONE
+>echo> - DONE
+<echo< - DONE
+handle }] - DONE
+echo (hi) - DONE
+printf (hi|bye) - DONE
+cat Makefile > outf > - DONE
+export ii=l---------------------- && "$ii"s # not syntax error - DONE
+
+CRASH: 
+<< - DONE
+<<echo<< #weird behavior in bash
+((((    ls -la > ls    &&    ls)    || ((ls -la) || (ls) ) ) ) ) && ((ls)) #parsing?
+&& ls - DONE
+<< end # why??? or leaks - DONE
+
+WRONG:
+(ls || (ls -la && ls || ls)) && ls # should print 2x ls, actually prints 4x
+sudo apt-get update && sudo apt-get upgrade # different error msgs
+grep -Rn "print_cmd" .
+
+
+LEAKS:
+bin/sudo apt-get update && sudo apt-get upgr #idk why
+test1
