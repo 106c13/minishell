@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:45:04 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 18:48:04 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/22 17:51:11 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static int	exec_path_bin(t_command *cmd, char **env_str_arr, t_shell *shell)
 	char	*bin;
 	int		exit_code;
 
-	execve(cmd->cmd->str, cmd->argv, env_str_arr);
+	if (str_contains(cmd->cmd->str, '/'))
+		execve(cmd->cmd->str, cmd->argv, env_str_arr);
 	bin = find_executable_path(cmd, shell);
 	if (!bin)
 	{
