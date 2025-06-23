@@ -1,56 +1,66 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pairs.c                                            :+:      :+:    :+:   */
+/*   brackets.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/21 17:29:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 15:31:25 by haaghaja         ###   ########.fr       */
+/*   Created: 2025/06/23 17:42:49 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/23 17:48:26 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdbool.h>
 
-bool	ns_validate_quotes(char *input)
+char	*skip_spaces(char *str);
+
+bool	ns_validate_empty_parens(char *input)
 {
 	char	quote;
+	char	*p;
 
 	while (*input)
 	{
-		if (*input == '\'' || *input == '"')
+		if (!quote && (*input == '\'' || *input == '"'))
+			quote = *input;
+		else if (quote && *input == quote)
+			quote = 0;
+		else if (!quote && *input == '(')
 		{
-			quote = *input++;
-			while (*input && *input != quote)
-				input++;
-			if (!*input)
+			p = input + 1;
+			while (*p && ft_isspace(*p))
+				p++;
+			if (*p == ')')
 				return (false);
 		}
-		if (*input)
-			input++;
+		input++;
 	}
 	return (true);
 }
 
 bool	ns_validate_brackets(char *input)
 {
-	int	count;
+	int		count;
+	char	quote;
 
 	count = 0;
+	quote = 0;
 	while (*input)
 	{
-		if (*input == '(')
+		if (!quote && (*input == '\'' || *input == '"'))
+			quote = *input;
+		else if (quote && *input == quote)
+			quote = 0;
+		else if (!quote)
 		{
-			count++;
-			if (input[1] == ')')
-				return (false);
-		}
-		else if (*input == ')')
-		{
-			count--;
-			if (count < 0)
-				return (false);
+			if (*input == '(')
+				count++;
+			else if (*input == ')')
+			{
+				count--;
+				if (count < 0)
+					return (false);
+			}
 		}
 		input++;
 	}

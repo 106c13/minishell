@@ -12,12 +12,12 @@ ENV = \
 EXPANDER = \
 	expander.c expand_utils.c \
 	wildcard.c args.c norm.c
-#VALIDATOR = \
-#	validator.c validator_utils.c
 VALIDATOR = \
 	ns_validator.c ops.c \
-	pairs.c redirects.c \
-	not_req_chars.c
+	redirects.c brackets.c \
+	not_req_chars.c cmd_subst.c \
+	quotes.c paren_check.c \
+	paren_check_utils.c
 BUILTINS = \
 	echo.c cd.c pwd.c \
 	export.c unset.c env.c \
