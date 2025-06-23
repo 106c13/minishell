@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:52:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/21 20:01:17 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:51:54 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ bool	ns_validate_brackets(char *input);
 
 bool	ns_validate_not_required_chars(char *input);
 
+bool	ns_validate_cmd_subst(char *input);
+
+bool	ns_validate_parens_and_context(char *input);
+
 bool	ns_validate(char *input)
 {
 	if (!ns_validate_quotes(input))
@@ -37,5 +41,9 @@ bool	ns_validate(char *input)
 	if (!ns_validate_redirects(input))
 		return (printerr1("syntax error "
 				"near unexpected token ('>', '<', '>>', '<<')"), false);
+	if (!ns_validate_cmd_subst(input))
+		return (printerr1("syntax error: command substitution"), false);
+	if (!ns_validate_parens_and_context(input))
+		return (printerr1("syntax error: hard cases"), false);
 	return (true);
 }
