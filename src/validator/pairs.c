@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:29:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/21 19:51:56 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:31:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ bool	ns_validate_brackets(char *input)
 	while (*input)
 	{
 		if (*input == '(')
+		{
 			count++;
+			if (input[1] == ')')
+				return (false);
+		}
 		else if (*input == ')')
 		{
 			count--;

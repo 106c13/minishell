@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 17:07:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:54:17 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,19 @@ int	get_ss_next_operator(t_command *cmd, t_shell *shell, int change)
 t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change)
 {
 	t_command	*tmp;
+	t_command	*start;
+	int			i;
 
-	tmp = cmd;
+	i = 1;
+	start = cmd;
 	while (cmd && cmd->op.depth != shell->depth)
 		cmd = cmd->next;
-	if (!cmd)
+	while (!cmd)
 	{
-		while (tmp && tmp->depth - 1 != shell->depth)
+		tmp = start;
+		while (tmp && tmp->depth - i != shell->depth)
 			tmp = tmp->next;
+		i++;	
 		cmd = tmp;
 	}
 	if (change)

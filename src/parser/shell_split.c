@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:56:57 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 14:33:58 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:24:45 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	add_arg(char **str, char *tmp, t_command *cmd, int *arg_i)
 	cmd->args[*arg_i].depth = calculate_depth(tmp, *str);
 	cmd->args[*arg_i].append = 0;
 	cmd->args[*arg_i].file = 0;
+	cmd->args[*arg_i].wed = 0;
 	add_arg2(str, cmd, arg_i, mode);
 }
 

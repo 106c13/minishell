@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:01:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 19:13:20 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:51:14 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	set_exec_result(t_shell *shell, int status)
 {
+	shell->exec_result = 0;
 	if (WIFEXITED(status))
 		shell->exec_result = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -62,7 +63,7 @@ int	start_exec(t_command *cmd, t_shell *shell)
 		else if (cmd->depth == shell->depth)
 		{
 			expand_args(cmd, shell);
-			if (cmd->op.type == PIPE)
+			if (cmd->op.type == PIPE && cmd->op.depth == shell->depth)
 				start_pipe(cmd, shell);
 			else
 				exec_ordinary(cmd, shell);
@@ -71,7 +72,7 @@ int	start_exec(t_command *cmd, t_shell *shell)
 			break ;
 		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
 			break ;
-		if (cmd->op.type == AND && shell->exec_result != 0)
+		if (cmd->op.type == AND && cmd->op.depth == shell->depth && shell->exec_result != 0)
 			cmd = cmd->next;
 		else if (cmd->op.type == OR && shell->exec_result == 0)
 			cmd = cmd->next;

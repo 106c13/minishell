@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:28:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 18:50:14 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:22:18 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ t_arg	new_arg_copy(char *str, t_arg *ref)
 {
 	t_arg	new;
 
+	ft_memcpy(&new, ref, sizeof(t_arg));
 	new.str = str;
-	new.quoted = ref->quoted;
-	new.interpret_env_var = ref->interpret_env_var;
-	new.file = ref->file;
-	new.append = ref->append;
-	new.depth = ref->depth;
 	return (new);
 }
 

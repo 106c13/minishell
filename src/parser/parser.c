@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:46:27 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/21 18:36:35 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:54:26 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,6 @@ t_command	*parse_command(char *input)
 	get_command(cmd, input);
 	if (!cmd)
 		return (NULL);
-//    print_cmd(cmd);
+    print_cmd(cmd);
 	return (cmd);
 }
