@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:41:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 15:23:56 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:17:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void	find_cmd(t_command *cmd)
 	int	i;
 
 	i = 0;
-    cmd->cmd = NULL;
+	cmd->cmd = NULL;
 	while (i < cmd->args_count)
 	{
 		if (cmd->args[i].file == 0)
-        {
+		{
 			cmd->cmd = &cmd->args[i];
-            break ;
-        }
+			break ;
+		}
 		i++;
 	}
 }

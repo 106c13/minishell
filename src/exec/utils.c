@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:01:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 19:51:14 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:49:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,32 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 	return (0);
 }
 
+t_command	*go_to_next_cmd(t_command *cmd, t_shell *shell)
+{
+	t_command	*dest;
+	t_oper		op;
+
+	dest = cmd;
+	while (dest)
+	{
+		op = dest->op;
+		dest = dest->next;
+
+		if (op.type == AND && shell->exec_result == 0)
+			return (dest);
+		else if (op.type == OR && shell->exec_result != 0)
+			return (dest);
+		else if (op.type == 0 || cmd->op.type == PIPE)
+			return (dest);
+		if (dest->depth != shell->depth)
+		{
+			while (dest && dest->op.depth != shell->depth)
+				dest = dest->next;
+		}
+	}
+	return (dest);
+}
+
 int	start_exec(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
@@ -72,12 +98,7 @@ int	start_exec(t_command *cmd, t_shell *shell)
 			break ;
 		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
 			break ;
-		if (cmd->op.type == AND && cmd->op.depth == shell->depth && shell->exec_result != 0)
-			cmd = cmd->next;
-		else if (cmd->op.type == OR && shell->exec_result == 0)
-			cmd = cmd->next;
-		if (cmd)
-			cmd = cmd->next;
+		cmd = go_to_next_cmd(cmd, shell);
 	}
 	collect_finished_jobs(shell);
 	return (shell->exec_result);

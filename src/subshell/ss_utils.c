@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/23 18:54:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:26:28 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change)
 		tmp = start;
 		while (tmp && tmp->depth - i != shell->depth)
 			tmp = tmp->next;
-		i++;	
+		i++;
 		cmd = tmp;
 	}
 	if (change)

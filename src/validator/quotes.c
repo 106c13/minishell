@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:29:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 19:53:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:15:09 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,3 @@ bool	ns_validate_quotes(char *input)
 	}
 	return (true);
 }
-

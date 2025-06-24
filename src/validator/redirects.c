@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 17:29:12 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/21 20:08:15 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:59:52 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	ns_validate_redirects(char *input)
 			else
 				input += 1;
 			input = skip_spaces(input);
-			if (!*input || *input == '<' || *input == '>')
+			if (!*input || *input == '<' || *input == '>' || is_eow(*input))
 				return (false);
 		}
 		else
