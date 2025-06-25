@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 21:32:48 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:53:39 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	*append_env_val(char *str, char *cmd_str, int *i, t_env *env)
 		val = add_quotes(ft_strdup(val));
 		tmp = str;
 		str = ft_strjoin(str, val);
+		free(val);
 		free(tmp);
 	}
 	return (str);
