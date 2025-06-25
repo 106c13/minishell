@@ -6,11 +6,13 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 21:49:48 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 22:16:46 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*add_quotes(char *str);
 
 static char	*append_exec_result(char *str, t_shell *shell, int *i)
 {
@@ -41,14 +43,16 @@ static char	*append_env_val(char *str, char *cmd_str, int *i, t_env *env)
 	free(key);
 	if (val != NULL)
 	{
+		val = add_quotes(ft_strdup(val));
 		tmp = str;
 		str = ft_strjoin(str, val);
+		free(val);
 		free(tmp);
 	}
 	return (str);
 }
 
-static void setup_quote(char *cmd_str, char *quote, int i)
+static void	setup_quote(char *cmd_str, char *quote, int i)
 {
 	if (*quote == 0 && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
 		*quote = cmd_str[i];

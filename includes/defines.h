@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:23:07 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 14:18:16 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:06:39 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@
 # define APPEND 22
 # define INPUT	23
 # define HEREDOC 24
+# define KOSTYL 31
 
 #endif

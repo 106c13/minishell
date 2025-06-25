@@ -6,38 +6,47 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:11:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 14:18:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:40:53 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	init(char *quote, int *i, char *kost, int *size)
+{
+	*quote = 0;
+	*i = 0;
+	*kost = 0;
+	*size = -1;
+}
+
 char	*clear_quotes(char *str)
 {
 	char	*nstr;
 	char	quote;
+	char	kost;
 	int		size;
 	int		i;
 
-	quote = 0;
-	i = 0;
+	init(&quote, &i, &kost, &size);
 	nstr = malloc(sizeof(char) * (get_unquoted_len(str) + 1));
 	if (!nstr)
 		return (NULL);
-	size = 0;
-	while (str[size])
+	while (str[++size])
 	{
-		if (!quote && is_quote(str[size]))
+		if (!kost && str[size] == KOSTYL)
+			kost = 1;
+		else if (str[size] == KOSTYL)
+			kost = 0;
+		else if (!quote && is_quote(str[size]) && !kost)
 			quote = str[size];
-		else if (str[size] == quote)
+		else if (str[size] == quote && !kost)
 			quote = 0;
 		else
 			nstr[i++] = str[size];
-		size++;
 	}
 	nstr[i] = '\0';
-	free(str);
-	return (nstr);
+	return (free(str), nstr);
 }
 
 int	setup_command(char *str, t_command *cmd)

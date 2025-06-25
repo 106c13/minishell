@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:36:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/19 18:00:52 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 22:01:57 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ char	*trim_spaces(char *str)
 {
 	int	size;
 
-	while (*str == ' ')
+	while (ft_isspace(*str))
 		str++;
+	if (*str == '\0')
+		return (str);
 	size = ft_strlen(str) - 1;
 	while (str[size] == ' ')
 		size--;
