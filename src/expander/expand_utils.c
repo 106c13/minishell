@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 16:48:49 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:49:48 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ char	**args_to_argv(t_arg *args, int args_count)
 	argc = 0;
 	i = 0;
 	argc = count_not_files_args(args, args_count);
+	if (argc == 0)
+		return (NULL);
 	argv = malloc(sizeof(char *) * (argc + 1));
 	if (!argv)
 		return (NULL);
