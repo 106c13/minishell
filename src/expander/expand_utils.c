@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/20 19:36:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:48:49 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,12 @@ static char	*append_env_val(char *str, char *cmd_str, int *i, t_env *env)
 	return (str);
 }
 
-static char	setup_quote(char *cmd_str, char quote, int i)
+static void setup_quote(char *cmd_str, char *quote, int i)
 {
-	if (quote == 0 && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
-		return (cmd_str[i]);
-	else if (cmd_str[i] == quote)
-		return (0);
-	else
-		return (quote);
+	if (*quote == 0 && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
+		*quote = cmd_str[i];
+	else if (cmd_str[i] == *quote)
+		*quote = 0;
 }
 
 void	init(char **res, int *i, char *quote);
@@ -69,7 +67,7 @@ char	*replace_env_vars(t_shell *shell, char *cmd_str, int quoted)
 	init(&res, &i, &quote);
 	while (cmd_str[i])
 	{
-		quote = setup_quote(cmd_str, quote, i);
+		setup_quote(cmd_str, &quote, i);
 		if (cmd_str[i] == '$' && cmd_str[i + 1] && quote != '\'')
 		{
 			if (cmd_str[i + 1] == '?')

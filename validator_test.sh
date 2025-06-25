@@ -142,7 +142,7 @@ tests=(
 "(echo hi)|0"
 "(echo hi) && echo b|0"
 "echo (hi)|1"
-"(((echo a)))|1"
+"(((echo a)))|0"
 )
 
 pass=0

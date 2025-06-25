@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:34:29 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/20 19:34:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:47:51 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ void	init(char **res, int *i, char *quote)
 {
 	*res = ft_strdup("");
 	*i = 0;
-	quote = 0;
+	*quote = 0;
 }
