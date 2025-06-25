@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 15:39:37 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:05:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static void	listen(t_shell *shell)
 		}
 		if (input[0] != '\0')
 			process_cmd(input, shell);
+		else
+			free(input);
 	}
 }
 

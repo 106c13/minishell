@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 18:36:44 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/25 15:37:52 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:03:03 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,15 @@ int	is_failed(int status)
 	return (1);
 }
 
-t_command	*skip_norm(t_command *cmd, t_shell *shell)
+t_command	*skip_norm(t_command *cmd, t_shell *shell, t_oper *op)
 {
-	t_oper	op;
-
 	while (cmd)
 	{
-		op = cmd->op;
+		*op = cmd->op;
 		cmd = cmd->next;
 		if (cmd && cmd->depth == shell->depth)
 			break ;
-		if (op.depth == shell->depth)
+		if (op->depth == shell->depth)
 			break ;
 	}
 	return (cmd);
@@ -70,9 +68,9 @@ t_command	*go_to_next_cmd(t_command *cmd, t_shell *shell)
 	{
 		if ((op.type == AND && shell->exec_result == 0)
 			|| (op.type == OR && is_failed(shell->exec_result))
-			|| (op.type == PIPE))
+			|| (op.type == PIPE && shell->exec_result == 0))
 			return (cmd);
-		cmd = skip_norm(cmd, shell);
+		cmd = skip_norm(cmd, shell, &op);
 	}
 	return (cmd);
 }
