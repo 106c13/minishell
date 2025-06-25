@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:42:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 18:37:31 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:57:23 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,17 @@ static bool	validate_after_parens(char *close)
 	return (true);
 }
 
+static bool	normis(char *close, char *input)
+{
+	if (!close)
+		return (false);
+	if (!validate_inside_parens(input, close))
+		return (false);
+	if (!validate_after_parens(close))
+		return (false);
+	return (true);
+}
+
 bool	ns_validate_parens_and_context(char *input)
 {
 	char	*start;
@@ -87,11 +98,7 @@ bool	ns_validate_parens_and_context(char *input)
 			if (!is_valid_op_before_paren(input, start))
 				return (false);
 			close = find_closing_paren(input);
-			if (!close)
-				return (false);
-			if (!validate_inside_parens(input, close))
-				return (false);
-			if (!validate_after_parens(close))
+			if (normis(close, input) == false)
 				return (false);
 			input = close - 1;
 		}

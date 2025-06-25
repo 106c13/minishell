@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:34:52 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/23 18:51:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:58:12 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	run_ss_in_pipe(t_command **cmd, t_shell *shell)
 		if (prev_read_fd != -1)
 			close(prev_read_fd);
 		add_job(shell, pid);
-		*cmd = skip_command(*cmd, shell->depth + 1);
 	}
 	return (0);
 }
@@ -81,7 +80,8 @@ int	run_ss_ordinary(t_command **cmd, t_shell *shell)
 	{
 		waitpid(pid, &shell->exec_result, 0);
 		close_pipes(&shell->mfd);
-		*cmd = skip_command(*cmd, shell->depth + 1);
+		if (shell->exec_result > 256)
+			shell->exec_result /= 256;
 	}
 	return (0);
 }

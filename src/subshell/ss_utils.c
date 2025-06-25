@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:19:12 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/06/24 19:26:28 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:18:56 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_command	*get_ss_cmd(t_command *cmd, t_shell *shell, int change)
 		cmd = tmp;
 	}
 	if (change)
-		cmd->op.type = 0;
+		change = 0;
 	return (cmd);
 }
 
@@ -95,5 +95,7 @@ int	run_subshell(t_command **cmd, t_shell *shell)
 	shell->mfd.is_redirected = 1;
 	ss_restore_fd(&shell->mfd);
 	restore_fd(&shell->mfd);
+	if (shell->exec_result > 256)
+		shell->exec_result /= 256;
 	return (0);
 }

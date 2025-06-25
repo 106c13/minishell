@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:46:32 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/21 18:30:59 by azolotar         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:40:06 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,8 @@ int		check_out(t_command *cmd, t_shell *shell);
 
 /* exec/helpers.c */
 int		is_multiple_file(t_arg *args, int n);
+
+t_cmd	*go_to_next_cmd(t_command *cmd, t_shell *shell);
 
 /* job_manager.c */
 void	clear_jobs(t_job *job);

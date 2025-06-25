@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/23 19:52:13 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:39:37 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	listen(t_shell *shell)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	shell;
+
 	shell.exec_result = 0;
 	shell.cmd_ptr = NULL;
 	init_env_list(&shell, env);

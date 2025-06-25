@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 17:01:48 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:49:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:38:33 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	set_exec_result(t_shell *shell, int status)
 		shell->exec_result = 128 + WTERMSIG(status);
 	else
 		shell->exec_result = status;
+	if (shell->exec_result > 256)
+		shell->exec_result /= 256;
 }
 
 void	do_in_ss(t_command **cmd, t_shell *shell)
@@ -54,32 +56,6 @@ int	exec_cmd(t_command *cmd, t_shell *shell)
 	return (0);
 }
 
-t_command	*go_to_next_cmd(t_command *cmd, t_shell *shell)
-{
-	t_command	*dest;
-	t_oper		op;
-
-	dest = cmd;
-	while (dest)
-	{
-		op = dest->op;
-		dest = dest->next;
-
-		if (op.type == AND && shell->exec_result == 0)
-			return (dest);
-		else if (op.type == OR && shell->exec_result != 0)
-			return (dest);
-		else if (op.type == 0 || cmd->op.type == PIPE)
-			return (dest);
-		if (dest->depth != shell->depth)
-		{
-			while (dest && dest->op.depth != shell->depth)
-				dest = dest->next;
-		}
-	}
-	return (dest);
-}
-
 int	start_exec(t_command *cmd, t_shell *shell)
 {
 	while (cmd)
@@ -96,7 +72,8 @@ int	start_exec(t_command *cmd, t_shell *shell)
 		}
 		else
 			break ;
-		if (!cmd || cmd->last_in_group || shell->exec_result == 130)
+		if (!cmd || (cmd->last_in_group && shell->depth == cmd->depth)
+			|| shell->exec_result == 130)
 			break ;
 		cmd = go_to_next_cmd(cmd, shell);
 	}
