@@ -8,6 +8,10 @@
 
 It replicates core features of common shells like bash/zsh, including command execution, environment handling, redirections, pipelines, and more.
 
+<p align="center">
+  <img src="https://github.com/106c13/minishell/blob/main/preview.png" alt="minishell interface preview" width="800" />
+</p>
+
 ---
 
 ## ⚙️ Architecture

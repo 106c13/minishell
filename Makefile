@@ -56,7 +56,7 @@ SRCS = \
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror # -g3 -fsanitize=address
 
 # Detect OS
 UNAME_S := $(shell uname -s)
