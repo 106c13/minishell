@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 18:05:23 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/26 22:05:04 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ char	*get_prompt(void)
 	return (prompt);
 }
 
-
-
-static void	listen(t_shell *shell)
+static void	listen_shell(t_shell *shell)
 {
 	int			last_code;
 	char		*input;
@@ -123,7 +121,7 @@ int	main(int argc, char **argv, char **env)
 	init_env_list(&shell, env);
 	update_shlvl(shell.env_list);
 	setup_signals();
-	listen(&shell);
+	listen_shell(&shell);
 	safe_shell_exit(NULL, &shell);
 	return ((void)argc, (void)argv, 0);
 }

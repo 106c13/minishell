@@ -37,6 +37,7 @@ UTILS = \
 	ft_memset.c fd_utils_helper.c ft_isspace.c
 SUBSHELL = \
 	subshell.c ss_utils.c utils.c
+
 SRCS_DIR = src/
 OBJS_DIR = objs/
 INCLUDES_DIR = includes/
@@ -56,7 +57,18 @@ OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
-LGFLAGS = -lreadline
+
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S), Darwin)
+	# macOS specific paths (Homebrew readline)
+	LGFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline
+	CFLAGS += -I/opt/homebrew/opt/readline/include
+else
+	# Linux default
+	LGFLAGS = -lreadline
+endif
 
 # ✨ Colors
 GREEN = \033[1;32m
@@ -109,4 +121,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re banner
+.PHONY: all clean fclean re
+

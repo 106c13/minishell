@@ -6,11 +6,12 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:44:49 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/19 17:05:12 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/26 22:07:19 by 032zolotarev     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
 #include <readline/readline.h>
