@@ -59,15 +59,42 @@ static void	process_cmd(char *input, t_shell *shell)
 	shell->cmd_ptr = NULL;
 }
 
+char	*get_prompt(void)
+{
+	char	*cwd;
+	char	*prefix;
+	char	*tmp;
+	char	*prompt;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
+	prefix = ft_strjoin("minishell@\001\033[0;34m\002", cwd);
+	free(cwd);
+	tmp = ft_strjoin(prefix, " > ");
+	free(prefix);
+	prompt = ft_strjoin("\001\033[0;32m\002", tmp);
+	free(tmp);
+	tmp = prompt;
+	prompt = ft_strjoin(tmp, "\001\033[0m\002");
+	free(tmp);
+	return (prompt);
+}
+
+
+
 static void	listen(t_shell *shell)
 {
 	int			last_code;
 	char		*input;
+	char		*prompt;
 
 	while (1)
 	{
 		set_interactive_signals();
-		input = readline("\001\033[0;32m\002minishell > \001\033[0m\002");
+		prompt = get_prompt();
+		input = readline(prompt);
+		free(prompt);
 		set_execution_signals();
 		if (g_last_status == 130)
 		{

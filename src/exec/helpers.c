@@ -68,7 +68,7 @@ t_command	*go_to_next_cmd(t_command *cmd, t_shell *shell)
 	{
 		if ((op.type == AND && shell->exec_result == 0)
 			|| (op.type == OR && is_failed(shell->exec_result))
-			|| (op.type == PIPE && shell->exec_result == 0))
+			|| (op.type == PIPE && shell->mfd.pipefd[0] != -1))
 			return (cmd);
 		cmd = skip_norm(cmd, shell, &op);
 	}
