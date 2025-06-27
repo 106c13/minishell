@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/26 22:05:04 by 032zolotarev     ###   ########.fr       */
+/*   Updated: 2025/06/27 16:49:36 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,11 @@ char	*get_prompt(void)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (NULL);
-	prefix = ft_strjoin("minishell@\001\033[0;34m\002", cwd);
+	prefix = ft_strjoin("\033[38;5;196m┌── minishell\033[0m:\033[38;5;226m", cwd);
 	free(cwd);
-	tmp = ft_strjoin(prefix, " > ");
+	tmp = ft_strjoin(prefix, "\n\033[38;5;196m└──➤\033[0m ");
 	free(prefix);
-	prompt = ft_strjoin("\001\033[0;32m\002", tmp);
-	free(tmp);
-	tmp = prompt;
-	prompt = ft_strjoin(tmp, "\001\033[0m\002");
+	prompt = ft_strjoin("\033[1;33m", tmp);
 	free(tmp);
 	return (prompt);
 }
