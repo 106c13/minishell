@@ -13,48 +13,6 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-typedef struct s_arg
-{
-	char	*str;
-	int		interpret_env_var;
-	char	quoted;
-
-	int		depth;
-	char	file;
-	char	append;
-	int		wed;
-}	t_arg;
-
-typedef struct s_oper
-{
-	int	type;
-	int	depth;
-}	t_oper;
-
-typedef struct s_command
-{
-	t_arg				*cmd;
-
-	t_arg				*args;
-	int					args_count;
-
-	int					out_file_count;
-	int					in_file_count;
-
-	char				**delimiters;
-	int					delimiter_count;
-	int					heredoc_fd;
-
-	char				**argv;
-	int					argc;
-
-	t_oper				op;
-
-	int					last_in_group;
-	int					depth;
-	struct s_command	*next;
-}	t_command;
-
 /* parser.c */
 t_command	*parse_command(char *cmd);
 

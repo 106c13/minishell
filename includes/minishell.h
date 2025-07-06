@@ -32,6 +32,7 @@ extern int			g_last_status;
 
 typedef t_command	t_cmd;
 
+
 typedef struct s_env
 {
 	char			*key;
@@ -67,6 +68,67 @@ typedef struct s_shell
 	t_job		*job_list;
 	t_mfd		mfd;
 }	t_shell;
+
+typedef	s_token
+{
+	int		type;
+	int		depth;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_arg
+{
+	char	*str;
+	int		interpret_env_var;
+	char	quoted;
+}	t_arg;
+
+typedef struct s_oper
+{
+	int	type;
+}	t_oper;
+
+typedef struct s_file
+{
+	int	type;
+	char	*file_name;
+}	t_file;
+
+typedef struct s_command
+{
+	t_arg				*cmd;
+	t_arg				*args;
+	int					args_count;
+	char				**argv;
+	int					argc;
+}	t_command;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* exec */
 int		start_exec(t_command *cmd, t_shell *shell);
