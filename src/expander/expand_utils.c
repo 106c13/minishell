@@ -1,121 +1,109 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 14:48:18 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/25 22:16:46 by haaghaja         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+#include <stdlib.h>
+#include <stdbool.h>
 #include "minishell.h"
+#include "enviroment.h"
+#include "utils.h"
 
-char	*add_quotes(char *str);
-
-static char	*append_exec_result(char *str, t_shell *shell, int *i)
+//TODO: make new group of function for special characters ~
+//This works only for ~
+char	*expand_speacial_character(char *arg, t_list *env)
 {
-	char	*val;
-	char	*tmp;
+	char	*new;
+	char	*home;
 
-	val = ft_itoa(shell->exec_result);
-	tmp = str;
-	str = ft_strjoin(str, val);
-	free(tmp);
-	free(val);
-	*i += 2;
-	return (str);
+	if (*arg != '~' || (arg[1] && arg[1] != '/'))
+		return (arg);
+	home = get_env_val(env, "HOME");
+	if (!home)
+		return (arg);
+	new = ft_strjoin(home, &arg[1]);
+	if (!new)
+		return (NULL);
+	return (new);
 }
 
-static char	*append_env_val(char *str, char *cmd_str, int *i, t_env *env)
+char	*parse_env_key(char *str)
 {
-	char	*tmp;
-	int		start;
 	char	*key;
-	char	*val;
+	int		size;
 
-	start = ++(*i);
-	while (ft_isalnum(cmd_str[*i]) || cmd_str[*i] == '_')
-		(*i)++;
-	key = ft_substr(cmd_str, start, *i - start);
-	val = get_env_val(env, key);
-	free(key);
-	if (val != NULL)
+	size = 0;
+	str++;
+	while (str[size] && (ft_isalnum(str[size]) || str[size] == '_'))
+			size++;
+	if (size == 0)
+		return (NULL);
+	key = malloc(size + 1);
+	if (!key)
+		return (NULL);
+	key = ft_memcpy(key, str, size);
+	key[size] = '\0';
+	return (key);
+}
+
+char	*expand_variable(char *dest, char **src, t_shell *shell)
+{
+	char	*key;
+	char	*value;
+	char	*new_dest;
+
+	if ((*src)[1] == '?')
 	{
-		val = add_quotes(ft_strdup(val));
-		tmp = str;
-		str = ft_strjoin(str, val);
-		free(val);
-		free(tmp);
+		*src += 2;
+		new_dest = ft_strjoin(dest, ft_itoa(shell->exec_result));
+		free(dest);
+		return (new_dest);
 	}
-	return (str);
+	else if ((*src)[1] == '$')
+	{
+		*src += 2;
+		new_dest = ft_strjoin(dest, ft_itoa(shell->pid));
+		free(dest);
+		return (new_dest);
+	}
+	key = parse_env_key(*src);
+	if (!key)
+		return (free(dest), NULL);
+	value = get_env_val(shell->env, key);
+	if (!value)
+		value = "";
+	*src += ft_strlen(key) + 1;
+	dest = ft_strjoin(dest, value);
+	free(key);
+	return (dest);
 }
 
-static void	setup_quote(char *cmd_str, char *quote, int i)
+char	*add_chunk(char *dest, char **src, char *delim)
 {
-	if (*quote == 0 && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
-		*quote = cmd_str[i];
-	else if (cmd_str[i] == *quote)
-		*quote = 0;
-}
-
-void	init(char **res, int *i, char *quote);
-
-char	*replace_env_vars(t_shell *shell, char *cmd_str, int quoted)
-{
-	char	*res;
+	char	*new_dest;
 	int		i;
+
+	i = 0;
+	while ((*src)[i] && !is_end((*src)[i], delim))
+		i++;
+	new_dest = ft_strnjoin(dest, *src, i);
+	free(dest);
+	*src += i;
+	return (new_dest);
+}
+
+char	*expand_quotes(char *dest, char **src, t_shell *shell)
+{
 	char	quote;
 
-	init(&res, &i, &quote);
-	while (cmd_str[i])
+	quote = **src;
+	(*src)++;
+	while (**src != quote)
 	{
-		setup_quote(cmd_str, &quote, i);
-		if (cmd_str[i] == '$' && cmd_str[i + 1] && quote != '\'')
-		{
-			if (cmd_str[i + 1] == '?')
-				res = append_exec_result(res, shell, &i);
-			else if (cmd_str[i + 1] == '_' || ft_isalnum(cmd_str[i + 1]))
-				res = append_env_val(res, cmd_str, &i, shell->env_list);
-			else
-				res = str_append_char_safe(res, cmd_str[i++]);
-		}
+		if (**src == '$' && quote == '"')
+			dest = expand_variable(dest, src, shell);
+		else if (quote == '"')
+			dest = add_chunk(dest, src, "$\"");
 		else
-			res = str_append_char_safe(res, cmd_str[i++]);
+			dest = add_chunk(dest, src, &quote);
+		if (!dest)
+			return (NULL);
 	}
-	res = str_append_char_safe(res, '\0');
-	if (res[0] == '\0' && quoted)
-		return (free(res), NULL);
-	return (res);
-}
-
-int		count_not_files_args(t_arg *args, int args_count);
-
-char	**args_to_argv(t_arg *args, int args_count)
-{
-	char	**argv;
-	int		i;
-	int		argc;
-	int		j;
-
-	if (!args || args_count == 0)
-		return (NULL);
-	argc = 0;
-	i = 0;
-	argc = count_not_files_args(args, args_count);
-	if (argc == 0)
-		return (NULL);
-	argv = malloc(sizeof(char *) * (argc + 1));
-	if (!argv)
-		return (NULL);
-	i = -1;
-	j = -1;
-	while (++i < args_count)
-	{
-		if (args[i].file == 0)
-			argv[++j] = ft_strdup(args[i].str);
-	}
-	argv[argc] = NULL;
-	return (argv);
+	(*src)++;
+	return (dest);
 }

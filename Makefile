@@ -2,41 +2,31 @@ NAME = minishell
 
 MAIN = \
 	main.c signal.c
-EXEC = \
-	exec.c builtin.c bin.c \
-	heredoc.c utils.c job_manager.c \
-	helpers.c heredoc_utils.c
-ENV = \
-	env_init.c env_utils.c env_helpers.c \
-	shlvl.c
-EXPANDER = \
-	expander.c expand_utils.c \
-	wildcard.c args.c norm.c
-VALIDATOR = \
-	ns_validator.c ops.c \
-	redirects.c brackets.c \
-	not_req_chars.c cmd_subst.c \
-	quotes.c paren_check.c \
-	paren_check_utils.c
-BUILTINS = \
-	echo.c cd.c pwd.c \
-	export.c unset.c env.c \
-	exit.c
+LEXER = \
+	tokenizer.c tokenizer_utils.c \
+	token_utils.c
 PARSER = \
-	parser.c parser_utils.c \
-	shell_split.c \
-	tools.c counter.c helpers.c \
-	parser_utils1.c 
+	ast.c ast_utils.c
+EXECUTOR = \
+	exec.c exec_utils.c redirection_utils.c
+EXECUTOR_BUILTINS = \
+	cd.c echo.c exit.c pwd.c export.c env.c \
+	alias.c
+ENVIROMENT = \
+	env.c env_utils.c
+EXPANDER = \
+	expand.c expand_utils.c
 UTILS = \
-	ft_memcpy.c ft_split.c ft_strcmp.c \
-	ft_strdup.c ft_strjoin.c utils.c \
-	ft_strcpy.c ft_isalnum.c ft_atoi.c \
-	ft_itoa.c fd_utils.c str_utils.c \
-	ft_strchr.c ft_substr.c ft_strlen.c \
-	ft_putstr_fd.c printerr.c free_cmd.c \
-	ft_memset.c fd_utils_helper.c ft_isspace.c
-SUBSHELL = \
-	subshell.c ss_utils.c utils.c
+	string_utils.c ft_strcmp.c \
+	skip_utils.c ft_memcpy.c \
+	ft_calloc.c ft_bzero.c \
+	error_utils.c ft_strdup.c \
+	ft_strchr.c ft_strjoin.c \
+	ft_strlen.c ft_isalnum.c \
+	ft_itoa.c free_utils.c \
+	ft_isalpha.c utils.c
+UTILS_SPLIT = \
+	split.c split_utils.c
 
 SRCS_DIR = src/
 OBJS_DIR = objs/
@@ -44,19 +34,20 @@ INCLUDES_DIR = includes/
 
 SRCS = \
 	$(addprefix $(SRCS_DIR)main/, $(MAIN)) \
-	$(addprefix $(SRCS_DIR)builtins/, $(BUILTINS)) \
-	$(addprefix $(SRCS_DIR)exec/, $(EXEC)) \
-	$(addprefix $(SRCS_DIR)env/, $(ENV)) \
-	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
-	$(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
+	$(addprefix $(SRCS_DIR)lexer/, $(LEXER)) \
 	$(addprefix $(SRCS_DIR)parser/, $(PARSER)) \
-	$(addprefix $(SRCS_DIR)subshell/, $(SUBSHELL)) \
-	$(addprefix $(SRCS_DIR)validator/, $(VALIDATOR))
+	$(addprefix $(SRCS_DIR)executor/, $(EXECUTOR)) \
+	$(addprefix $(SRCS_DIR)executor/builtins/, $(EXECUTOR_BUILTINS)) \
+	$(addprefix $(SRCS_DIR)enviroment/, $(ENVIROMENT)) \
+	$(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
+	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
+	$(addprefix $(SRCS_DIR)utils/split/, $(UTILS_SPLIT))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror # -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -g3 -fsanitize=address
 
 # Detect OS
 UNAME_S := $(shell uname -s)

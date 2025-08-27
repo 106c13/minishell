@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 13:50:14 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:50:18 by azolotar         ###   ########.fr       */
+/*   Created: 2025/05/28 16:23:12 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/23 16:08:50 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchr(const char *s, int n)
-{
-	int		i;
-	char	c;
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "minishell.h"
+#include "defines.h"
 
-	i = 0;
-	c = (char)n;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return ((char *)s + i);
-		i++;
-	}
-	if (s[i] == c)
-		return ((char *)s + i);
-	return (0);
+int	print_working_dir()
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	printf("%s\n", pwd);
+	free(pwd);
+	return (SUCCESS);
 }

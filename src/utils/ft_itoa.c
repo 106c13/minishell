@@ -1,80 +1,71 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 15:52:21 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/05 19:51:30 by azolotar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <stdlib.h>
+#include "utils.h"
 
-#include "minishell.h"
-
-static int	get_divider(int n)
+static char	*zero_case(void)
 {
-	int	div;
+	char	*str;
 
-	div = 1000000000;
-	while (n / div == 0)
-	{
-		div /= 10;
-	}
-	return (div);
+	str = malloc(2 * sizeof(char));
+	if (!str)
+		return (NULL);
+	str[0] = '0';
+	str[1] = '\0';
+	return (str);
 }
 
-static char	*create_result(char *buf)
+static int	get_size(int n)
 {
-	size_t	i;
-	size_t	len;
-	char	*result;
+	int	size;
 
-	len = ft_strlen(buf);
-	result = malloc(sizeof(char) * (len + 1));
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	size = 0;
+	if (n < 0)
 	{
-		result[i] = buf[i];
-		i++;
+		n *= -1;
+		size++;
 	}
-	result[i] = '\0';
-	return (result);
+	while (n != 0)
+	{
+		size++;
+		n /= 10;
+	}
+	return (size);
+}
+
+static char	*min_case(void)
+{
+	char	*str;
+
+	str = malloc(12 * sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, "-2147483648", 12);
+	return (str);
 }
 
 char	*ft_itoa(int n)
 {
-	int		div;
-	char	buf[12];
-	int		i;
+	char	*str;
+	int		size;
 
-	i = 0;
-	if (n < 0)
-		buf[i++] = '-';
 	if (n == 0)
-		return (create_result("0"));
-	div = get_divider(n);
-	while (div != 0)
+		return (zero_case());
+	if (n == -2147483648)
+		return (min_case());
+	size = get_size(n);
+	str = malloc((size + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	str[size] = '\0';
+	if (n < 0)
 	{
-		if (n < 0)
-			buf[i] = (n / div) * -1 + '0';
-		else
-			buf[i] = n / div + '0';
-		n %= div;
-		div /= 10;
-		i++;
+		n *= -1;
+		str[0] = '-';
 	}
-	buf[i] = '\0';
-	return (create_result(buf));
+	while (n != 0)
+	{
+		str[size - 1] = (n % 10) + 48;
+		n /= 10;
+		size--;
+	}
+	return (str);
 }
-
-/* #include <limits.h>
-#include <stdio.h>
-
-int	main(void)
-{
-	printf("%s\n", ft_itoa(-613));
-	return (0);
-} */

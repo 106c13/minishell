@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 13:50:14 by azolotar          #+#    #+#             */
-/*   Updated: 2025/06/14 13:50:18 by azolotar         ###   ########.fr       */
+/*   Created: 2025/05/27 17:58:34 by azolotar          #+#    #+#             */
+/*   Updated: 2025/06/16 16:48:06 by azolotar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchr(const char *s, int n)
-{
-	int		i;
-	char	c;
+#include <stdio.h>
+#include "minishell.h"
+#include "defines.h"
 
-	i = 0;
-	c = (char)n;
-	while (s[i])
+int	print_env_list(t_ast *cmd, t_list *env)
+{
+	if (cmd->argc != 1)
 	{
-		if (s[i] == c)
-			return ((char *)s + i);
-		i++;
+		printf("minishell: env: too many arguments\n");
+		return (FAILURE);
 	}
-	if (s[i] == c)
-		return ((char *)s + i);
-	return (0);
+	while (env)
+	{
+		if (env->val != NULL)
+			printf("%s=%s\n", env->key, env->val);
+		env = env->next;
+	}
+	return (SUCCESS);
 }
