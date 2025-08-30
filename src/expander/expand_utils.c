@@ -6,14 +6,14 @@
 
 //TODO: make new group of function for special characters ~
 //This works only for ~
-char	*expand_speacial_character(char *arg, t_list *env)
+char	*expand_speacial_character(char *arg, t_dict *env)
 {
 	char	*new;
 	char	*home;
 
 	if (*arg != '~' || (arg[1] && arg[1] != '/'))
 		return (arg);
-	home = get_env_val(env, "HOME");
+	home = get_dict_val(env, "HOME");
 	if (!home)
 		return (arg);
 	new = ft_strjoin(home, &arg[1]);
@@ -64,7 +64,7 @@ char	*expand_variable(char *dest, char **src, t_shell *shell)
 	key = parse_env_key(*src);
 	if (!key)
 		return (free(dest), NULL);
-	value = get_env_val(shell->env, key);
+	value = get_dict_val(shell->env, key);
 	if (!value)
 		value = "";
 	*src += ft_strlen(key) + 1;

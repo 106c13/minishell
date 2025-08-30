@@ -24,11 +24,11 @@ int	execute_builtin(t_ast *cmd, t_shell *shell)
 	else if (ft_strcmp(cmd->argv[0], "env") == 0)
 		return (print_env_list(cmd, shell->env));
 	else if (ft_strcmp(cmd->argv[0], "alias") == 0)
-		return (alias(cmd, shell->aliases));
+		return (alias(cmd, &shell->aliases));
 	return (NOTFOUND);
 }
 
-int	execute_bin(t_ast *leaf, t_list *env)
+int	execute_bin(t_ast *leaf, t_dict *env)
 {
 	char	**envp;
 	char	*path;

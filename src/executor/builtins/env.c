@@ -13,19 +13,15 @@
 #include <stdio.h>
 #include "minishell.h"
 #include "defines.h"
+#include "utils.h"
 
-int	print_env_list(t_ast *cmd, t_list *env)
+int	print_env_list(t_ast *cmd, t_dict *env)
 {
 	if (cmd->argc != 1)
 	{
 		printf("minishell: env: too many arguments\n");
 		return (FAILURE);
 	}
-	while (env)
-	{
-		if (env->val != NULL)
-			printf("%s=%s\n", env->key, env->val);
-		env = env->next;
-	}
+	print_dict(env);
 	return (SUCCESS);
 }

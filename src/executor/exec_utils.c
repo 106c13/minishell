@@ -71,7 +71,7 @@ static char	*build_path(char *path_env, char *cmd)
 	return (path);
 }
 
-char	*find_executable(char *cmd, t_list *env)
+char	*find_executable(char *cmd, t_dict *env)
 {
 	char	*path_env;
 	char	*path;
@@ -85,7 +85,7 @@ char	*find_executable(char *cmd, t_list *env)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	path_env = get_env_val(env, "PATH");
+	path_env = get_dict_val(env, "PATH");
 	if (!path_env)
 		return (NULL);
 	start = path_env;

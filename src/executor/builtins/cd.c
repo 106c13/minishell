@@ -17,7 +17,7 @@
 #include "utils.h"
 #include "enviroment.h"
 
-int	change_dir(t_ast *cmd, t_list *env)
+int	change_dir(t_ast *cmd, t_dict *env)
 {
 	char	*path;
 	char	*oldpath;
@@ -26,13 +26,13 @@ int	change_dir(t_ast *cmd, t_list *env)
 		return (printf("cd: Too many argument\n"), FAILURE);
 	if (cmd->argc == 1)
 	{
-		path = get_env_val(env, "HOME");
+		path = get_dict_val(env, "HOME");
 		if (!path)
 			return (printf("minishell: cd: HOME not set\n"), FAILURE);
 	}
 	else if (ft_strcmp(cmd->argv[1], "...") == 0)
 	{
-		path = get_env_val(env, "OLDPWD");
+		path = get_dict_val(env, "OLDPWD");
 		if (!path)
 			return (printf("minishell: cd: OLDPWD not set\n"), FAILURE);
 	}
@@ -44,6 +44,6 @@ int	change_dir(t_ast *cmd, t_list *env)
 		printf("minishell: cd: %s: No such file or directory\n", path);
 		return (FAILURE);
 	}
-	set_env_val(env, "OLDPWD", oldpath);
+	set_dict_val(env, "OLDPWD", oldpath);
 	return (SUCCESS);
 }

@@ -5,26 +5,13 @@
 #include "minishell.h"
 #include "enviroment.h"
 
-static t_list	*parse_env_line(char *env_line)
-{
-	char	*i;
-	t_list	*new;
-
-	i = ft_strchr(env_line, '=');
-	if (!i)
-		return (NULL);
-	*i = '\0';
-	new = new_env_node(env_line, i + 1);
-	return (new);
-}
-
-char **env_to_array(t_list *env)
+char **env_to_array(t_dict *env)
 {
     char    **env_arr;
     char    *tmp;
     int     size;
     int     i;
-    t_list   *curr;
+    t_dict   *curr;
 
     size = 0;
     curr = env;
@@ -58,40 +45,19 @@ char **env_to_array(t_list *env)
     return (env_arr);
 }
 
-t_list	*new_env_node(char *key, char *val)
-{
-	t_list	*new;
-
-	new = ft_calloc(1, sizeof(t_list));
-	if (!new)
-		return (NULL);
-	new->key = ft_strdup(key);
-	if (!new->key)
-		return (free(new), NULL);
-	if (val)
-		new->val = ft_strdup(val);
-	if (val && !new->val)
-		return (free(new->key), free(new), NULL);
-	return (new);
-}
-
 void	init_env_list(t_shell *shell, char **env_arr)
 {
-	t_list	*new;
-	t_list	*prev;
+    char    *c;
 	int		i;
 
 	shell->env = NULL;
 	i = -1;
 	while (env_arr[++i])
 	{
-		new = parse_env_line(env_arr[i]);
-		if (!new)
-			continue ;
-		if (shell->env == NULL)
-			shell->env = new;
-		else
-			prev->next = new;
-		prev = new;
+	    c = ft_strchr(env_arr[i], '=');
+        if (!c)
+            return ;
+        *c = '\0';
+		shell->env = set_dict_val(shell->env, env_arr[i], c + 1);
 	}
 }

@@ -29,6 +29,12 @@ int 	skip_quote(char **str);
 int	    skip_spaces(char **str);
 int	    skip_part(char **str);
 
+/* dict_utils.c */
+char	*get_dict_val(t_dict *dict, char *key);
+t_dict	*set_dict_val(t_dict *head, char *key, char *val);
+void	free_dict_list(t_dict *dict);
+void	print_dict(t_dict *dict);
+
 /* split.c */
 char	**split_command(char *input);
 

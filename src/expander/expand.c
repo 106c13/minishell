@@ -63,21 +63,32 @@ t_redir	*expand_redirections(t_redir *redirs, t_shell *shell)
 	return (new);
 }
 
+char	*expand_alias(char *arg, t_dict	*aliases)
+{
+	char	*new;
+
+	new = get_dict_val(aliases, arg);
+	if (!new)
+		return (arg);
+	return (new);
+}
+
 char	**expand_argv(int size, char **argv, t_shell *shell)
 {
 	char	**new;
 	int		i;
 
-	i = 0;
-	new= malloc((size + 1) * sizeof(char *));
+	i = -1;
+	new = malloc((size + 1) * sizeof(char *));
 	if (!new)
 		return (free_argv(size, argv), NULL);
-	while (i < size)
+	while (++i < size)
 	{
+		if (i == 0)
+			argv[0] = expand_alias(argv[0], shell->aliases);
 		new[i] = expand_arg(argv[i], shell);
 		if (!new[i])
 			return (free_argv(size, argv), NULL);
-		i++;
 	}
 	new[size] = NULL;
 	free_argv(size, argv);

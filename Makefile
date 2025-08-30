@@ -13,7 +13,7 @@ EXECUTOR_BUILTINS = \
 	cd.c echo.c exit.c pwd.c export.c env.c \
 	alias.c
 ENVIROMENT = \
-	env.c env_utils.c
+	env.c
 EXPANDER = \
 	expand.c expand_utils.c
 UTILS = \
@@ -24,7 +24,8 @@ UTILS = \
 	ft_strchr.c ft_strjoin.c \
 	ft_strlen.c ft_isalnum.c \
 	ft_itoa.c free_utils.c \
-	ft_isalpha.c utils.c
+	ft_isalpha.c utils.c \
+	dict_utils.c
 UTILS_SPLIT = \
 	split.c split_utils.c
 

@@ -25,19 +25,19 @@ typedef struct  s_ast
     struct s_ast    *right;
 }   t_ast;
 
-typedef struct s_list
+typedef struct s_dict
 {
 	char			*key;
 	char			*val;
-	struct s_list    *next;
-}	t_list;
+	struct s_dict    *next;
+}	t_dict;
 
 typedef struct s_shell
 {
     int     exec_result;
     pid_t   pid;
-    t_list  *env;
-    t_list  *aliases;
+    t_dict  *env;
+    t_dict  *aliases;
 }   t_shell;
 
 #endif

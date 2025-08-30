@@ -17,6 +17,11 @@
 #include "defines.h"
 #include "utils.h"
 
+bool	is_env_var(char *str)
+{
+	return (*str == '$' && (ft_isalnum(str[1]) || str[1] == '_' || str[1] == '?'));
+}
+
 bool	is_valid_identifier(char *arg)
 {
 	if (!ft_isalpha(*arg) && *arg != '_')
@@ -31,14 +36,14 @@ bool	is_valid_identifier(char *arg)
 	return (true);
 }
 
-int	export_env(t_ast *cmd, t_list *env)
+int	export_env(t_ast *cmd, t_dict *env)
 {
 	int		i;
 	char	*key;
 	char	*val;
 
 	if (cmd->argc == 1)
-		return (print_env(env), SUCCESS);
+		return (print_dict(env), SUCCESS);
 	i = 0;
 	while (++i < cmd->argc)
 	{
@@ -48,7 +53,7 @@ int	export_env(t_ast *cmd, t_list *env)
 		val = ft_strchr(cmd->argv[i], '=');
 		if (val)
 			*val++ = '\0';
-		set_env_val(env, key, val);
+		set_dict_val(env, key, val);
 	}
 	return (SUCCESS);
 }
