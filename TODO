@@ -1,2 +1,2 @@
 Improve executor and parser
-Combine env and aliases, both are lists
+remove ft_strdub from dict

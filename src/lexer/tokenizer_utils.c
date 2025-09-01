@@ -15,6 +15,16 @@ static bool	is_valid_token(t_token *token)
 	return (true);
 }
 
+int	get_t_array_size(t_token *token)
+{
+	int	size;
+
+	size = 0;
+	while(token++)
+		size++;
+	return (size);
+}
+
 bool	check_token_array(t_token *token)
 {
 	bool	is_first = true;

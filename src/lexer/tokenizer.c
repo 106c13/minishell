@@ -43,8 +43,6 @@ t_token	*tokenize(char *input)
 	{
 		printf("Error during tokenizing\n");
 		return (NULL);
-	}
-	if (!check_token_array(tokens))
-		return (free(tokens), NULL);
+    }
 	return (tokens);
 }

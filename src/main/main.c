@@ -69,6 +69,12 @@ static void	listen_shell(t_shell *shell)
 		}
 		add_history(input);
 		tokens = tokenize(input);
+    	tokens = expand_aliases(tokens);
+		if (!check_token_array(tokens))
+		{
+			free(tokens);
+			continue ;
+		}
 		ast = build_ast(tokens);
 		free(input);
 		printf("\n");
