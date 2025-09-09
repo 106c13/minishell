@@ -19,39 +19,7 @@
 #include "tokenizer.h"
 #include "exec.h"
 #include "enviroment.h"
-#include "utils.h"
-
-char *read_block(void)
-{
-	char	*line;
-	char	*block;
-	char	*tmp;
-
-	block = NULL;
-	while (true)
-	{
-		if (!block)
-			line = readline("\033[38;5;196mminishell42? \033[0m");
-		else
-			line = readline("");
-		if (!line)
-			break;
-		if (!*line)
-			return (free(line), block);
-		if (!block)
-			block = ft_strdup(line);
-		else
-		{
-			tmp = ft_strjoin(block, "\n");
-			free(block);
-			block = ft_strjoin(tmp, line);
-			free(tmp);
-		}
-		free(line);
-	}
-	return (block);
-}
-
+#include "expander.h"
 
 static void	listen_shell(t_shell *shell)
 {
@@ -69,7 +37,7 @@ static void	listen_shell(t_shell *shell)
 		}
 		add_history(input);
 		tokens = tokenize(input);
-    	tokens = expand_aliases(tokens);
+    	tokens = expand_aliases(tokens, shell->aliases);
 		if (!check_token_array(tokens))
 		{
 			free(tokens);

@@ -10,6 +10,7 @@ t_token	*tokenize(char *input);
 /* tokenizer_utils.c */
 bool	check_token_array(t_token *token);
 void	set_token_type(t_token *token, char *part);
+int		get_t_array_size(t_token *token);
 int 	get_parts_size(char **parts);
 
 /* token_utils.c */

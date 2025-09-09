@@ -15,7 +15,7 @@ EXECUTOR_BUILTINS = \
 ENVIROMENT = \
 	env.c
 EXPANDER = \
-	expand.c expand_utils.c
+	expand.c expand_utils.c expand_aliases.c
 UTILS = \
 	string_utils.c ft_strcmp.c \
 	skip_utils.c ft_memcpy.c \
