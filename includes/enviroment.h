@@ -1,4 +1,4 @@
-#ifndef ENIVROMENT_H
+#ifndef ENVIROMENT_H
 # define ENVIROMENT_H
 
 # include <stdbool.h>

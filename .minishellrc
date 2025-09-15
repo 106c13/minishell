@@ -1,0 +1,5 @@
+alias gst='git status'
+
+alias ls='ls --color -1'
+alias leaks='valgrind --leak-check=full'
+alias copy='xsel --clipboard'

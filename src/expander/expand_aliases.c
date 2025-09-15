@@ -51,21 +51,30 @@ t_token	*expand_aliases(t_token *old, t_dict *aliases)
 
 	if (!aliases)
 		return (old);
+
 	tmp = old;
 	new = NULL;
 	is_first = true;
-	while (tmp->type)
+	while (tmp && tmp->type)
 	{
 		if (tmp->type == WORD && is_first)
 		{
 			is_first = false;
-			new = join_tokens(new, get_dict_val(aliases, tmp->value));
+			if (get_dict_val(aliases, tmp->value))
+				new = join_tokens(new, get_dict_val(aliases, tmp->value));
+			else
+				new = join_tokens(new, tmp->value);
 		}
-		else if (t_is_operator(tmp->type))
-			is_first = true;
+		else
+		{
+			new = join_tokens(new, tmp->value);
+			if (t_is_operator(tmp->type))
+				is_first = true;
+		}
 		tmp++;
 	}
 	if (!new)
 		return (old);
 	return (new);
 }
+

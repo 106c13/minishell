@@ -58,7 +58,7 @@ int	execute_command(t_ast *leaf, t_shell *shell)
 		return (1);
 	if (leaf->argv && is_builtin(leaf->argv[0]))
 		status = execute_builtin(leaf, shell);
-	else if (leaf->argv)
+	else
 	{
 		pid = fork();
 		if (pid < 0)
