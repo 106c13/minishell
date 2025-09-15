@@ -28,6 +28,8 @@ UTILS = \
 	dict_utils.c
 UTILS_SPLIT = \
 	split.c split_utils.c
+GET_NEXT_LINE = \
+	get_next_line.c get_next_line_utils.c
 
 SRCS_DIR = src/
 OBJS_DIR = objs/
@@ -42,7 +44,8 @@ SRCS = \
 	$(addprefix $(SRCS_DIR)enviroment/, $(ENVIROMENT)) \
 	$(addprefix $(SRCS_DIR)expander/, $(EXPANDER)) \
 	$(addprefix $(SRCS_DIR)utils/, $(UTILS)) \
-	$(addprefix $(SRCS_DIR)utils/split/, $(UTILS_SPLIT))
+	$(addprefix $(SRCS_DIR)utils/split/, $(UTILS_SPLIT)) \
+	$(addprefix $(SRCS_DIR)get_next_line/, $(GET_NEXT_LINE))
 
 OBJS = $(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

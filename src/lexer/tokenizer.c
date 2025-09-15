@@ -31,6 +31,8 @@ t_token	*tokenize(char *input)
 	char	**parts;
 	t_token	*tokens;
 
+	if (!input)
+		return (NULL);
 	parts = split_command(input);
 	if (!parts)
 	{

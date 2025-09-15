@@ -13,7 +13,6 @@ static t_token	*new_token_array(t_token *left, t_token *right)
 
 	size = 0;
 	size = get_t_array_size(left) + get_t_array_size(right);
-	printf("SIZE: %d\n", size);
 	dest = malloc(sizeof(t_token) * (size + 1));
 	if (!dest)
 		return (free(left), free(right), NULL);
@@ -57,7 +56,6 @@ t_token	*expand_aliases(t_token *old, t_dict *aliases)
 	is_first = true;
 	while (tmp->type)
 	{
-		printf("DOE\n");
 		if (tmp->type == WORD && is_first)
 		{
 			is_first = false;
@@ -67,5 +65,7 @@ t_token	*expand_aliases(t_token *old, t_dict *aliases)
 			is_first = true;
 		tmp++;
 	}
+	if (!new)
+		return (old);
 	return (new);
 }

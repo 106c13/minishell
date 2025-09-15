@@ -20,6 +20,41 @@
 #include "exec.h"
 #include "enviroment.h"
 #include "expander.h"
+#include "get_next_line.h"
+#include "utils.h"
+
+static void	init_session(t_shell *shell)
+{
+	int		fd;
+	char	*line;
+	t_token	*tokens;
+	t_ast	*ast;
+
+	fd = open(".minishellrc", O_RDONLY);
+	if (fd == -1)
+		return ;
+	line = get_next_line(fd);
+	while (line)
+	{
+		printf("LINE: %s", line);
+		line[ft_strlen(line) - 1] = '\0';
+		tokens = tokenize(line);
+    	tokens = expand_aliases(tokens, shell->aliases);
+		if (!check_token_array(tokens))
+		{
+			free(tokens);
+			continue ;
+		}
+		ast = build_ast(tokens);
+		if (ast)
+			shell->exec_result = execute_node(ast, shell);
+		free(line);
+		free(ast);
+		free(tokens);
+		line = get_next_line(fd);
+	}
+	close(fd);
+}
 
 static void	listen_shell(t_shell *shell)
 {
@@ -56,8 +91,9 @@ int	main(int argc, char **argv, char **env)
 	t_shell	shell;
 
 	/* In future add init_shell function */
-	init_env_list(&shell, env);
 	shell.aliases = NULL;
+	init_session(&shell);
+	init_env_list(&shell, env);
 	shell.pid = getpid();
 	listen_shell(&shell);
 	return ((void)argc, (void)argv, shell.exec_result);

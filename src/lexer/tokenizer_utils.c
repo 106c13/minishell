@@ -14,7 +14,7 @@ static bool	is_valid_token(t_token *token)
 		return (false);
 	return (true);
 }
-#include <stdio.h>
+
 int	get_t_array_size(t_token *token)
 {
 	int	size;
