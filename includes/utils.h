@@ -47,6 +47,9 @@ void    free_parts(char **parts, int size);
 /* free_utils.c */
 void	free_argv(int argc, char **argv);
 
+/* interface.c */
+char	*get_prompt(char *old);
+
 /* Basic functions */
 int	    ft_strcmp(const char *s1, const char *s2);
 int	    ft_strncmp(const char *s1, const char *s2, int n);
@@ -57,6 +60,7 @@ void	*ft_calloc(size_t count, size_t size);
 void	*ft_bzero(void *s, size_t n);
 char	*ft_strnjoin(char *s1, char *s2, int n);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_nstrjoin(char **arr);
 int		ft_strlen(char *str);
 int		ft_isalnum(char c);
 char	*ft_itoa(int num);

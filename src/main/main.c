@@ -6,7 +6,7 @@
 /*   By: azolotar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 19:27:30 by azolotar          #+#    #+#             */
-/*   Updated: 2025/09/15 16:28:36 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:52:02 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ static void	listen_shell(t_shell *shell)
 
 	while (true)
 	{
-		input = readline("\033[91mminishell\033[0m@\033[94m42 \033[31m❯ \033[0m");
+		shell->prompt = get_prompt(shell->prompt);
+		input = readline(shell->prompt);
 		if (!input)
 		{
 			printf("exit\n");

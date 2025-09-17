@@ -1,6 +1,35 @@
 #include <stdio.h>
 #include "utils.h"
 
+char	*ft_nstrjoin(char **arr)
+{
+	int		size;
+	int		i;
+	char	**tmp;
+	char	*str;
+
+	size = 0;
+	tmp = arr;
+	while (*tmp)
+	{
+		size += ft_strlen(*tmp);
+		tmp++;
+	}
+	str = malloc((size + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	str[size] = '\0';
+	i = 0;
+	while (*arr)
+	{
+		str = ft_strcpy(str, *arr);
+		arr++;
+	}
+	return (str);
+}
+
+
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	int		size;
