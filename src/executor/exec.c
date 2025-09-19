@@ -58,6 +58,8 @@ int	execute_command(t_ast *leaf, t_shell *shell)
 		return (1);
 	if (leaf->argv && is_builtin(leaf->argv[0]))
 		status = execute_builtin(leaf, shell);
+	else if (getpid() != shell->pid)
+		execute_bin(leaf, shell->env);
 	else
 	{
 		pid = fork();
@@ -100,6 +102,20 @@ int execute_pipe(t_ast *node, t_shell *shell)
     return (WIFEXITED(status) ? WEXITSTATUS(status) : FAILURE);
 }
 
+int	execute_background(t_ast *node, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	status = 0;
+	pid = fork();
+	if (pid == 0)
+		exit(execute_node(node->left, shell));
+	else
+		status = execute_node(node->right, shell);
+	return (status);
+}
+
 int	execute_node(t_ast *node, t_shell *shell)
 {
 	if (!node)
@@ -110,6 +126,8 @@ int	execute_node(t_ast *node, t_shell *shell)
 		return (execute_subshell(node, shell));
 	if (node->type == PIPE)
 		return (execute_pipe(node, shell));
+	if (node->type == BG)
+		return (execute_background(node, shell));
 	shell->exec_result = execute_node(node->left, shell);
 	if (node->type == SEMI)
 		return (execute_node(node->right, shell));

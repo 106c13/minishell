@@ -4,7 +4,7 @@
 char	*ft_nstrjoin(char **arr)
 {
 	int		size;
-	int		i;
+	size_t	i;
 	char	**tmp;
 	char	*str;
 
@@ -22,7 +22,7 @@ char	*ft_nstrjoin(char **arr)
 	i = 0;
 	while (*arr)
 	{
-		str = ft_strcpy(str, *arr);
+		i += ft_strcpy(&str[i], *arr);
 		arr++;
 	}
 	return (str);

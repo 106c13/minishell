@@ -15,6 +15,7 @@
 # define OR 1001
 # define AND 1002
 # define SEMI 1003
+# define BG 1004
 
 # define OUTFILE 1100
 # define INFILE 1101

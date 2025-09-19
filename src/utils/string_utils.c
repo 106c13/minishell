@@ -42,6 +42,8 @@ bool	is_end(char c, char *delim)
 
 int	get_operator_type(char *str)
 {
+	if (ft_strncmp(str, "&", 1) == 0)
+		return (BG);
 	if (ft_strncmp(str, "&&", 2) == 0)
 		return (AND);
 	if (ft_strncmp(str, "||", 2) == 0)
@@ -62,7 +64,6 @@ int	get_parenthesis_type(char *str)
 		return (RPAREN);
 	return (0);
 }
-
 
 int	get_redirect_type(char *str)
 {

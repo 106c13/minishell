@@ -14,7 +14,8 @@ bool	t_is_operator(int	type)
 	return (type == AND 
 			|| type == OR
 			|| type == PIPE
-			|| type == SEMI);
+			|| type == SEMI
+			|| type == BG);
 }
 
 bool	t_is_redirect(int	type)

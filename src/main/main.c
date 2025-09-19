@@ -64,8 +64,7 @@ static void	listen_shell(t_shell *shell)
 
 	while (true)
 	{
-		shell->prompt = get_prompt(shell->prompt);
-		input = readline(shell->prompt);
+		input = readline(get_prompt());
 		if (!input)
 		{
 			printf("exit\n");
@@ -93,9 +92,9 @@ int	main(int argc, char **argv, char **env)
 
 	/* In future add init_shell function */
 	shell.aliases = NULL;
-	init_session(&shell);
-	init_env_list(&shell, env);
 	shell.pid = getpid();
+	init_env_list(&shell, env);
+	init_session(&shell);
 	listen_shell(&shell);
 	return ((void)argc, (void)argv, shell.exec_result);
 }

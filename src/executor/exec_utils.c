@@ -8,7 +8,7 @@
 #include "enviroment.h"
 
 void	execute_pipe_node(t_ast *node, t_shell *shell, int *pipefd)
-{	
+{
 	close(pipefd[0]);
 	close(pipefd[1]);
 	exit(execute_node(node, shell));

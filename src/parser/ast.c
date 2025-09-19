@@ -37,7 +37,7 @@ t_token *find_higest_operator(t_token *token, bool *is_subshell)
 	{
 		if (t_is_operator(token->type) && depth <= min_depth)
 		{
-			if (token->type == PIPE && !op)
+			if (token->type == PIPE && (!op || op->type == PIPE))
 				op = token;
 			else if (token->type != PIPE)
 				op = token;

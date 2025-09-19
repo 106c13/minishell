@@ -25,7 +25,7 @@ UTILS = \
 	ft_strlen.c ft_isalnum.c \
 	ft_itoa.c free_utils.c \
 	ft_isalpha.c utils.c \
-	dict_utils.c
+	dict_utils.c ft_strcpy.c
 UTILS_SPLIT = \
 	split.c split_utils.c
 GET_NEXT_LINE = \

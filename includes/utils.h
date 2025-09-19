@@ -20,7 +20,8 @@ int 	get_parenthesis_type(char *str);
 void	syntax_error(int type);
 
 /* utils.c */
-int	get_redirs_size(t_redir *redirs);
+int		get_redirs_size(t_redir *redirs);
+char	*get_prompt();
 
 /* skip_utils.c */
 int 	skip_operator(char **str);
@@ -47,12 +48,10 @@ void    free_parts(char **parts, int size);
 /* free_utils.c */
 void	free_argv(int argc, char **argv);
 
-/* interface.c */
-char	*get_prompt(char *old);
-
 /* Basic functions */
 int	    ft_strcmp(const char *s1, const char *s2);
 int	    ft_strncmp(const char *s1, const char *s2, int n);
+size_t	ft_strcpy(char *dest, const char *src);
 char	*ft_strdup(const char *src);
 char	*ft_strchr(const char *s, int c);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
