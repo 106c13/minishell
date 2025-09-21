@@ -60,20 +60,6 @@ t_dict	*set_dict_val(t_dict *head, char *key, char *val)
 	return (head);
 }
 
-void	free_dict_list(t_dict *dict)
-{
-	t_dict	*tmp;
-
-	while (dict != NULL)
-	{
-		tmp = dict;
-		dict = dict->next;
-		free(tmp->key);
-		free(tmp->val);
-		free(tmp);
-	}
-}
-
 void	print_dict(t_dict *dict)
 {
 	while (dict)

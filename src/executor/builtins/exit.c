@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "minishell.h"
+#include "utils.h"
 
 static bool	is_long_long(long long num, int digit, int sign)
 {
@@ -56,19 +57,22 @@ static int	parse_exit_code(char *str)
 	return (result);
 }
 
-int	shell_exit(t_ast *leaf)
+//TODO:: Fix error 2
+int	shell_exit(t_ast *leaf, t_shell *shell)
 {
 	int			exit_code;
 
+	exit_code = 0;
 	if (leaf->argc > 2)
 	{
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
-	if (leaf->argc == 1)
-		exit(0);
-	exit_code = parse_exit_code(leaf->argv[1]);
+	if (leaf->argc == 2)
+		exit_code = parse_exit_code(leaf->argv[1]);
 	if (exit_code == 2)
 		printf("minishell: exit: %s numeric argument required\n", leaf->argv[1]);
+	free_dict(shell->env);
+	free_dict(shell->aliases);
 	exit(exit_code);
 }

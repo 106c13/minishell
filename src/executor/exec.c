@@ -16,7 +16,7 @@ int	execute_builtin(t_ast *cmd, t_shell *shell)
 	else if (ft_strcmp(cmd->argv[0], "echo") == 0)
 		return (echo(cmd));
 	else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		return (shell_exit(cmd));
+		return (shell_exit(cmd, shell));
 	else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
 		return (print_working_dir(cmd));
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -33,8 +33,6 @@ int	execute_bin(t_ast *leaf, t_dict *env)
 	char	**envp;
 	char	*path;
 
-	if (!leaf->argv[0])
-		exit (0);
 	path = find_executable(leaf->argv[0], env);
 	if (!path)
 	{
@@ -60,7 +58,7 @@ int	execute_command(t_ast *leaf, t_shell *shell)
 		status = execute_builtin(leaf, shell);
 	else if (getpid() != shell->pid)
 		execute_bin(leaf, shell->env);
-	else
+	else if (leaf->argv)
 	{
 		pid = fork();
 		if (pid < 0)

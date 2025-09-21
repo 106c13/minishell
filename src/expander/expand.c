@@ -71,15 +71,15 @@ char	**expand_argv(int size, char **argv, t_shell *shell)
 	i = -1;
 	new = malloc((size + 1) * sizeof(char *));
 	if (!new)
-		return (free_argv(size, argv), NULL);
+		return (free_argv(argv), NULL);
 	while (++i < size)
 	{
 		new[i] = expand_arg(argv[i], shell);
 		if (!new[i])
-			return (free_argv(size, argv), NULL);
+			return (free_argv(argv), NULL);
 	}
 	new[size] = NULL;
-	free_argv(size, argv);
+	free_argv(argv);
 	return (new);
 }
 

@@ -16,7 +16,7 @@ int	count_parts(char *line)
 			count++;
 		}
 	}
-	printf("\033[38;5;34m[DEBUG] PARTS COUNT: %d\033[0m\n", count);
+	//printf("\033[38;5;34m[DEBUG] PARTS COUNT: %d\033[0m\n", count);
 	return (count);
 }
 

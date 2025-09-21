@@ -25,7 +25,7 @@ int		change_dir(t_ast *leaf, t_dict *env);
 int		echo(t_ast  *leaf);
 
 /* exit.c */
-int 	shell_exit(t_ast *leaf);
+int	shell_exit(t_ast *leaf, t_shell *shell);
 
 /* pwd.c */
 int		print_working_dir(t_ast *leaf);

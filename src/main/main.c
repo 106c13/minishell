@@ -36,7 +36,7 @@ static void	init_session(t_shell *shell)
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("LINE: %s", line);
+		//printf("LINE: %s", line);
 		line[ft_strlen(line) - 1] = '\0';
 		tokens = tokenize(line);
     	tokens = expand_aliases(tokens, shell->aliases);
@@ -67,9 +67,10 @@ static void	listen_shell(t_shell *shell)
 		input = readline(get_prompt());
 		if (!input)
 		{
-			printf("exit\n");
+			printf("\nexit\n");
 			break ;
 		}
+		input = multiline_input(input);
 		add_history(input);
 		tokens = tokenize(input);
     	tokens = expand_aliases(tokens, shell->aliases);
@@ -80,7 +81,7 @@ static void	listen_shell(t_shell *shell)
 		}
 		ast = build_ast(tokens);
 		free(input);
-		printf("\n");
+		//printf("\n");
 		if (ast)
 			shell->exec_result = execute_node(ast, shell);
 	}

@@ -33,8 +33,10 @@ int	    skip_part(char **str);
 /* dict_utils.c */
 char	*get_dict_val(t_dict *dict, char *key);
 t_dict	*set_dict_val(t_dict *head, char *key, char *val);
-void	free_dict_list(t_dict *dict);
 void	print_dict(t_dict *dict);
+
+/* multiline_utils.c */
+char	*multiline_input(char *input);
 
 /* split.c */
 char	**split_command(char *input);
@@ -46,7 +48,8 @@ char	*get_part(char **str);
 void    free_parts(char **parts, int size);
 
 /* free_utils.c */
-void	free_argv(int argc, char **argv);
+void	free_argv(char **argv);
+void	free_dict(t_dict *dict);
 
 /* Basic functions */
 int	    ft_strcmp(const char *s1, const char *s2);

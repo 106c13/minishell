@@ -20,7 +20,7 @@ t_token *build_token_array(char **parts)
 	{
 		set_token_type(&tokens[i], parts[i]);
 		tokens[i].value = parts[i];
-		printf("\033[38;5;34m[DEBUG] TYPE %d VALUE %s\033[0m\n", tokens[i].type, tokens[i].value);
+		//printf("\033[38;5;34m[DEBUG] TYPE %d VALUE %s\033[0m\n", tokens[i].type, tokens[i].value);
 		i++;
 	}
 	return (tokens);

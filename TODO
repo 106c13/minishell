@@ -1,2 +1,3 @@
 Improve executor and parser
 remove ft_strdub from dict
+add unset and unalias

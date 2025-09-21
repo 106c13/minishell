@@ -77,4 +77,3 @@ t_token	*expand_aliases(t_token *old, t_dict *aliases)
 		return (old);
 	return (new);
 }
-

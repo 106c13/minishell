@@ -37,7 +37,7 @@ bool	check_token_array(t_token *token)
 
 	while (token->type)
 	{
-		if ((is_first && !is_valid_token(token)) || (token->type == RPAREN && is_first))
+		if ((is_first && !is_valid_token(token)) || (token->type == RPAREN && is_first) || (token->type == LPAREN && !is_first))
 			return (syntax_error(token->type), false);
 		if (token->type == RPAREN && depth == 0)
 			return (syntax_error(token->type), false);
