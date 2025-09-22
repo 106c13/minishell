@@ -85,19 +85,9 @@ t_redir	*extract_redirections(t_token *token)
 
 void	clean_parentheses(t_token *left, t_token *right)
 {
-	int		depth;
 	t_token	*paren;
 
-	depth = 0;
-	while (left != right)
-	{
-		if (left->type == LPAREN && depth++ == 0)
-			paren = left;
-		else if(left->type == RPAREN)
-			depth--;
-		left++;
-	}
-	paren->type = UNUSED;
+	left->type = UNUSED;
 	while (right->type)
 	{
 		if (right->type == RPAREN)
@@ -106,4 +96,3 @@ void	clean_parentheses(t_token *left, t_token *right)
 	}
 	paren->type = UNUSED;
 }
-

@@ -14,7 +14,7 @@ t_ast	*ast_leaf(t_token *token)
 {
 	t_ast	*leaf;
 
-	//printf("IN LEAF %d\n", token->type);
+	printf("IN LEAF %s\n", token->value);
 	leaf = ft_calloc(1, sizeof(t_ast));
 	leaf->type = COMMAND;
 	leaf->argv = extract_argv(token);
@@ -39,7 +39,7 @@ t_token *find_higest_operator(t_token *token, bool *is_subshell)
 		{
 			if (token->type == PIPE && (!op || op->type == PIPE))
 				op = token;
-			else if (token->type != PIPE)
+			else if (token->type != PIPE || depth < min_depth)
 				op = token;
 			min_depth = depth;
 			*is_subshell = (depth != 0);
@@ -57,7 +57,7 @@ t_ast	*ast_subshell(t_token *token)
 {
 	t_ast	*node;
 
-	//printf("SUBSHELL-> ");
+	printf("SUBSHELL-> ");
 	node = malloc(sizeof(t_ast));
 	node->type = SUBSHELL;
 	node->left = NULL;
@@ -65,18 +65,17 @@ t_ast	*ast_subshell(t_token *token)
 	return (node);
 }
 
-
 t_ast	*ast_node(t_token *left, t_token *right)
 {
 	t_ast	*node;
 
-	//printf("NODE-> ");
+	printf("OP(%d)-> ", right->type);
 	node = malloc(sizeof(t_ast));
 	node->type = right->type;
 	right->type = 0;
-	//printf("LEFT-> ");
+	printf("LEFT-> ");
 	node->left = build_ast(left);
-	//printf("RIGHT-> \n");
+	printf("RIGHT-> ");
 	node->right = build_ast(++right);
 	return (node);
 }
