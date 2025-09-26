@@ -66,28 +66,42 @@ t_redir	*expand_redirections(t_redir *redirs, t_shell *shell)
 char	**expand_argv(int size, char **argv, t_shell *shell)
 {
 	char	**new;
+	char	**tmp;
+	char	*new_arg;
 	int		i;
 
 	i = -1;
-	new = malloc((size + 1) * sizeof(char *));
-	if (!new)
-		return (free_argv(argv), NULL);
+	new = NULL;
 	while (++i < size)
 	{
-		new[i] = expand_arg(argv[i], shell);
-		if (!new[i])
+		new_arg = expand_arg(argv[i], shell);
+		if (!new_arg)
 			return (free_argv(argv), NULL);
+		if (i == 0)
+		{
+			tmp = split_command(new_arg);
+			new = join_str_arrays(new, tmp);
+		}
+		else
+			new = append_str_array(new, new_arg);
+		if (!new)
+			return (NULL);
 	}
-	new[size] = NULL;
 	free_argv(argv);
 	return (new);
 }
 
 void	expand_command(t_ast	*leaf, t_shell *shell)
 {
+	int	argc;
+
+	argc = 0;
 	if (leaf->argv)
 	{
 		leaf->argv = expand_argv(leaf->argc, leaf->argv, shell);
+		while (leaf->argv && leaf->argv[argc])
+			argc++;
+		leaf->argc = argc;
 		// wildcard
 	}
 	if (leaf->redirs)

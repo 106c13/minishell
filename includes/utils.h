@@ -35,6 +35,10 @@ char	*get_dict_val(t_dict *dict, char *key);
 t_dict	*set_dict_val(t_dict *head, char *key, char *val);
 void	print_dict(t_dict *dict);
 
+/* array_utils.c */
+char	**append_str_array(char **arr, char *tail);
+char	**join_str_arrays(char **a1, char **a2);
+
 /* multiline_utils.c */
 char	*multiline_input(char *input);
 
