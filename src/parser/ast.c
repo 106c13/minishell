@@ -14,7 +14,7 @@ t_ast	*ast_leaf(t_token *token)
 {
 	t_ast	*leaf;
 
-	printf("IN LEAF %s\n", token->value);
+	//printf("IN LEAF %s\n", token->value);
 	leaf = ft_calloc(1, sizeof(t_ast));
 	leaf->type = COMMAND;
 	leaf->argv = extract_argv(token);
@@ -57,7 +57,7 @@ t_ast	*ast_subshell(t_token *token)
 {
 	t_ast	*node;
 
-	printf("SUBSHELL-> ");
+	//printf("SUBSHELL-> ");
 	node = malloc(sizeof(t_ast));
 	node->type = SUBSHELL;
 	node->left = NULL;
@@ -69,13 +69,13 @@ t_ast	*ast_node(t_token *left, t_token *right)
 {
 	t_ast	*node;
 
-	printf("OP(%d)-> ", right->type);
+	//printf("OP(%d)-> ", right->type);
 	node = malloc(sizeof(t_ast));
 	node->type = right->type;
 	right->type = 0;
-	printf("LEFT-> ");
+//	printf("LEFT-> ");
 	node->left = build_ast(left);
-	printf("RIGHT-> ");
+	//printf("RIGHT-> ");
 	node->right = build_ast(++right);
 	return (node);
 }

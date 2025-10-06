@@ -59,12 +59,15 @@ static void	init_session(t_shell *shell)
 static void	listen_shell(t_shell *shell)
 {
 	char	*input;
+	char	*prompt;
 	t_token	*tokens;
 	t_ast	*ast;
 
 	while (true)
 	{
-		input = readline(get_prompt());
+		prompt = get_prompt();
+		input = readline(prompt);
+		free(prompt);
 		if (!input)
 		{
 			printf("\nexit\n");
@@ -81,9 +84,13 @@ static void	listen_shell(t_shell *shell)
 		}
 		ast = build_ast(tokens);
 		free(input);
+		free_tokens(tokens);
 		//printf("\n");
 		if (ast)
+		{
 			shell->exec_result = execute_node(ast, shell);
+			free_ast(ast);
+		}
 	}
 }
 

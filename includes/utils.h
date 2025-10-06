@@ -54,6 +54,8 @@ void    free_parts(char **parts, int size);
 /* free_utils.c */
 void	free_argv(char **argv);
 void	free_dict(t_dict *dict);
+void	free_ast(t_ast *ast);
+void	free_tokens(t_token *token);
 
 /* Basic functions */
 int	    ft_strcmp(const char *s1, const char *s2);

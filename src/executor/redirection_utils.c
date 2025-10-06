@@ -5,13 +5,16 @@
 #include "minishell.h"
 #include "defines.h"
 
-static bool redirect_out(char *file)
+static bool redirect_out(char *file, bool append)
 {
 	int fd;
 
 	if (access(file, F_OK) == 0 && access(file, R_OK) != 0)
 		return (printf("minishell: %s: Premission denied\n", file), false);
-	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (append)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (false);
 	if (dup2(fd, STDOUT_FILENO) < 0)
@@ -62,7 +65,9 @@ bool	setup_redirections(int *fds, t_redir *redirs)
 		return (true);
 	while (redirs->type)
 	{
-		if (redirs->type == OUTFILE && !redirect_out(redirs->file))
+		if (redirs->type == OUTFILE && !redirect_out(redirs->file, 0))
+			return (false);
+		if (redirs->type == APPEND && !redirect_out(redirs->file, 1))
 			return (false);
 		if (redirs->type == INFILE && !redirect_in(redirs->file))
 			return (false);
