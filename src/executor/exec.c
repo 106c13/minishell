@@ -51,6 +51,7 @@ int	execute_command(t_ast *leaf, t_shell *shell)
 	int		fds[2];
 	pid_t	pid;
 
+	status = 0;
 	expand_command(leaf, shell);
 	if (!setup_redirections(fds, leaf->redirs))
 		return (1);

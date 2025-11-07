@@ -19,5 +19,9 @@ void	syntax_error(int type)
 		write(STDERR_FILENO, ";", 1);
 	if (type == PIPE)
 		write(STDERR_FILENO, "|", 1);
+	if (type == OUTFILE)
+	   write(STDERR_FILENO, ">", 1);	
+	if (type == INFILE)
+	   write(STDERR_FILENO, "<", 1);	
 	write(STDERR_FILENO, "\n", 1);
 }
