@@ -52,6 +52,7 @@ char	*get_part(char **str);
 void    free_parts(char **parts, int size);
 
 /* free_utils.c */
+void	free_redirs(t_redir *redir);
 void	free_argv(char **argv);
 void	free_dict(t_dict *dict);
 void	free_ast(t_ast *ast);

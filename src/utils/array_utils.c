@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "utils.h"
 
 char	**join_str_arrays(char **a1, char **a2)
@@ -19,8 +20,6 @@ char	**join_str_arrays(char **a1, char **a2)
 	ft_memcpy(new, a1, size1 * sizeof(char *));
 	ft_memcpy(new + size1, a2, size2 * sizeof(char *));
 	new[size1 + size2] = NULL;
-	if (a1)
-		free(a1);
 	if (a2)
 		free(a2);
 	return (new);
@@ -38,11 +37,9 @@ char	**append_str_array(char **arr, char *tail)
 	if (!new)
 		return (NULL);
 	ft_memcpy(new, arr, size * sizeof(char *));
-	new[size] = ft_strdup(tail);
+	new[size] = tail;
 	new[size + 1] = NULL;
 	if (arr)
 		free(arr);
-	if (tail)
-		free(tail);
 	return (new);
 }	

@@ -36,31 +36,26 @@ char	*expand_arg(char *arg, t_shell *shell)
 
 t_redir	*expand_redirections(t_redir *redirs, t_shell *shell)
 {
-	t_redir	*new;
-	int		size;
+	char	*tmp;
 	int		i;
 
 	if (!redirs)
 		return (NULL);
-	size = get_redirs_size(redirs);
-	new = malloc(sizeof(t_redir) * (size + 1));
 	i = 0;
-	while (i < size)
+	while (redirs[i].type != 0)
 	{
-		new[i].type = redirs[i].type;
-		new[i].file = expand_arg(redirs[i].file, shell);
-		if (!new[i].file)
+		tmp = redirs[i].file;
+		redirs[i].file = expand_arg(redirs[i].file, shell);
+		if (!redirs[i].file)
 		{
 			printf("minishell: %s: ambiguous redirect\n", redirs[i].file);
-			free(new);
-			free(redirs);
+			free_redirs(redirs);
 			return (NULL);
 		}
+		free(tmp);
 		i++;
 	}
-	new[i].type = 0;
-	free(redirs);
-	return (new);
+	return (redirs);
 }
 
 char	**expand_argv(int size, char **argv, t_shell *shell)
@@ -91,7 +86,7 @@ char	**expand_argv(int size, char **argv, t_shell *shell)
 	return (new);
 }
 
-void	expand_command(t_ast	*leaf, t_shell *shell)
+void	expand_command(t_ast *leaf, t_shell *shell)
 {
 	int	argc;
 

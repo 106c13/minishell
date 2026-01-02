@@ -75,7 +75,7 @@ t_redir	*extract_redirections(t_token *token)
 		{
 			redirs[i].type = token->type; 
 			token++;
-			redirs[i++].file = token->value;
+			redirs[i++].file = ft_strdup(token->value);
 		}
 		token++;
 	}

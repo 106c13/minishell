@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <readline/readline.h>
+#include "minishell.h"
 
 int	g_last_status = 0;
 

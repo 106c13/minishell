@@ -49,7 +49,7 @@ bool	check_token_array(t_token *token)
 			depth++;
 		else if (token->type == RPAREN)
 			depth--;
-		if (t_is_operator(token->type) && token[1].type == 0)
+		if ((t_is_redirect(token->type) || t_is_operator(token->type)) && token[1].type == 0)
 			return (syntax_error(token->type), false);
 		token++;
 	}

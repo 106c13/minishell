@@ -1,10 +1,13 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "minishell.h"
 
 void	free_argv(char **argv)
 {
 	int		i;
 
+	if (!argv)
+		return ;
 	i = -1;
 	while (argv[++i])
 	{
@@ -32,13 +35,15 @@ void	free_redirs(t_redir *redir)
 {
 	t_redir	*tmp;
 
+	if (!redir)
+		return ;
 	tmp = redir;
-	while (redir)
+	while (redir->type != 0)
 	{
+		free(redir->file);
 		redir++;
-		free(tmp);
-		tmp = redir;
 	}
+	free(tmp);
 }
 
 void	free_ast(t_ast *ast)

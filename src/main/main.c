@@ -21,6 +21,7 @@
 #include "enviroment.h"
 #include "expander.h"
 #include "get_next_line.h"
+#include "signals.h"
 #include "utils.h"
 
 static void	init_session(t_shell *shell)
@@ -99,6 +100,7 @@ int	main(int argc, char **argv, char **env)
 	t_shell	shell;
 
 	/* In future add init_shell function */
+	setup_signals();
 	shell.aliases = NULL;
 	shell.pid = getpid();
 	init_env_list(&shell, env);

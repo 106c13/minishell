@@ -29,8 +29,8 @@ char	*get_part(char **str)
 	part = malloc(sizeof(char) * (size + 1));
 	if (!part)
 		return (NULL);
-	part[size] = '\0';
 	ft_memcpy(part, (*str - size), size);
+	part[size] = '\0';
 	return (part);
 }
 

@@ -8,6 +8,7 @@
 #include "expander.h"
 #include "utils.h"
 #include "enviroment.h"
+#include "signals.h"
 
 int	execute_builtin(t_ast *cmd, t_shell *shell)
 {
@@ -40,6 +41,7 @@ int	execute_bin(t_ast *leaf, t_dict *env)
 		exit(127);
 	}
 	envp = env_to_array(env);
+	set_default_signals();
 	execve(path, leaf->argv, envp);
 	perror(leaf->argv[0]);
 	exit(127);
@@ -95,7 +97,7 @@ int execute_pipe(t_ast *node, t_shell *shell)
     }
     close(pipefd[0]);
     close(pipefd[1]);
-    waitpid(pid_left, NULL, 0);
+	//waitpid(pid_left, NULL, 0);
     waitpid(pid_right, &status, 0);
     return (WIFEXITED(status) ? WEXITSTATUS(status) : FAILURE);
 }

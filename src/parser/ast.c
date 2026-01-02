@@ -70,7 +70,7 @@ t_ast	*ast_node(t_token *left, t_token *right)
 	t_ast	*node;
 
 	//printf("OP(%d)-> ", right->type);
-	node = malloc(sizeof(t_ast));
+	node = ft_calloc(sizeof(t_ast), 1);
 	node->type = right->type;
 	right->type = 0;
 //	printf("LEFT-> ");
